@@ -6,7 +6,7 @@ import { MouseEventHandler, useEffect } from "react";
 import Spinner from "../Spinner";
 
 type Props = {
-  action?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   className?: string;
   children: string;
   color: string;
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export default function Button({
-  action,
+  onClick,
   className,
   children,
   color,
@@ -37,11 +37,11 @@ export default function Button({
     <>
       <button
         type={type}
-        onClick={action}
+        onClick={onClick}
         data-aos={dataAos}
         data-aos-duration={dataDuration}
         disabled={disabled}
-        className={`mr-2 rounded-xl ${color} px-5 py-3 text-base font-medium text-white hover:brightness-110 focus:outline-none ${className}`}
+        className={`mr-2 rounded-full ${color} px-5 py-3 text-base font-medium text-white hover:brightness-110 focus:outline-none ${className}`}
       >
         {loading && <Spinner className={"mr-3 inline"} />}
         {icon && (
