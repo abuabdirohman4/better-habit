@@ -8,7 +8,7 @@ import Spinner from "../Spinner";
 type Props = {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   className?: string;
-  children: string;
+  children: string | React.ReactNode;
   color: string;
   dataAos?: string;
   dataDuration?: string;

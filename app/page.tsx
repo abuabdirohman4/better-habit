@@ -3,12 +3,15 @@ import Button from "@/components/Button";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
+// import { FcGoogle } from "react-icons/fc";
+// import { MdEmail } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { getLocal, removeLocal, setLocal } from "@/utils/session";
 import { LOCALKEY } from "@/utils/constants";
 import Spinner from "@/components/Spinner";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Welcome() {
   const modalRef = useRef<HTMLDialogElement>(null);
@@ -22,6 +25,7 @@ export default function Welcome() {
     clientid: "",
     password: "",
   });
+  // const { data: session, status } = useSession();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -68,6 +72,51 @@ export default function Welcome() {
               priority={true}
             />
           </div>
+          {/* {session ? (
+            <>
+              <p>Welcome, {session.user?.name}</p>
+              <button
+                onClick={() => signOut()}
+                className="px-4 py-2 bg-red-500 text-white rounded"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => signIn("google")}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Sign in with Google
+            </button>
+          )} */}
+
+          {/* <Button color="bg-primary" className="w-full py-3.5">
+            <div className="flex justify-center">
+              <div className="bg-white inline mr-3 px-1 flex items-center rounded-md">
+                <FcGoogle size={18} />
+              </div>
+              Sign in with Google
+            </div>
+          </Button>
+          <Button color="bg-primary" className="w-full py-3.5 mt-3">
+            <div className="flex justify-center">
+              <div className="bg-white inline mr-3 px-1 flex items-center rounded-md">
+                <MdEmail size={18} color="#1496F6" />
+              </div>
+              Sign up using Email
+            </div>
+          </Button>
+          <p className="mt-3 flex justify-center">
+            Already have an account?
+            <button
+              className="text-primary font-semibold ml-1"
+              onClick={openModal}
+            >
+              Sign In
+            </button>
+          </p> */}
+
           {rememberMe ? (
             <Button
               color="bg-primary"

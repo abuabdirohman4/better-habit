@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+// import SessionProviderWrapper from "@/components/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +12,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  // session,
 }: Readonly<{
   children: React.ReactNode;
+  // session: any;
 }>) {
   return (
     <html lang="en" className="mx-auto max-w-md bg-white dark:bg-white">
       <body className={`${inter.className} min-h-screen shadow-2xl bg-white`}>
+        {/* <SessionProviderWrapper session={session}>{children}</SessionProviderWrapper> */}
         {children}
       </body>
     </html>
