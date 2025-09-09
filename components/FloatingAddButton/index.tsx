@@ -34,7 +34,7 @@ const FloatingAddButton: React.FC<FloatingAddButtonProps> = ({
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
-            className={`fixed bottom-6 right-6 w-14 h-14 bg-primary hover:bg-primary/90 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 ${
+            className={`fixed bottom-6 right-6 w-14 h-14 bg-habit-blue hover:bg-habit-blue/90 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center z-50 ${
                 isPressed ? "scale-95" : "scale-100"
             } ${className}`}
             aria-label="Add new habit"

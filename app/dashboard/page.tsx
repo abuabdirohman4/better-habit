@@ -35,7 +35,7 @@ export default function DashboardPage() {
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
-            <div className="bg-gradient-to-br from-primary to-primary/80 px-7 pt-16 pb-8 text-white">
+            <div className="bg-gradient-to-r from-habit-blue to-habit-purple px-7 pt-16 pb-8 text-white rounded-b-3xl">
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <h1 className="text-3xl font-bold mb-1">
@@ -62,9 +62,9 @@ export default function DashboardPage() {
                         <p className="text-white/80 text-sm">Current Streak</p>
                         <p className="text-2xl font-bold">7 Days</p>
                     </div>
-                    <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-habit-yellow rounded-full flex items-center justify-center">
                         <svg
-                            className="w-6 h-6 text-yellow-800"
+                            className="w-6 h-6 text-habit-dark"
                             fill="currentColor"
                             viewBox="0 0 24 24"
                         >
@@ -87,7 +87,7 @@ export default function DashboardPage() {
                         <h2 className="text-2xl font-bold text-gray-800">
                             Today&apos;s Habits
                         </h2>
-                        <button className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <button className="w-8 h-8 bg-habit-blue rounded-full flex items-center justify-center hover:bg-habit-blue/90 transition-colors">
                             <svg
                                 className="w-5 h-5 text-white"
                                 fill="none"
@@ -153,7 +153,7 @@ export default function DashboardPage() {
                             </p>
                         </div>
                         <div className="text-right">
-                            <p className="text-2xl font-bold text-primary">
+                            <p className="text-2xl font-bold text-habit-blue">
                                 {habits.length > 0 ? "33%" : "0%"}
                             </p>
                         </div>

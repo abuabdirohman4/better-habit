@@ -15,6 +15,26 @@ const config: Config = {
             },
             colors: {
                 primary: "#1496F6",
+                // Mockup Color Palette
+                "habit-blue": "#1496F6",
+                "habit-purple": "#8B5CF6",
+                "habit-green": "#10B981",
+                "habit-yellow": "#F59E0B",
+                "habit-red": "#EF4444",
+                "habit-pink": "#EC4899",
+                "habit-gray": "#6B7280",
+                "habit-light-gray": "#F3F4F6",
+                "habit-dark": "#1F2937",
+                // Gradient colors
+                "gradient-start": "#1496F6",
+                "gradient-end": "#8B5CF6",
+                // Card colors
+                "card-green": "#D1FAE5",
+                "card-blue": "#DBEAFE",
+                "card-purple": "#EDE9FE",
+                "card-yellow": "#FEF3C7",
+                "card-red": "#FEE2E2",
+                "card-pink": "#FCE7F3",
             },
         },
     },

@@ -20,17 +20,49 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
     const getHabitIcon = (iconName: string) => {
         // Map icon names to actual icons based on mockup
         const iconMap: { [key: string]: string } = {
-            exercise_icon: "🏃‍♂️",
-            book_icon: "📚",
+            exercise_icon: "⚡",
+            book_icon: "📖",
             no_smoking_icon: "🚭",
             water_icon: "💧",
-            meditation_icon: "🧘‍♀️",
+            meditation_icon: "💡",
             sleep_icon: "😴",
-            run_icon: "🏃‍♂️",
+            run_icon: "⚡",
             read_icon: "📖",
             default: "✅",
         };
         return iconMap[iconName] || iconMap.default;
+    };
+
+    const getHabitCardColor = (iconName: string) => {
+        // Map icon names to card colors based on mockup
+        const colorMap: { [key: string]: string } = {
+            exercise_icon: "bg-card-green",
+            book_icon: "bg-card-blue",
+            no_smoking_icon: "bg-card-red",
+            water_icon: "bg-card-blue",
+            meditation_icon: "bg-card-purple",
+            sleep_icon: "bg-card-yellow",
+            run_icon: "bg-card-green",
+            read_icon: "bg-card-blue",
+            default: "bg-card-green",
+        };
+        return colorMap[iconName] || colorMap.default;
+    };
+
+    const getHabitTextColor = (iconName: string) => {
+        // Map icon names to text colors based on mockup
+        const colorMap: { [key: string]: string } = {
+            exercise_icon: "text-habit-green",
+            book_icon: "text-habit-blue",
+            no_smoking_icon: "text-habit-red",
+            water_icon: "text-habit-blue",
+            meditation_icon: "text-habit-purple",
+            sleep_icon: "text-habit-yellow",
+            run_icon: "text-habit-green",
+            read_icon: "text-habit-blue",
+            default: "text-habit-green",
+        };
+        return colorMap[iconName] || colorMap.default;
     };
 
     const getHabitTypeColor = (type: "do" | "dont") => {
@@ -71,11 +103,9 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
             <div className="flex items-center space-x-4">
                 {/* Icon */}
                 <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                        habit.type === "do" ? "bg-success/20" : "bg-error/20"
-                    }`}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center ${getHabitCardColor(habit.iconName)}`}
                 >
-                    <div className="text-2xl">
+                    <div className="text-2xl text-white">
                         {getHabitIcon(habit.iconName)}
                     </div>
                 </div>
@@ -96,11 +126,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                     </p>
                     <div className="flex items-center space-x-2">
                         <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                habit.type === "do"
-                                    ? "bg-success/20 text-success"
-                                    : "bg-error/20 text-error"
-                            }`}
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${getHabitCardColor(habit.iconName)} ${getHabitTextColor(habit.iconName)}`}
                         >
                             {Math.floor(Math.random() * 7) + 1} day streak
                         </span>
@@ -112,7 +138,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                     onClick={handleToggleCompletion}
                     className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
                         isCompleted
-                            ? "bg-success text-white"
+                            ? "bg-habit-green text-white"
                             : "bg-gray-200 text-gray-400 hover:bg-gray-300"
                     }`}
                 >

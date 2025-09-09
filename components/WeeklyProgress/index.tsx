@@ -33,15 +33,15 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ className = "" }) => {
     };
 
     const getBarColor = (percentage: number) => {
-        if (percentage >= 80) return "bg-success";
-        if (percentage >= 60) return "bg-warning";
-        return "bg-error";
+        if (percentage >= 80) return "bg-habit-blue";
+        if (percentage >= 60) return "bg-habit-yellow";
+        return "bg-habit-red";
     };
 
     const getTextColor = (percentage: number) => {
-        if (percentage >= 80) return "text-success";
-        if (percentage >= 60) return "text-warning";
-        return "text-error";
+        if (percentage >= 80) return "text-habit-blue";
+        if (percentage >= 60) return "text-habit-yellow";
+        return "text-habit-red";
     };
 
     return (
@@ -50,7 +50,7 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ className = "" }) => {
                 <h2 className="text-xl font-semibold text-gray-800">
                     Weekly Progress
                 </h2>
-                <div className="text-sm text-gray-500">
+                <div className="text-2xl font-bold text-habit-blue">
                     {Math.round(
                         currentWeek.reduce((sum, val) => sum + val, 0) /
                             currentWeek.length

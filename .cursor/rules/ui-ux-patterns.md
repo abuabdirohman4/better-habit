@@ -21,13 +21,28 @@
 ### Better Habit Design System
 
 ```css
-/* Better Habit Color Palette */
-- Primary: #1496F6 (blue-500, blue-600, blue-700)
-- Success: #10b981 (emerald-500, emerald-600, emerald-700)
-- Warning: #f59e0b (amber-500, amber-600, amber-700)
-- Error: #ef4444 (red-500, red-600, red-700)
-- Neutral: #6b7280 (gray-500, gray-600, gray-700)
-- Background: Linear gradient (white to gray-50)
+/* Better Habit Color Palette - Based on Mockup */
+- Primary Blue: #1496F6 (habit-blue)
+- Primary Purple: #8B5CF6 (habit-purple)
+- Success Green: #10B981 (habit-green)
+- Warning Yellow: #F59E0B (habit-yellow)
+- Error Red: #EF4444 (habit-red)
+- Accent Pink: #EC4899 (habit-pink)
+- Neutral Gray: #6B7280 (habit-gray)
+- Light Gray: #F3F4F6 (habit-light-gray)
+- Dark Gray: #1F2937 (habit-dark)
+
+/* Card Background Colors */
+- Card Green: #D1FAE5 (card-green) - for exercise habits
+- Card Blue: #DBEAFE (card-blue) - for reading habits
+- Card Purple: #EDE9FE (card-purple) - for meditation habits
+- Card Yellow: #FEF3C7 (card-yellow) - for general habits
+- Card Red: #FEE2E2 (card-red) - for "don't" habits
+- Card Pink: #FCE7F3 (card-pink) - for health habits
+
+/* Gradient Backgrounds */
+- Header Gradient: from-habit-blue to habit-purple
+- Card Gradient: from-white to habit-light-gray
 ```
 
 ## Component Design Patterns
@@ -35,34 +50,72 @@
 ### Card Components
 
 ```jsx
-// Standard Card Pattern
-<div className="[CARD_CONTAINER_CLASSES]">
-    <div className="[CARD_HEADER_CLASSES]">
-        <h2 className="[CARD_TITLE_CLASSES]">[CARD_TITLE]</h2>
-        <div className="[CARD_ICON_CONTAINER_CLASSES]">{/* Icon */}</div>
+// Habit Card Pattern - Based on Mockup
+<div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 p-4">
+    <div className="flex items-center space-x-4">
+        {/* Icon with colored background */}
+        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-card-green">
+            <div className="text-2xl">🏃‍♂️</div>
+        </div>
+
+        {/* Habit Details */}
+        <div className="flex-1">
+            <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                Morning Exercise
+            </h3>
+            <p className="text-sm text-gray-600 mb-2">30 minutes workout</p>
+            <div className="flex items-center space-x-2">
+                <span className="px-2 py-1 rounded-full text-xs font-medium bg-card-green text-habit-green">
+                    7 day streak
+                </span>
+            </div>
+        </div>
+
+        {/* Completion Button */}
+        <button className="w-10 h-10 rounded-full flex items-center justify-center bg-habit-green text-white">
+            <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                />
+            </svg>
+        </button>
     </div>
-    <div className="[CARD_CONTENT_CLASSES]">{/* Content */}</div>
 </div>
 ```
 
 ### Button Patterns
 
 ```jsx
-// Primary Button
-<button className="[PRIMARY_BUTTON_CLASSES]">
-    [BUTTON_TEXT]
+// Primary Button - Based on Mockup
+<button className="bg-habit-blue text-white px-6 py-3 rounded-full font-semibold hover:bg-habit-blue/90 transition-colors">
+    Get Started
 </button>
 
-// Secondary Button
-<button className="[SECONDARY_BUTTON_CLASSES]">
-    [BUTTON_TEXT]
-</button>
-
-// Icon Button
-<button className="[ICON_BUTTON_CLASSES]">
-    <svg className="[ICON_CLASSES]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        {/* Icon path */}
+// Add Button (Circular)
+<button className="w-8 h-8 bg-habit-blue rounded-full flex items-center justify-center hover:bg-habit-blue/90 transition-colors">
+    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
     </svg>
+</button>
+
+// Completion Button (Habit Card)
+<button className="w-10 h-10 rounded-full flex items-center justify-center bg-habit-green text-white hover:bg-habit-green/90 transition-colors">
+    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+    </svg>
+</button>
+
+// Floating Add Button
+<button className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-habit-blue rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all">
+    <span className="text-3xl text-white font-light">+</span>
 </button>
 ```
 
