@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import SWRProvider from "@/components/SWRProvider";
+import BottomNavigationBar from "@/components/BottomNavigationBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
             <body
                 className={`${inter.className} min-h-screen shadow-2xl bg-white`}
             >
-                <SWRProvider>{children}</SWRProvider>
+                <SWRProvider>
+                    {children}
+                    <BottomNavigationBar />
+                </SWRProvider>
             </body>
         </html>
     );
