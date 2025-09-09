@@ -3,6 +3,7 @@
 ## 🎯 Quick Start (5 Minutes)
 
 ### **Step 1: Copy Templates**
+
 ```bash
 # Copy template rules to new project
 cp -r .cursor/rules/templates/ ../new-project/.cursor/rules/
@@ -12,6 +13,7 @@ rm ../new-project/.cursor/rules/templates/
 ```
 
 ### **Step 2: Basic Customization**
+
 ```bash
 # Replace project name
 find ../new-project/.cursor/rules/ -name "*.md" -exec sed -i 's/\[PROJECT_NAME\]/Your Project Name/g' {} \;
@@ -24,6 +26,7 @@ find ../new-project/.cursor/rules/ -name "*.md" -exec sed -i 's/\[CSS_FRAMEWORK\
 ```
 
 ### **Step 3: Test Rules**
+
 ```bash
 # Test in new project
 cd ../new-project
@@ -35,8 +38,10 @@ cd ../new-project
 ### **1. Project-Specific Customization**
 
 #### **Update Project Overview**
+
 ```markdown
 # Edit project-overview.md
+
 - Replace [PROJECT_NAME] with your project name
 - Update [PROJECT_TYPE] (web app, mobile app, etc.)
 - Set [MAIN_FRAMEWORK] and [VERSION]
@@ -45,8 +50,10 @@ cd ../new-project
 ```
 
 #### **Customize Coding Standards**
+
 ```markdown
 # Edit coding-standards.md
+
 - Set [FRAMEWORK] to your framework
 - Choose [COMPONENT_TYPE] (functional, class, etc.)
 - Select [FUNCTION_STYLE] (arrow functions, etc.)
@@ -55,8 +62,10 @@ cd ../new-project
 ```
 
 #### **Update UI/UX Patterns**
+
 ```markdown
 # Edit ui-ux-patterns.md
+
 - Set [CSS_FRAMEWORK] to your choice
 - Define [DOMAIN_FOCUS] (Financial, E-commerce, etc.)
 - Choose color palette
@@ -67,6 +76,7 @@ cd ../new-project
 ### **2. Framework-Specific Examples**
 
 #### **React + Next.js**
+
 ```bash
 # Replace framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[FRAMEWORK\]/React/g' {} \;
@@ -76,6 +86,7 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[HOOKS_TYPE\]/React hooks/g' {
 ```
 
 #### **Vue + Nuxt**
+
 ```bash
 # Replace framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[FRAMEWORK\]/Vue/g' {} \;
@@ -85,6 +96,7 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[HOOKS_TYPE\]/Vue Composition 
 ```
 
 #### **Angular**
+
 ```bash
 # Replace framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[FRAMEWORK\]/Angular/g' {} \;
@@ -96,6 +108,7 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[HOOKS_TYPE\]/Angular services
 ### **3. CSS Framework Examples**
 
 #### **Tailwind CSS**
+
 ```bash
 # Replace CSS framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[CSS_FRAMEWORK\]/Tailwind CSS/g' {} \;
@@ -104,6 +117,7 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/4, 8, 12, 16,
 ```
 
 #### **Bootstrap**
+
 ```bash
 # Replace CSS framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[CSS_FRAMEWORK\]/Bootstrap/g' {} \;
@@ -112,6 +126,7 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/1, 2, 3, 4, 5
 ```
 
 #### **Material-UI**
+
 ```bash
 # Replace CSS framework variables
 find .cursor/rules/ -name "*.md" -exec sed -i 's/\[CSS_FRAMEWORK\]/Material-UI/g' {} \;
@@ -124,8 +139,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ### **1. Domain-Specific Customization**
 
 #### **E-Commerce Project**
+
 ```markdown
 # Update domain variables
+
 - [DOMAIN_FOCUS] → "E-commerce Focus"
 - [DOMAIN] → "ecommerce"
 - [DATA_TYPE] → "Price"
@@ -135,8 +152,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ```
 
 #### **Admin Dashboard**
+
 ```markdown
 # Update domain variables
+
 - [DOMAIN_FOCUS] → "Admin Focus"
 - [DOMAIN] → "admin"
 - [DATA_TYPE] → "Metric"
@@ -146,8 +165,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ```
 
 #### **Blog/Content Site**
+
 ```markdown
 # Update domain variables
+
 - [DOMAIN_FOCUS] → "Content Focus"
 - [DOMAIN] → "content"
 - [DATA_TYPE] → "Word Count"
@@ -159,8 +180,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ### **2. Technology Stack Customization**
 
 #### **Full-Stack MERN**
+
 ```markdown
 # Update tech stack
+
 - [MAIN_FRAMEWORK] → "React"
 - [BACKEND_FRAMEWORK] → "Express.js"
 - [DATABASE] → "MongoDB"
@@ -170,8 +193,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ```
 
 #### **Full-Stack MEAN**
+
 ```markdown
 # Update tech stack
+
 - [MAIN_FRAMEWORK] → "Angular"
 - [BACKEND_FRAMEWORK] → "Express.js"
 - [DATABASE] → "MongoDB"
@@ -181,8 +206,10 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ```
 
 #### **Full-Stack LAMP**
+
 ```markdown
 # Update tech stack
+
 - [MAIN_FRAMEWORK] → "PHP"
 - [BACKEND_FRAMEWORK] → "Laravel"
 - [DATABASE] → "MySQL"
@@ -194,25 +221,33 @@ find .cursor/rules/ -name "*.md" -exec sed -i 's/\[SPACING_SCALE\]/8px grid syst
 ### **3. Custom Rules Creation**
 
 #### **Add Project-Specific Rules**
+
 ```markdown
 # Create new rule file
+
 touch .cursor/rules/[PROJECT_SPECIFIC_RULE].md
 
 # Example: ecommerce-patterns.md
+
 # Example: admin-dashboard-patterns.md
+
 # Example: blog-content-patterns.md
 ```
 
 #### **Update Existing Rules**
+
 ```markdown
 # Add custom patterns to existing files
+
 # Example: Add e-commerce specific patterns to component-patterns.md
+
 # Example: Add admin-specific patterns to ui-ux-patterns.md
 ```
 
 ## 📋 Customization Checklist
 
 ### **Basic Customization (5 min)**
+
 - [ ] Copy template rules
 - [ ] Replace project name
 - [ ] Set main framework
@@ -220,6 +255,7 @@ touch .cursor/rules/[PROJECT_SPECIFIC_RULE].md
 - [ ] Test rules work
 
 ### **Intermediate Customization (15 min)**
+
 - [ ] Update project overview
 - [ ] Customize coding standards
 - [ ] Set UI/UX patterns
@@ -228,6 +264,7 @@ touch .cursor/rules/[PROJECT_SPECIFIC_RULE].md
 - [ ] Update file organization
 
 ### **Advanced Customization (30 min)**
+
 - [ ] Set domain-specific patterns
 - [ ] Customize tech stack
 - [ ] Add project-specific rules
@@ -238,6 +275,7 @@ touch .cursor/rules/[PROJECT_SPECIFIC_RULE].md
 ## 🔄 Template Updates
 
 ### **Keeping Templates Updated**
+
 ```bash
 # Pull latest template updates
 git pull origin main
@@ -250,6 +288,7 @@ cp -r .cursor/rules/templates/ ../your-project/.cursor/rules/
 ```
 
 ### **Contributing to Templates**
+
 ```bash
 # If you find improvements
 # 1. Update template files
@@ -263,6 +302,7 @@ cp -r .cursor/rules/templates/ ../your-project/.cursor/rules/
 ### **Color Palette Examples**
 
 #### **Financial App**
+
 ```css
 - Primary: Blue (#1e40af, #1d4ed8, #2563eb)
 - Success: Green (#10b981, #059669, #047857)
@@ -272,6 +312,7 @@ cp -r .cursor/rules/templates/ ../your-project/.cursor/rules/
 ```
 
 #### **E-Commerce App**
+
 ```css
 - Primary: Purple (#7c3aed, #8b5cf6, #a78bfa)
 - Success: Green (#10b981, #059669, #047857)
@@ -281,6 +322,7 @@ cp -r .cursor/rules/templates/ ../your-project/.cursor/rules/
 ```
 
 #### **Admin Dashboard**
+
 ```css
 - Primary: Indigo (#4f46e5, #6366f1, #818cf8)
 - Success: Green (#10b981, #059669, #047857)
@@ -292,6 +334,7 @@ cp -r .cursor/rules/templates/ ../your-project/.cursor/rules/
 ## 🚀 Quick Setup Scripts
 
 ### **React + Next.js + Tailwind**
+
 ```bash
 #!/bin/bash
 # setup-react-nextjs-tailwind.sh
@@ -310,6 +353,7 @@ echo "✅ React + Next.js + Tailwind rules setup complete!"
 ```
 
 ### **Vue + Nuxt + Tailwind**
+
 ```bash
 #!/bin/bash
 # setup-vue-nuxt-tailwind.sh
@@ -328,6 +372,7 @@ echo "✅ Vue + Nuxt + Tailwind rules setup complete!"
 ```
 
 ### **Angular + Material-UI**
+
 ```bash
 #!/bin/bash
 # setup-angular-material.sh

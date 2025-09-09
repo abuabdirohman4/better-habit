@@ -13,6 +13,7 @@
 ## [FRAMEWORK] Patterns
 
 ### State Management
+
 - Use `[LOCAL_STATE_HOOK]` for local component state
 - Use `[EFFECT_HOOK]` for side effects and data fetching
 - Use `[MEMO_HOOK]` for expensive calculations
@@ -20,12 +21,14 @@
 - Use `[REF_HOOK]` for DOM references and mutable values
 
 ### Custom Hooks
+
 - Create custom hooks for reusable [HOOK_PURPOSE] (e.g., `[HOOK_EXAMPLE]`)
 - Use [DATA_FETCHING_LIBRARY] for server state management with built-in caching and revalidation
 - Implement proper error handling and loading states in custom hooks
 - Return consistent hook interface: `{ [HOOK_RETURN_INTERFACE] }`
 
 ### Data Fetching
+
 - Use [DATA_FETCHING_LIBRARY] for all API calls with proper configuration
 - Implement cache busting for real-time data updates
 - Add proper error boundaries and fallback states
@@ -34,6 +37,7 @@
 ## File Organization
 
 ### Component Structure
+
 ```
 components/
 ├── [COMPONENT_NAME]/
@@ -42,6 +46,7 @@ components/
 ```
 
 ### Utility Organization
+
 ```
 utils/
 ├── [UTILS_1].js              # [UTILS_1_DESCRIPTION]
@@ -51,6 +56,7 @@ utils/
 ```
 
 ### [FRAMEWORK] Structure
+
 ```
 [PAGES_DIR]/
 ├── [FEATURE_NAME]/
@@ -63,6 +69,7 @@ utils/
 ## Import/Export Patterns
 
 ### Component Exports
+
 ```javascript
 // components/[COMPONENT_NAME]/[MAIN_FILE]
 export { default as [COMPONENT_1] } from "./[COMPONENT_1]";
@@ -71,6 +78,7 @@ export { default as [COMPONENT_3] } from "./[COMPONENT_3]";
 ```
 
 ### Utility Exports
+
 ```javascript
 // utils/[UTILS_FILE]
 export function [FUNCTION_NAME]([PARAMETERS]) {
@@ -83,6 +91,7 @@ export function [ANOTHER_FUNCTION]([PARAMETERS]) {
 ```
 
 ### Import Patterns
+
 ```javascript
 // Use absolute imports with [IMPORT_PREFIX]
 import { [HOOK_1], [HOOK_2] } from "@/utils/[HOOKS_FILE]";
@@ -93,6 +102,7 @@ import { [COMPONENT_1], [COMPONENT_2] } from "@/components/[COMPONENT_DIR]";
 ## [DATA_FETCHING_LIBRARY] Integration
 
 ### Custom Hook Pattern
+
 ```javascript
 export const [HOOK_NAME] = ([PARAMETERS]) => {
     const { data, error, isLoading, mutate } = [DATA_FETCHING_LIBRARY](
@@ -114,6 +124,7 @@ export const [HOOK_NAME] = ([PARAMETERS]) => {
 ```
 
 ### API Route Pattern
+
 ```javascript
 // [API_DIR]/[ENDPOINT]/[ROUTE_FILE]
 export async function [HTTP_METHOD](request) {
@@ -132,6 +143,7 @@ export async function [HTTP_METHOD](request) {
 ## Error Handling
 
 ### Component Error States
+
 ```javascript
 if (error) {
     return (
@@ -145,6 +157,7 @@ if (error) {
 ```
 
 ### Loading States
+
 ```javascript
 if (isLoading) {
     return (
@@ -159,6 +172,7 @@ if (isLoading) {
 ## Code Quality
 
 ### Function Documentation
+
 ```javascript
 /**
  * [FUNCTION_DESCRIPTION]
@@ -172,12 +186,14 @@ export function [FUNCTION_NAME]([PARAMETERS]) {
 ```
 
 ### Consistent Error Messages
+
 - Use descriptive error messages
 - Include context about what failed
 - Provide actionable next steps
 - Use consistent error styling and icons
 
 ### Performance Considerations
+
 - Use `[MEMO_HOOK]` for expensive calculations
 - Use `[CALLBACK_HOOK]` for event handlers in lists
 - Implement proper loading states
@@ -187,6 +203,7 @@ export function [FUNCTION_NAME]([PARAMETERS]) {
 ## Testing Guidelines
 
 ### Manual Testing Checklist
+
 - [ ] Test all user interactions
 - [ ] Verify error states and recovery
 - [ ] Check loading states
@@ -197,6 +214,7 @@ export function [FUNCTION_NAME]([PARAMETERS]) {
 ## Customization Guide
 
 ### Required Replacements
+
 1. **[FRAMEWORK]** → Your framework (React, Vue, Angular, etc.)
 2. **[COMPONENT_TYPE]** → functional components, class components, etc.
 3. **[HOOKS_TYPE]** → React hooks, Vue composition API, etc.
@@ -209,6 +227,7 @@ export function [FUNCTION_NAME]([PARAMETERS]) {
 ### Framework-Specific Examples
 
 #### React
+
 ```javascript
 // Component naming: PascalCase
 export default function UserProfile() {}
@@ -217,38 +236,40 @@ export default function UserProfile() {}
 // UserProfile.js, UserProfile.test.js
 
 // Variable naming: camelCase
-const userName = 'john';
+const userName = "john";
 const isLoggedIn = true;
 
 // Constants: UPPER_SNAKE_CASE
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = "https://api.example.com";
 const MAX_RETRY_ATTEMPTS = 3;
 ```
 
 #### Vue
+
 ```javascript
 // Component naming: PascalCase
 export default {
-  name: 'UserProfile'
-}
+    name: "UserProfile",
+};
 
 // File naming: PascalCase for components
 // UserProfile.vue, UserProfile.spec.js
 
 // Variable naming: camelCase
-const userName = 'john';
+const userName = "john";
 const isLoggedIn = true;
 
 // Constants: UPPER_SNAKE_CASE
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = "https://api.example.com";
 ```
 
 #### Angular
+
 ```typescript
 // Component naming: PascalCase
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html'
+    selector: "app-user-profile",
+    templateUrl: "./user-profile.component.html",
 })
 export class UserProfileComponent {}
 
@@ -256,31 +277,31 @@ export class UserProfileComponent {}
 // user-profile.component.ts, user-profile.component.spec.ts
 
 // Variable naming: camelCase
-const userName = 'john';
+const userName = "john";
 const isLoggedIn = true;
 
 // Constants: UPPER_SNAKE_CASE
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = "https://api.example.com";
 ```
 
 ## Template Variables
 
-| Variable | Description | React Example | Vue Example | Angular Example |
-|----------|-------------|---------------|-------------|-----------------|
-| `[FRAMEWORK]` | Main framework | "React" | "Vue" | "Angular" |
-| `[COMPONENT_TYPE]` | Component type | "functional components" | "SFC components" | "class components" |
-| `[HOOKS_TYPE]` | Hooks system | "React hooks" | "Vue Composition API" | "Angular services" |
-| `[FUNCTION_STYLE]` | Function style | "arrow functions" | "arrow functions" | "arrow functions" |
-| `[COMPONENT_NAMING]` | Component naming | "PascalCase" | "PascalCase" | "PascalCase" |
-| `[FILE_NAMING]` | File naming | "PascalCase" | "PascalCase" | "kebab-case" |
-| `[VARIABLE_NAMING]` | Variable naming | "camelCase" | "camelCase" | "camelCase" |
-| `[CONSTANT_NAMING]` | Constant naming | "UPPER_SNAKE_CASE" | "UPPER_SNAKE_CASE" | "UPPER_SNAKE_CASE" |
-| `[LOCAL_STATE_HOOK]` | Local state hook | "useState" | "ref" | "BehaviorSubject" |
-| `[EFFECT_HOOK]` | Effect hook | "useEffect" | "watchEffect" | "ngOnInit" |
-| `[MEMO_HOOK]` | Memo hook | "useMemo" | "computed" | "memoize" |
-| `[CALLBACK_HOOK]` | Callback hook | "useCallback" | "useCallback" | "memoize" |
-| `[REF_HOOK]` | Ref hook | "useRef" | "ref" | "ViewChild" |
-| `[DATA_FETCHING_LIBRARY]` | Data fetching | "SWR" | "VueUse" | "HttpClient" |
-| `[PAGES_DIR]` | Pages directory | "pages" | "views" | "pages" |
-| `[API_DIR]` | API directory | "api" | "api" | "api" |
-| `[IMPORT_PREFIX]` | Import prefix | "@/" | "@/" | "@/" |
+| Variable                  | Description      | React Example           | Vue Example           | Angular Example    |
+| ------------------------- | ---------------- | ----------------------- | --------------------- | ------------------ |
+| `[FRAMEWORK]`             | Main framework   | "React"                 | "Vue"                 | "Angular"          |
+| `[COMPONENT_TYPE]`        | Component type   | "functional components" | "SFC components"      | "class components" |
+| `[HOOKS_TYPE]`            | Hooks system     | "React hooks"           | "Vue Composition API" | "Angular services" |
+| `[FUNCTION_STYLE]`        | Function style   | "arrow functions"       | "arrow functions"     | "arrow functions"  |
+| `[COMPONENT_NAMING]`      | Component naming | "PascalCase"            | "PascalCase"          | "PascalCase"       |
+| `[FILE_NAMING]`           | File naming      | "PascalCase"            | "PascalCase"          | "kebab-case"       |
+| `[VARIABLE_NAMING]`       | Variable naming  | "camelCase"             | "camelCase"           | "camelCase"        |
+| `[CONSTANT_NAMING]`       | Constant naming  | "UPPER_SNAKE_CASE"      | "UPPER_SNAKE_CASE"    | "UPPER_SNAKE_CASE" |
+| `[LOCAL_STATE_HOOK]`      | Local state hook | "useState"              | "ref"                 | "BehaviorSubject"  |
+| `[EFFECT_HOOK]`           | Effect hook      | "useEffect"             | "watchEffect"         | "ngOnInit"         |
+| `[MEMO_HOOK]`             | Memo hook        | "useMemo"               | "computed"            | "memoize"          |
+| `[CALLBACK_HOOK]`         | Callback hook    | "useCallback"           | "useCallback"         | "memoize"          |
+| `[REF_HOOK]`              | Ref hook         | "useRef"                | "ref"                 | "ViewChild"        |
+| `[DATA_FETCHING_LIBRARY]` | Data fetching    | "SWR"                   | "VueUse"              | "HttpClient"       |
+| `[PAGES_DIR]`             | Pages directory  | "pages"                 | "views"               | "pages"            |
+| `[API_DIR]`               | API directory    | "api"                   | "api"                 | "api"              |
+| `[IMPORT_PREFIX]`         | Import prefix    | "@/"                    | "@/"                  | "@/"               |

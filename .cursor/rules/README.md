@@ -1,28 +1,33 @@
 # Cursor Rules Templates
 
 ## 📋 Overview
+
 Template rules yang bisa digunakan untuk proyek apapun dengan kualitas yang sama seperti Better Habit.
 
 ## 🚀 Cara Penggunaan
 
 ### **1. Copy Template Rules**
+
 ```bash
 # Copy template rules ke proyek baru
 cp -r .cursor/rules/templates/ ../new-project/.cursor/rules/
 ```
 
 ### **2. Customize untuk Proyek**
+
 - Edit `project-overview.md` dengan detail proyek baru
 - Sesuaikan `coding-standards.md` dengan tech stack
 - Update `ui-ux-patterns.md` dengan design system
 - Modifikasi `api-integration.md` dengan data source
 
 ### **3. Pilih Rules yang Diperlukan**
+
 - **Proyek Kecil**: 4 file dasar
 - **Proyek Menengah**: + api-integration.md
 - **Proyek Besar**: Semua 7 file
 
 ## 📁 File Structure
+
 ```
 templates/
 ├── README.md                    # Panduan penggunaan
@@ -38,16 +43,19 @@ templates/
 ## 🎨 Customization Levels
 
 ### **Level 1: Basic (5 menit)**
+
 - Ganti nama proyek
 - Update tech stack
 - Sesuaikan warna utama
 
 ### **Level 2: Intermediate (15 menit)**
+
 - Customize component patterns
 - Update API integration
 - Sesuaikan deployment strategy
 
 ### **Level 3: Advanced (30 menit)**
+
 - Full customization
 - Add project-specific patterns
 - Create custom rules
@@ -79,6 +87,7 @@ find ../new-project/.cursor/rules/ -name "*.md" -exec sed -i 's/#1496F6/g' {} \;
 ## 🆕 Template Updates
 
 Template ini akan diupdate secara berkala dengan:
+
 - Best practices terbaru
 - New patterns yang ditemukan
 - Bug fixes dan improvements
@@ -87,6 +96,7 @@ Template ini akan diupdate secara berkala dengan:
 ## 🤝 Contributing
 
 Jika menemukan pattern baru atau improvement:
+
 1. Update template yang sesuai
 2. Test di proyek baru
 3. Document perubahan

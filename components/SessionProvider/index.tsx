@@ -3,12 +3,12 @@ import { SessionProvider } from "next-auth/react";
 import { ReactNode } from "react";
 
 interface Props {
-  children: ReactNode;
-  session: any;
+    children: ReactNode;
+    session: any;
 }
 
 const SessionProviderWrapper = ({ children, session }: Props) => {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
+    return <SessionProvider session={session}>{children}</SessionProvider>;
 };
 
 export default SessionProviderWrapper;

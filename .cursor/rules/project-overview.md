@@ -44,17 +44,20 @@
 ## Key Features
 
 ### Core Features
+
 - **[FEATURE_1]**: [FEATURE_1_DESCRIPTION]
 - **[FEATURE_2]**: [FEATURE_2_DESCRIPTION]
 - **[FEATURE_3]**: [FEATURE_3_DESCRIPTION]
 - **[FEATURE_4]**: [FEATURE_4_DESCRIPTION]
 
 ### Advanced Features
+
 - **[ADVANCED_FEATURE_1]**: [ADVANCED_FEATURE_1_DESCRIPTION]
 - **[ADVANCED_FEATURE_2]**: [ADVANCED_FEATURE_2_DESCRIPTION]
 - **[ADVANCED_FEATURE_3]**: [ADVANCED_FEATURE_3_DESCRIPTION]
 
 ### Technical Features
+
 - **[TECH_FEATURE_1]**: [TECH_FEATURE_1_DESCRIPTION]
 - **[TECH_FEATURE_2]**: [TECH_FEATURE_2_DESCRIPTION]
 - **[TECH_FEATURE_3]**: [TECH_FEATURE_3_DESCRIPTION]
@@ -62,6 +65,7 @@
 ## Customization Guide
 
 ### Required Replacements
+
 1. **[PROJECT_NAME]** → Your project name
 2. **[PROJECT_TYPE]** → Web app, Mobile app, Desktop app, etc.
 3. **[MAIN_FRAMEWORK]** → Next.js, React, Vue, Angular, etc.
@@ -71,19 +75,23 @@
 7. **[INTEGRATION_TYPE]** → API, Database, External service, etc.
 
 ### Optional Customizations
+
 - Update project structure to match your framework
 - Add/remove features based on your needs
 - Customize tech stack for your requirements
 - Update file names and directories
 
 ### Example Customization
+
 ```markdown
 # E-Commerce Store - Project Overview
 
 ## Project Description
+
 E-Commerce Store is a web application built with Next.js 14 for online shopping. The app provides product catalog, shopping cart, checkout, and order management with Stripe payment integration.
 
 ## Tech Stack
+
 - **Framework**: Next.js 14 (App Router)
 - **Styling**: Tailwind CSS with custom design system
 - **State Management**: Zustand for global state, React Hooks for local state
@@ -92,23 +100,23 @@ E-Commerce Store is a web application built with Next.js 14 for online shopping.
 
 ## Template Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `[PROJECT_NAME]` | Your project name | "E-Commerce Store" |
-| `[PROJECT_TYPE]` | Type of application | "web application" |
-| `[MAIN_FRAMEWORK]` | Primary framework | "Next.js" |
-| `[VERSION]` | Framework version | "14" |
-| `[PROJECT_PURPOSE]` | What the app does | "online shopping" |
-| `[KEY_FEATURES]` | Main features | "product catalog, shopping cart" |
-| `[INTEGRATION_TYPE]` | Data integration | "Stripe payment" |
-| `[CSS_FRAMEWORK]` | CSS framework | "Tailwind CSS" |
-| `[DESIGN_SYSTEM]` | Design system | "custom design system" |
-| `[STATE_MANAGEMENT]` | State management | "Zustand" |
-| `[LOCAL_STATE]` | Local state | "React Hooks" |
-| `[DATA_SOURCE]` | Data source | "PostgreSQL" |
-| `[API_CLIENT]` | API client | "Prisma ORM" |
-| `[BUILD_TOOL]` | Build tool | "Next.js built-in" |
-| `[OPTIMIZATION_FEATURES]` | Optimization | "PWA optimization" |
-| `[LINTER]` | Linter | "ESLint" |
-| `[FORMATTER]` | Formatter | "Prettier" |
-| `[CSS_PROCESSOR]` | CSS processor | "PostCSS" |
+| Variable                  | Description         | Example                          |
+| ------------------------- | ------------------- | -------------------------------- |
+| `[PROJECT_NAME]`          | Your project name   | "E-Commerce Store"               |
+| `[PROJECT_TYPE]`          | Type of application | "web application"                |
+| `[MAIN_FRAMEWORK]`        | Primary framework   | "Next.js"                        |
+| `[VERSION]`               | Framework version   | "14"                             |
+| `[PROJECT_PURPOSE]`       | What the app does   | "online shopping"                |
+| `[KEY_FEATURES]`          | Main features       | "product catalog, shopping cart" |
+| `[INTEGRATION_TYPE]`      | Data integration    | "Stripe payment"                 |
+| `[CSS_FRAMEWORK]`         | CSS framework       | "Tailwind CSS"                   |
+| `[DESIGN_SYSTEM]`         | Design system       | "custom design system"           |
+| `[STATE_MANAGEMENT]`      | State management    | "Zustand"                        |
+| `[LOCAL_STATE]`           | Local state         | "React Hooks"                    |
+| `[DATA_SOURCE]`           | Data source         | "PostgreSQL"                     |
+| `[API_CLIENT]`            | API client          | "Prisma ORM"                     |
+| `[BUILD_TOOL]`            | Build tool          | "Next.js built-in"               |
+| `[OPTIMIZATION_FEATURES]` | Optimization        | "PWA optimization"               |
+| `[LINTER]`                | Linter              | "ESLint"                         |
+| `[FORMATTER]`             | Formatter           | "Prettier"                       |
+| `[CSS_PROCESSOR]`         | CSS processor       | "PostCSS"                        |

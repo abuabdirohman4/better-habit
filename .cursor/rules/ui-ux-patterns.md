@@ -11,6 +11,7 @@
 ## [CSS_FRAMEWORK] Usage
 
 ### Utility-First Approach
+
 - **Utility Classes**: Prefer utility classes over custom CSS
 - **Responsive Design**: Use responsive prefixes (`[RESPONSIVE_PREFIXES]`)
 - **Color System**: Use consistent [CSS_FRAMEWORK] color palette with [DESIGN_SYSTEM]
@@ -18,6 +19,7 @@
 - **Typography**: Use [FONT_FAMILY] with proper weight and size hierarchy
 
 ### Custom Design System
+
 ```css
 /* [APP_NAME] Color Palette */
 - Primary: [PRIMARY_COLOR] ([PRIMARY_VARIANTS])
@@ -31,22 +33,20 @@
 ## Component Design Patterns
 
 ### Card Components
+
 ```jsx
 // Standard Card Pattern
 <div className="[CARD_CONTAINER_CLASSES]">
     <div className="[CARD_HEADER_CLASSES]">
         <h2 className="[CARD_TITLE_CLASSES]">[CARD_TITLE]</h2>
-        <div className="[CARD_ICON_CONTAINER_CLASSES]">
-            {/* Icon */}
-        </div>
+        <div className="[CARD_ICON_CONTAINER_CLASSES]">{/* Icon */}</div>
     </div>
-    <div className="[CARD_CONTENT_CLASSES]">
-        {/* Content */}
-    </div>
+    <div className="[CARD_CONTENT_CLASSES]">{/* Content */}</div>
 </div>
 ```
 
 ### Button Patterns
+
 ```jsx
 // Primary Button
 <button className="[PRIMARY_BUTTON_CLASSES]">
@@ -67,9 +67,10 @@
 ```
 
 ### Form Elements
+
 ```jsx
 // Input Field
-<input 
+<input
     className="[INPUT_CLASSES]"
     placeholder="[PLACEHOLDER_TEXT]"
 />
@@ -83,6 +84,7 @@
 ## Layout Patterns
 
 ### Page Structure
+
 ```jsx
 // Standard Page Layout
 <main className="[MAIN_CONTAINER_CLASSES]">
@@ -91,30 +93,35 @@
         {/* Background decorations */}
         <div className="[DECORATION_1_CLASSES]"></div>
         <div className="[DECORATION_2_CLASSES]"></div>
-        
+
         {/* Wave shape at bottom */}
         <div className="[WAVE_CONTAINER_CLASSES]">
-            <svg viewBox="0 0 400 32" className="[WAVE_SVG_CLASSES]" preserveAspectRatio="none">
-                <path d="[WAVE_PATH]" fill="[WAVE_COLOR]" className="[WAVE_ANIMATION_CLASSES]" />
+            <svg
+                viewBox="0 0 400 32"
+                className="[WAVE_SVG_CLASSES]"
+                preserveAspectRatio="none"
+            >
+                <path
+                    d="[WAVE_PATH]"
+                    fill="[WAVE_COLOR]"
+                    className="[WAVE_ANIMATION_CLASSES]"
+                />
             </svg>
         </div>
-        
-        <div className="[HEADER_CONTENT_CLASSES]">
-            {/* Header content */}
-        </div>
+
+        <div className="[HEADER_CONTENT_CLASSES]">{/* Header content */}</div>
     </div>
-    
+
     {/* Content Section */}
-    <div className="[CONTENT_CONTAINER_CLASSES]">
-        {/* Page content */}
-    </div>
-    
+    <div className="[CONTENT_CONTAINER_CLASSES]">{/* Page content */}</div>
+
     {/* Bottom spacing for navigation */}
     <div className="[BOTTOM_SPACING_CLASSES]"></div>
 </main>
 ```
 
 ### Grid Layouts
+
 ```jsx
 // [GRID_TYPE] Grid
 <div className="[GRID_CONTAINER_CLASSES]">
@@ -131,6 +138,7 @@
 ```
 
 ### Container Patterns
+
 ```jsx
 // Mobile-first container
 <html className="[HTML_CONTAINER_CLASSES]">
@@ -148,6 +156,7 @@
 ## [DOMAIN] Data Visualization
 
 ### [DATA_TYPE] Formatting
+
 ```jsx
 // [DATA_TYPE] display patterns
 <div className="[DATA_DISPLAY_CLASSES]">
@@ -166,22 +175,26 @@
 ```
 
 ### Progress Indicators
+
 ```jsx
 // [PROGRESS_TYPE] progress bar
 <div className="[PROGRESS_CONTAINER_CLASSES]">
     <div className="[PROGRESS_BAR_CONTAINER_CLASSES]">
-        <div 
+        <div
             className={`[PROGRESS_BAR_CLASSES] ${[GET_COLOR_FUNCTION]([PERCENTAGE]).progress}`}
             style={{ width: `${Math.min([PERCENTAGE], 100)}%` }}
         ></div>
     </div>
-    <span className={`[PROGRESS_TEXT_CLASSES] ${[GET_COLOR_FUNCTION]([PERCENTAGE]).text}`}>
+    <span
+        className={`[PROGRESS_TEXT_CLASSES] ${[GET_COLOR_FUNCTION]([PERCENTAGE]).text}`}
+    >
         {[PERCENTAGE].toFixed(0)}%
     </span>
 </div>
 ```
 
 ### Status Indicators
+
 ```jsx
 // Status badges
 <div className={`[STATUS_BADGE_CLASSES] ${[STATUS_BG_CLASSES]}`}>
@@ -201,6 +214,7 @@
 ## Interactive Elements
 
 ### Loading States
+
 ```jsx
 // Skeleton loader
 <div className="[LOADING_CONTAINER_CLASSES]">
@@ -219,6 +233,7 @@
 ```
 
 ### Error States
+
 ```jsx
 // Error message
 <div className="[ERROR_CONTAINER_CLASSES]">
@@ -240,6 +255,7 @@
 ```
 
 ### Hover Effects
+
 ```jsx
 // Card hover
 <div className="[CARD_HOVER_CLASSES]">
@@ -262,6 +278,7 @@
 ## Animation Patterns
 
 ### Transitions
+
 ```jsx
 // Smooth transitions
 <div className="[TRANSITION_CLASSES]">
@@ -280,14 +297,21 @@
 ```
 
 ### Collapsible Content
+
 ```jsx
 // Collapsible section
-<div className={`[COLLAPSIBLE_CONTAINER_CLASSES] ${
-    [IS_COLLAPSED] ? "[COLLAPSED_CLASSES]" : "[EXPANDED_CLASSES]"
-}`}>
-    <div className={`[COLLAPSIBLE_CONTENT_CLASSES] ${
-        [IS_COLLAPSED] ? "[COLLAPSED_CONTENT_CLASSES]" : "[EXPANDED_CONTENT_CLASSES]"
-    }`}>
+<div
+    className={`[COLLAPSIBLE_CONTAINER_CLASSES] ${
+        [IS_COLLAPSED] ? "[COLLAPSED_CLASSES]" : "[EXPANDED_CLASSES]"
+    }`}
+>
+    <div
+        className={`[COLLAPSIBLE_CONTENT_CLASSES] ${
+            [IS_COLLAPSED]
+                ? "[COLLAPSED_CONTENT_CLASSES]"
+                : "[EXPANDED_CONTENT_CLASSES]"
+        }`}
+    >
         {/* Content */}
     </div>
 </div>
@@ -296,11 +320,13 @@
 ## Accessibility Guidelines
 
 ### Color Contrast
+
 - **Text**: Ensure [TEXT_CONTRAST_RATIO] contrast ratio for normal text
 - **Large Text**: Ensure [LARGE_TEXT_CONTRAST_RATIO] contrast ratio for large text ([LARGE_TEXT_SIZE]+)
 - **Interactive Elements**: Ensure [INTERACTIVE_CONTRAST_RATIO] contrast ratio for buttons and links
 
 ### Focus States
+
 ```jsx
 // Focus indicators
 <button className="[FOCUS_BUTTON_CLASSES]">
@@ -311,6 +337,7 @@
 ```
 
 ### Screen Reader Support
+
 ```jsx
 // ARIA labels
 <button aria-label="[ARIA_LABEL]" title="[TOOLTIP_TEXT]">
@@ -328,6 +355,7 @@
 ```
 
 ### Keyboard Navigation
+
 - **Tab Order**: Ensure logical tab order through interactive elements
 - **Skip Links**: Provide skip links for main content
 - **Keyboard Shortcuts**: Implement common keyboard shortcuts where appropriate
@@ -336,6 +364,7 @@
 ## Responsive Design Patterns
 
 ### Mobile-First Breakpoints
+
 ```jsx
 // Mobile first approach
 <div className="[RESPONSIVE_GRID_CLASSES]">
@@ -354,6 +383,7 @@
 ```
 
 ### Touch-Friendly Design
+
 - **Minimum Touch Target**: [MIN_TOUCH_TARGET] minimum for touch targets
 - **Spacing**: Adequate spacing between interactive elements
 - **Gesture Support**: Support common mobile gestures
@@ -362,6 +392,7 @@
 ## Customization Guide
 
 ### Required Replacements
+
 1. **[CSS_FRAMEWORK]** → Your CSS framework (Tailwind, Bootstrap, etc.)
 2. **[DOMAIN_FOCUS]** → Your domain focus (Financial, E-commerce, etc.)
 3. **[DOMAIN]** → Your domain (finance, ecommerce, etc.)
@@ -376,6 +407,7 @@
 ### CSS Framework Examples
 
 #### Tailwind CSS
+
 ```css
 /* Color Palette */
 - Primary: Blue (#1496F6, blue-700, blue-800)
@@ -392,6 +424,7 @@
 ```
 
 #### Bootstrap
+
 ```css
 /* Color Palette */
 - Primary: Blue (#007bff, #0056b3, #004085)
@@ -408,6 +441,7 @@
 ```
 
 #### Material-UI
+
 ```css
 /* Color Palette */
 - Primary: Blue (#1976d2, #1565c0, #0d47a1)
@@ -425,22 +459,22 @@
 
 ## Template Variables
 
-| Variable | Description | Tailwind Example | Bootstrap Example | Material-UI Example |
-|----------|-------------|------------------|-------------------|---------------------|
-| `[CSS_FRAMEWORK]` | CSS framework | "Tailwind CSS" | "Bootstrap" | "Material-UI" |
-| `[DOMAIN_FOCUS]` | Domain focus | "Financial Focus" | "E-commerce Focus" | "Admin Focus" |
-| `[DOMAIN]` | Domain | "finance" | "ecommerce" | "admin" |
-| `[APP_NAME]` | App name | "Better Habit" | "E-Commerce Store" | "Admin Dashboard" |
-| `[FONT_FAMILY]` | Font family | "Inter" | "Roboto" | "Roboto" |
-| `[PRIMARY_COLOR]` | Primary color | "Blue" | "Blue" | "Blue" |
-| `[SUCCESS_COLOR]` | Success color | "Green" | "Green" | "Green" |
-| `[WARNING_COLOR]` | Warning color | "Yellow" | "Yellow" | "Orange" |
-| `[ERROR_COLOR]` | Error color | "Red" | "Red" | "Red" |
-| `[NEUTRAL_COLOR]` | Neutral color | "Gray" | "Gray" | "Gray" |
-| `[RESPONSIVE_PREFIXES]` | Responsive prefixes | "sm:, md:, lg:, xl:" | "sm-, md-, lg-, xl-" | "xs, sm, md, lg, xl" |
-| `[SPACING_SCALE]` | Spacing scale | "4, 8, 12, 16, 20, 24, 32, 48, 64" | "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" | "8px grid system" |
-| `[TEXT_CONTRAST_RATIO]` | Text contrast | "4.5:1" | "4.5:1" | "4.5:1" |
-| `[LARGE_TEXT_CONTRAST_RATIO]` | Large text contrast | "3:1" | "3:1" | "3:1" |
-| `[INTERACTIVE_CONTRAST_RATIO]` | Interactive contrast | "3:1" | "3:1" | "3:1" |
-| `[LARGE_TEXT_SIZE]` | Large text size | "18px+" | "18px+" | "18px+" |
-| `[MIN_TOUCH_TARGET]` | Min touch target | "44px" | "44px" | "44px" |
+| Variable                       | Description          | Tailwind Example                   | Bootstrap Example               | Material-UI Example  |
+| ------------------------------ | -------------------- | ---------------------------------- | ------------------------------- | -------------------- |
+| `[CSS_FRAMEWORK]`              | CSS framework        | "Tailwind CSS"                     | "Bootstrap"                     | "Material-UI"        |
+| `[DOMAIN_FOCUS]`               | Domain focus         | "Financial Focus"                  | "E-commerce Focus"              | "Admin Focus"        |
+| `[DOMAIN]`                     | Domain               | "finance"                          | "ecommerce"                     | "admin"              |
+| `[APP_NAME]`                   | App name             | "Better Habit"                     | "E-Commerce Store"              | "Admin Dashboard"    |
+| `[FONT_FAMILY]`                | Font family          | "Inter"                            | "Roboto"                        | "Roboto"             |
+| `[PRIMARY_COLOR]`              | Primary color        | "Blue"                             | "Blue"                          | "Blue"               |
+| `[SUCCESS_COLOR]`              | Success color        | "Green"                            | "Green"                         | "Green"              |
+| `[WARNING_COLOR]`              | Warning color        | "Yellow"                           | "Yellow"                        | "Orange"             |
+| `[ERROR_COLOR]`                | Error color          | "Red"                              | "Red"                           | "Red"                |
+| `[NEUTRAL_COLOR]`              | Neutral color        | "Gray"                             | "Gray"                          | "Gray"               |
+| `[RESPONSIVE_PREFIXES]`        | Responsive prefixes  | "sm:, md:, lg:, xl:"               | "sm-, md-, lg-, xl-"            | "xs, sm, md, lg, xl" |
+| `[SPACING_SCALE]`              | Spacing scale        | "4, 8, 12, 16, 20, 24, 32, 48, 64" | "1, 2, 3, 4, 5, 6, 7, 8, 9, 10" | "8px grid system"    |
+| `[TEXT_CONTRAST_RATIO]`        | Text contrast        | "4.5:1"                            | "4.5:1"                         | "4.5:1"              |
+| `[LARGE_TEXT_CONTRAST_RATIO]`  | Large text contrast  | "3:1"                              | "3:1"                           | "3:1"                |
+| `[INTERACTIVE_CONTRAST_RATIO]` | Interactive contrast | "3:1"                              | "3:1"                           | "3:1"                |
+| `[LARGE_TEXT_SIZE]`            | Large text size      | "18px+"                            | "18px+"                         | "18px+"              |
+| `[MIN_TOUCH_TARGET]`           | Min touch target     | "44px"                             | "44px"                          | "44px"               |
