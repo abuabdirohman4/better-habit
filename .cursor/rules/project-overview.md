@@ -1,66 +1,70 @@
-# [PROJECT_NAME] - Project Overview
+# Better Habit - Project Overview
 
 ## Project Description
 
-[PROJECT_NAME] is a [PROJECT_TYPE] application built with [MAIN_FRAMEWORK] for [PROJECT_PURPOSE]. The app provides [KEY_FEATURES] with [INTEGRATION_TYPE] integration.
+Better Habit is a web application built with Next.js 14 for habit tracking and personal development. The app provides habit creation, tracking, progress monitoring, and user authentication with NextAuth integration.
 
 ## Tech Stack
 
-- **Framework**: [MAIN_FRAMEWORK] ([VERSION])
-- **Styling**: [CSS_FRAMEWORK] with [DESIGN_SYSTEM]
-- **PWA**: [PWA_LIBRARY], Service Worker, Manifest, Offline capabilities
-- **State Management**: [STATE_MANAGEMENT] for data fetching, [LOCAL_STATE] for local state
-- **Data Integration**: [DATA_SOURCE], [API_CLIENT]
-- **Build Tool**: [BUILD_TOOL] with [OPTIMIZATION_FEATURES]
-- **Development**: [LINTER], [FORMATTER], [CSS_PROCESSOR]
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS with DaisyUI components
+- **Authentication**: NextAuth.js
+- **Database**: Google Sheets API
+- **State Management**: SWR for server state, React Hooks for local state
+- **Caching**: SWR with built-in caching and revalidation
+- **Icons**: FontAwesome + React Icons
+- **Animations**: AOS (Animate On Scroll)
+- **Build Tool**: Next.js built-in with TypeScript
+- **Development**: ESLint, Prettier, PostCSS
 
 ## Project Structure
 
 ```
-[PROJECT_NAME]/
-├── [PAGES_DIR]/                 # [FRAMEWORK] pages
-│   ├── [FEATURE_1]/             # [FEATURE_1_DESCRIPTION]
-│   ├── [FEATURE_2]/             # [FEATURE_2_DESCRIPTION]
-│   ├── [FEATURE_3]/             # [FEATURE_3_DESCRIPTION]
-│   └── [LAYOUT_FILE]            # Root layout with [SETUP_TYPE]
+Better Habit/
+├── app/                         # Next.js App Router pages
+│   ├── api/                     # API routes
+│   │   └── auth/                # NextAuth authentication
+│   ├── globals.css              # Global styles with Tailwind
+│   ├── layout.tsx               # Root layout with providers
+│   └── page.tsx                 # Home page (Welcome screen)
 ├── components/                  # Reusable UI components
-│   ├── [COMPONENT_1]/           # [COMPONENT_1_DESCRIPTION]
-│   ├── [COMPONENT_2]/           # [COMPONENT_2_DESCRIPTION]
-│   ├── [COMPONENT_3]/           # [COMPONENT_3_DESCRIPTION]
-│   └── [COMPONENT_4]/           # [COMPONENT_4_DESCRIPTION]
-├── [API_DIR]/                   # [FRAMEWORK] API routes
-│   ├── [ENDPOINT_1]/            # [ENDPOINT_1_DESCRIPTION]
-│   ├── [ENDPOINT_2]/            # [ENDPOINT_2_DESCRIPTION]
-│   └── [ENDPOINT_3]/            # [ENDPOINT_3_DESCRIPTION]
+│   ├── Button/                  # Custom button component
+│   ├── SessionProvider/         # NextAuth session provider
+│   └── Spinner/                 # Loading spinner component
+├── lib/                         # Utility libraries
+│   ├── google-sheets.ts         # Google Sheets API client
+│   └── swr-config.ts            # SWR configuration
 ├── utils/                       # Utility functions & helpers
-│   ├── [UTILS_1].js             # [UTILS_1_DESCRIPTION]
-│   ├── [UTILS_2].js             # [UTILS_2_DESCRIPTION]
-│   └── [UTILS_3].js             # [UTILS_3_DESCRIPTION]
-├── [CONFIG_DIR]/                # Configuration files
-├── docs/                        # Documentation & guides
-└── public/                      # Static assets & [PWA_FILES]
+│   ├── constants.ts             # App constants and keys
+│   └── session.ts               # Session management utilities
+├── public/                      # Static assets
+│   └── illustration/            # SVG illustrations
+└── .cursor/rules/               # Cursor IDE rules
 ```
 
 ## Key Features
 
 ### Core Features
 
-- **[FEATURE_1]**: [FEATURE_1_DESCRIPTION]
-- **[FEATURE_2]**: [FEATURE_2_DESCRIPTION]
-- **[FEATURE_3]**: [FEATURE_3_DESCRIPTION]
-- **[FEATURE_4]**: [FEATURE_4_DESCRIPTION]
+- **Habit Creation**: Create and customize personal habits with goals and schedules
+- **Progress Tracking**: Visual progress tracking with charts and statistics
+- **User Authentication**: Secure login with NextAuth.js and multiple providers
+- **Responsive Design**: Mobile-first design with Tailwind CSS and DaisyUI
 
 ### Advanced Features
 
-- **[ADVANCED_FEATURE_1]**: [ADVANCED_FEATURE_1_DESCRIPTION]
-- **[ADVANCED_FEATURE_2]**: [ADVANCED_FEATURE_2_DESCRIPTION]
-- **[ADVANCED_FEATURE_3]**: [ADVANCED_FEATURE_3_DESCRIPTION]
+- **Habit Analytics**: Detailed insights and progress reports
+- **Streak Tracking**: Track consecutive days of habit completion
+- **Reminder System**: Smart notifications and reminders
+- **Social Features**: Share progress and compete with friends
 
 ### Technical Features
 
-- **[TECH_FEATURE_1]**: [TECH_FEATURE_1_DESCRIPTION]
-- **[TECH_FEATURE_2]**: [TECH_FEATURE_2_DESCRIPTION]
-- **[TECH_FEATURE_3]**: [TECH_FEATURE_3_DESCRIPTION]
+- **TypeScript**: Full type safety throughout the application
+- **Google Sheets API**: Real-time data storage and retrieval
+- **SWR Caching**: Intelligent caching with automatic revalidation
+- **NextAuth.js**: Secure authentication with session management
+- **AOS Animations**: Smooth scroll animations for better UX
 
 ## Customization Guide
 

@@ -29,14 +29,14 @@ cp -r .cursor/rules/templates/ ../new-project/.cursor/rules/
 ## 📁 File Structure
 
 ```
-templates/
+.cursor/rules/
 ├── README.md                    # Panduan penggunaan
-├── project-overview.md          # Template overview proyek
-├── coding-standards.md          # Standar coding universal
-├── ui-ux-patterns.md            # Pola UI/UX generik
-├── api-integration.md           # Template API integration
-├── component-patterns.md        # Pola komponen universal
-├── deployment-guidelines.md     # Panduan deployment
+├── project-overview.md          # Overview proyek Better Habit
+├── coding-standards.md          # Standar coding Next.js + TypeScript
+├── ui-ux-patterns.md            # Pola UI/UX Tailwind + DaisyUI
+├── api-integration.md           # NextAuth + Prisma integration
+├── component-patterns.md        # Pola komponen Better Habit
+├── deployment-guidelines.md     # Panduan deployment Next.js
 └── customization-guide.md       # Panduan kustomisasi
 ```
 

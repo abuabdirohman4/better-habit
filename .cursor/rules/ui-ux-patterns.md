@@ -1,4 +1,4 @@
-# UI/UX Design Patterns & [CSS_FRAMEWORK]
+# UI/UX Design Patterns & Tailwind CSS
 
 ## Design Principles
 
@@ -6,28 +6,28 @@
 - **Consistency**: Use consistent design system across all components
 - **Accessibility**: Implement proper ARIA labels and keyboard navigation
 - **Performance**: Prioritize smooth interactions and fast loading
-- **[DOMAIN_FOCUS]**: Design specifically for [DOMAIN] data visualization and management
+- **Habit Focus**: Design specifically for habit tracking and personal development
 
-## [CSS_FRAMEWORK] Usage
+## Tailwind CSS + DaisyUI Usage
 
 ### Utility-First Approach
 
 - **Utility Classes**: Prefer utility classes over custom CSS
-- **Responsive Design**: Use responsive prefixes (`[RESPONSIVE_PREFIXES]`)
-- **Color System**: Use consistent [CSS_FRAMEWORK] color palette with [DESIGN_SYSTEM]
-- **Spacing**: Use [CSS_FRAMEWORK] spacing scale ([SPACING_SCALE])
-- **Typography**: Use [FONT_FAMILY] with proper weight and size hierarchy
+- **Responsive Design**: Use responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`)
+- **Color System**: Use consistent Tailwind color palette with DaisyUI components
+- **Spacing**: Use Tailwind spacing scale (4, 8, 12, 16, 20, 24, 32, 48, 64)
+- **Typography**: Use Inter font family with proper weight and size hierarchy
 
-### Custom Design System
+### Better Habit Design System
 
 ```css
-/* [APP_NAME] Color Palette */
-- Primary: [PRIMARY_COLOR] ([PRIMARY_VARIANTS])
-- Success: [SUCCESS_COLOR] ([SUCCESS_VARIANTS])
-- Warning: [WARNING_COLOR] ([WARNING_VARIANTS])
-- Error: [ERROR_COLOR] ([ERROR_VARIANTS])
-- Neutral: [NEUTRAL_COLOR] ([NEUTRAL_VARIANTS])
-- Background: [BACKGROUND_GRADIENT]
+/* Better Habit Color Palette */
+- Primary: #1496F6 (blue-500, blue-600, blue-700)
+- Success: #10b981 (emerald-500, emerald-600, emerald-700)
+- Warning: #f59e0b (amber-500, amber-600, amber-700)
+- Error: #ef4444 (red-500, red-600, red-700)
+- Neutral: #6b7280 (gray-500, gray-600, gray-700)
+- Background: Linear gradient (white to gray-50)
 ```
 
 ## Component Design Patterns

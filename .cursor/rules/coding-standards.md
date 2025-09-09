@@ -2,37 +2,39 @@
 
 ## Code Style
 
-- **Components**: Use [COMPONENT_TYPE] with [HOOKS_TYPE]
-- **Functions**: Prefer [FUNCTION_STYLE] for components and event handlers
+- **Components**: Use functional components with React hooks
+- **Functions**: Prefer arrow functions for components and event handlers
 - **Naming**:
-    - Components: [COMPONENT_NAMING] (e.g., `[COMPONENT_EXAMPLE]`)
-    - Files: [FILE_NAMING] for pages (e.g., `[PAGE_EXAMPLE]`), [COMPONENT_NAMING] for components
-    - Variables: [VARIABLE_NAMING] (e.g., `[VARIABLE_EXAMPLE]`)
-    - Constants: [CONSTANT_NAMING] (e.g., `[CONSTANT_EXAMPLE]`)
+    - Components: PascalCase (e.g., `Button`, `SessionProvider`)
+    - Files: kebab-case for pages (e.g., `page.tsx`), PascalCase for components
+    - Variables: camelCase (e.g., `isLoading`, `rememberMe`)
+    - Constants: UPPER_SNAKE_CASE (e.g., `LOCALKEY`, `API_BASE_URL`)
 
-## [FRAMEWORK] Patterns
+## Next.js + TypeScript Patterns
 
 ### State Management
 
-- Use `[LOCAL_STATE_HOOK]` for local component state
-- Use `[EFFECT_HOOK]` for side effects and data fetching
-- Use `[MEMO_HOOK]` for expensive calculations
-- Use `[CALLBACK_HOOK]` for event handlers passed to child components
-- Use `[REF_HOOK]` for DOM references and mutable values
+- Use `useState` for local component state
+- Use `useEffect` for side effects and data fetching
+- Use `useMemo` for expensive calculations
+- Use `useCallback` for event handlers passed to child components
+- Use `useRef` for DOM references and mutable values
 
 ### Custom Hooks
 
-- Create custom hooks for reusable [HOOK_PURPOSE] (e.g., `[HOOK_EXAMPLE]`)
-- Use [DATA_FETCHING_LIBRARY] for server state management with built-in caching and revalidation
+- Create custom hooks for reusable logic (e.g., `useLocalStorage`, `useAuth`)
+- Use SWR hooks for data fetching with built-in caching
+- Use NextAuth hooks for authentication state management
 - Implement proper error handling and loading states in custom hooks
-- Return consistent hook interface: `{ [HOOK_RETURN_INTERFACE] }`
+- Return consistent hook interface: `{ data, error, isLoading, mutate }`
 
 ### Data Fetching
 
-- Use [DATA_FETCHING_LIBRARY] for all API calls with proper configuration
-- Implement cache busting for real-time data updates
-- Add proper error boundaries and fallback states
-- Use consistent API response structure
+- Use SWR for all data fetching with automatic caching and revalidation
+- Use Google Sheets API for database operations
+- Use NextAuth for authentication and session management
+- Implement proper error boundaries and fallback states
+- Use consistent API response structure with TypeScript interfaces
 
 ## File Organization
 
@@ -40,30 +42,37 @@
 
 ```
 components/
-├── [COMPONENT_NAME]/
-│   ├── [MAIN_FILE]          # Main component export
-│   └── [IMPLEMENTATION_FILE]  # Component implementation
+├── Button/
+│   └── index.tsx              # Button component export
+├── SessionProvider/
+│   └── index.tsx              # NextAuth session provider
+└── Spinner/
+    └── index.tsx              # Loading spinner component
 ```
 
 ### Utility Organization
 
 ```
 utils/
-├── [UTILS_1].js              # [UTILS_1_DESCRIPTION]
-├── [UTILS_2].js              # [UTILS_2_DESCRIPTION]
-├── [UTILS_3].js              # [UTILS_3_DESCRIPTION]
-└── [UTILS_4].js              # [UTILS_4_DESCRIPTION]
+├── constants.ts               # App constants and configuration
+└── session.ts                 # Session management utilities
+
+lib/
+├── google-sheets.ts           # Google Sheets API client
+├── swr-config.ts              # SWR configuration
+└── types.ts                   # TypeScript type definitions
 ```
 
-### [FRAMEWORK] Structure
+### Next.js App Router Structure
 
 ```
-[PAGES_DIR]/
-├── [FEATURE_NAME]/
-│   ├── [PAGE_FILE]           # Main page component
-│   ├── [UTILS_FILE]          # Page-specific utilities
-│   └── [SUB_FEATURE]/
-│       └── [PAGE_FILE]       # Nested page
+app/
+├── api/                       # API routes
+│   └── auth/                  # NextAuth authentication
+│       └── [...nextauth].ts   # NextAuth configuration
+├── globals.css                # Global styles
+├── layout.tsx                 # Root layout
+└── page.tsx                   # Home page
 ```
 
 ## Import/Export Patterns
