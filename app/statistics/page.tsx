@@ -1,6 +1,34 @@
 "use client";
 
+import { useHabits } from "@/hooks/useHabits";
+import Calendar from "@/components/Calendar";
+import HabitPerformance from "@/components/HabitPerformance";
+import Spinner from "@/components/Spinner";
+
 export default function StatisticsPage() {
+    const { habits, isLoading, error } = useHabits();
+
+    if (isLoading) {
+        return (
+            <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <Spinner />
+            </main>
+        );
+    }
+
+    if (error) {
+        return (
+            <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-red-500 mb-4">
+                        Error loading statistics
+                    </p>
+                    <p className="text-gray-500">{error}</p>
+                </div>
+            </main>
+        );
+    }
+
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
@@ -120,10 +148,8 @@ export default function StatisticsPage() {
                         </div>
                     </div>
 
-                    {/* Calendar Placeholder */}
-                    <div className="text-center py-8 text-gray-500">
-                        <p>Calendar component will be implemented here</p>
-                    </div>
+                    {/* Calendar Component */}
+                    <Calendar />
                 </div>
 
                 {/* Habit Performance Section */}
@@ -131,9 +157,7 @@ export default function StatisticsPage() {
                     <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         Habit Performance
                     </h2>
-                    <div className="text-center py-8 text-gray-500">
-                        <p>Habit performance charts will be implemented here</p>
-                    </div>
+                    <HabitPerformance habits={habits} />
                 </div>
             </div>
 

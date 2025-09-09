@@ -22,6 +22,7 @@ const config: Config = {
                 "habit-yellow": "#F59E0B",
                 "habit-red": "#EF4444",
                 "habit-pink": "#EC4899",
+                "habit-indigo": "#6366F1",
                 "habit-gray": "#6B7280",
                 "habit-light-gray": "#F3F4F6",
                 "habit-dark": "#1F2937",

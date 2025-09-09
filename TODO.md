@@ -127,22 +127,22 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ### 3.3 Monthly Calendar Section
 
-- [ ] **TODO**: Create "This Month" section
-- [ ] **TODO**: Add month navigation (December 2024)
-- [ ] **TODO**: Implement calendar grid dengan day headers
-- [ ] **TODO**: Style calendar cells berdasarkan status:
+- [x] ✅ Create "This Month" section
+- [x] ✅ Add month navigation (December 2024)
+- [x] ✅ Implement calendar grid dengan day headers
+- [x] ✅ Style calendar cells berdasarkan status:
     - Green circle untuk "Completed" days
     - Pink circle untuk "Missed" days
     - Blue circle untuk "Today"
     - Gray untuk future days
-- [ ] **TODO**: Add calendar legend (Completed, Missed, Today)
+- [x] ✅ Add calendar legend (Completed, Missed, Today)
 
 ### 3.4 Habit Performance Section
 
-- [ ] **TODO**: Create "Habit Performance" section
-- [ ] **TODO**: Display habit cards dengan performance metrics
-- [ ] **TODO**: Show streak count dan success rate per habit
-- [ ] **TODO**: Style dengan appropriate colors
+- [x] ✅ Create "Habit Performance" section
+- [x] ✅ Display habit cards dengan performance metrics
+- [x] ✅ Show streak count dan success rate per habit
+- [x] ✅ Style dengan appropriate colors
 
 ### 3.5 Bottom Navigation
 

@@ -162,7 +162,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Floating Add Button */}
-            <FloatingAddButton />
+            {/* <FloatingAddButton /> */}
 
             {/* Bottom spacing for navigation */}
             <div className="pb-20"></div>
