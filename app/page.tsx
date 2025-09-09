@@ -11,6 +11,7 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { getLocal, removeLocal, setLocal } from "@/utils/session";
 import { LOCALKEY } from "@/utils/constants";
 import Spinner from "@/components/Spinner";
+import { useRouter } from "next/navigation";
 // import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Welcome() {
@@ -36,20 +37,23 @@ export default function Welcome() {
         }
     };
 
+    const router = useRouter();
+
     useEffect(() => {
-        const rememberMe = getLocal(LOCALKEY.rememberMe);
-        if (rememberMe) {
-            setRememberMe(rememberMe);
-        }
-        const clientid = getLocal(LOCALKEY.clientid);
-        if (clientid) {
-            setForm({
-                clientid: clientid,
-                password: "",
-            });
-        }
-        setIsLoading(false);
-    }, []);
+        // const rememberMe = getLocal(LOCALKEY.rememberMe);
+        // if (rememberMe) {
+        //     setRememberMe(rememberMe);
+        // }
+        // const clientid = getLocal(LOCALKEY.clientid);
+        // if (clientid) {
+        //     setForm({
+        //         clientid: clientid,
+        //         password: "",
+        //     });
+        // }
+        // setIsLoading(false);// Redirect to dashboard immediately
+        router.push("/dashboard");
+    }, [router]);
 
     return (
         <main className="bg-white pt-24 px-7">

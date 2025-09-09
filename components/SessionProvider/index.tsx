@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 
 interface Props {
     children: ReactNode;
-    session: any;
+    session?: any;
 }
 
 const SessionProviderWrapper = ({ children, session }: Props) => {
