@@ -210,10 +210,10 @@ const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 ```
 
-### SWR Data Fetching
+### SWR Data Fetching (CSV Optimized)
 
 ```tsx
-// Using SWR for data fetching
+// Using SWR for data fetching with CSV optimization
 import { useHabits } from "@/hooks/useHabits";
 
 const { habits, isLoading, error, createHabit, updateHabit, deleteHabit } =
@@ -228,6 +228,32 @@ if (isLoading) {
 if (error) {
     return <div className="text-red-500">Error: {error}</div>;
 }
+```
+
+### CSV Data Handling
+
+```tsx
+// CSV data transformation and handling
+const processCSVData = (rawData: any[]) => {
+    return rawData.map((row) => ({
+        id: row.id,
+        title: row.title,
+        description: row.description || "",
+        frequency: row.frequency,
+        target: parseInt(row.target) || 1,
+        color: row.color || "#1496F6",
+        userId: row.userId,
+        createdAt: row.createdAt,
+        updatedAt: row.updatedAt,
+    }));
+};
+
+// Error handling for CSV parsing
+const handleCSVError = (error: any) => {
+    console.error("CSV parsing error:", error);
+    // Fallback to authenticated method or show user-friendly error
+    return [];
+};
 ```
 
 ### Local Storage Integration
@@ -516,4 +542,7 @@ const RefreshButton = () => {
 10. **SWR Patterns**: Use SWR for all server state management with proper error handling
 11. **Optimistic Updates**: Implement optimistic updates for better UX
 12. **Conditional Fetching**: Only fetch data when conditions are met
-13. **Testing**: Write tests for component behavior and user interactions
+13. **CSV Optimization**: Use CSV format for Google Sheets data fetching for better performance
+14. **Data Transformation**: Always transform CSV data to proper TypeScript interfaces
+15. **Error Fallbacks**: Implement fallback mechanisms for CSV parsing errors
+16. **Testing**: Write tests for component behavior and user interactions
