@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface FloatingAddButtonProps {
     className?: string;
@@ -10,10 +11,10 @@ const FloatingAddButton: React.FC<FloatingAddButtonProps> = ({
     className = "",
 }) => {
     const [isPressed, setIsPressed] = useState(false);
+    const router = useRouter();
 
     const handleClick = () => {
-        console.log("Add habit button clicked");
-        // TODO: Implement navigation to add habit page
+        router.push("/add-habit");
     };
 
     const handleMouseDown = () => {

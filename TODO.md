@@ -2,6 +2,10 @@
 
 Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk membangun aplikasi habit tracker "Better Habit".
 
+## LIST IDEA
+ - [ ] Setting that have list of habit to archive
+ - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
+
 ## 📱 **1. Dashboard Page ("My Habits")**
 
 ### 1.1 Layout & Structure
@@ -48,7 +52,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Create `FloatingAddButton` component
 - [x] ✅ Style sebagai circular blue button
 - [x] ✅ Position di bottom center
-- [ ] 🔄 **TODO**: Add navigation ke "Add New Habit" page
+- [x] ✅ Add navigation ke "Add New Habit" page
 
 ### 1.7 Bottom Navigation Bar
 
@@ -156,56 +160,56 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ### 4.1 Header & Navigation
 
-- [ ] **TODO**: Create header dengan back arrow
-- [ ] **TODO**: Display "Add New Habit" title
-- [ ] **TODO**: Implement back navigation
+- [x] ✅ Create header dengan back arrow
+- [x] ✅ Display "Add New Habit" title
+- [x] ✅ Implement back navigation
 
 ### 4.2 Form Sections
 
-- [ ] **TODO**: Create "Habit Name" input field
-- [ ] **TODO**: Add placeholder "e.g. Morning Run"
+- [x] ✅ Create "Habit Name" input field
+- [x] ✅ Add placeholder "e.g. Morning Run"
 
 ### 4.3 Icon Selection
 
-- [ ] **TODO**: Create "Choose Icon" section
-- [ ] **TODO**: Implement icon grid dengan circular buttons
-- [ ] **TODO**: Add icons: arrow, book, graph, clipboard, heart, pencil
-- [ ] **TODO**: Implement selection state (blue border untuk selected)
+- [x] ✅ Create "Choose Icon" section
+- [x] ✅ Implement icon grid dengan circular buttons
+- [x] ✅ Add icons: run, meditation, water, book, sleep, exercise
+- [x] ✅ Implement selection state (blue border untuk selected)
 
 ### 4.4 Frequency Selection
 
-- [ ] **TODO**: Create "Frequency" section
-- [ ] **TODO**: Add pill buttons: Daily, Weekly, Custom
-- [ ] **TODO**: Implement selection state (blue untuk selected)
+- [x] ✅ Create "Frequency" section
+- [x] ✅ Add pill buttons: Daily, Weekly, Custom
+- [x] ✅ Implement selection state (blue untuk selected)
 
 ### 4.5 Days of Week Selection
 
-- [ ] **TODO**: Create "Days of Week" section
-- [ ] **TODO**: Add circular day buttons (M, T, W, T, F, S, S)
-- [ ] **TODO**: Implement multi-selection state
-- [ ] **TODO**: Style selected days dengan blue background
+- [x] ✅ Create "Days of Week" section
+- [x] ✅ Add circular day buttons (M, T, W, T, F, S, S)
+- [x] ✅ Implement multi-selection state
+- [x] ✅ Style selected days dengan blue background
 
 ### 4.6 Reminder Settings
 
-- [ ] **TODO**: Create "Reminder" section
-- [ ] **TODO**: Add toggle switch untuk enable/disable
-- [ ] **TODO**: Create time picker dropdown ("7:00 AM")
-- [ ] **TODO**: Style dengan chevron icon
+- [x] ✅ Create "Reminder" section
+- [x] ✅ Add toggle switch untuk enable/disable
+- [x] ✅ Create time picker dropdown ("7:00 AM")
+- [x] ✅ Style dengan chevron icon
 
 ### 4.7 Goal Settings (Optional)
 
-- [ ] **TODO**: Create "Goal (optional)" section
-- [ ] **TODO**: Add number input field ("e.g. 5")
-- [ ] **TODO**: Add unit dropdown ("km")
-- [ ] **TODO**: Style dengan proper spacing
+- [x] ✅ Create "Goal (optional)" section
+- [x] ✅ Add number input field ("e.g. 5")
+- [x] ✅ Add unit dropdown ("km")
+- [x] ✅ Style dengan proper spacing
 
 ### 4.8 Form Submission
 
-- [ ] **TODO**: Create "Save Habit" button
-- [ ] **TODO**: Implement form validation
-- [ ] **TODO**: Connect dengan `useHabits.createHabit`
-- [ ] **TODO**: Add success/error handling
-- [ ] **TODO**: Navigate back ke dashboard setelah save
+- [x] ✅ Create "Save Habit" button
+- [x] ✅ Implement form validation
+- [x] ✅ Connect dengan `useHabits.createHabit`
+- [x] ✅ Add success/error handling
+- [x] ✅ Navigate back ke dashboard setelah save
 
 ### 4.9 Bottom Navigation
 
@@ -259,7 +263,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Install dependencies (SWR, Papa Parse, Google APIs)
 - [x] ✅ Create Google Sheets client
 - [x] ✅ Setup CSV parsing dengan Papa Parse
-- [ ] **TODO**: Create API routes untuk habits
+- [x] ✅ Create API routes untuk habits
 - [ ] **TODO**: Create API routes untuk habit logs
 - [ ] **TODO**: Implement authentication untuk private sheets
 

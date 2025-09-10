@@ -5,9 +5,11 @@ import Spinner from "@/components/Spinner";
 import WeeklyProgress from "@/components/WeeklyProgress";
 import HabitCard from "@/components/HabitCard";
 import FloatingAddButton from "@/components/FloatingAddButton";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
+    const router = useRouter();
 
     // Show loading while fetching habits
     if (isLoading) {
@@ -87,7 +89,10 @@ export default function DashboardPage() {
                         <h2 className="text-2xl font-bold text-gray-800">
                             Today&apos;s Habits
                         </h2>
-                        <button className="w-8 h-8 bg-habit-blue rounded-full flex items-center justify-center hover:bg-habit-blue/90 transition-colors">
+                        <button
+                            onClick={() => router.push("/add-habit")}
+                            className="w-8 h-8 bg-habit-blue rounded-full flex items-center justify-center hover:bg-habit-blue/90 transition-colors"
+                        >
                             <svg
                                 className="w-5 h-5 text-white"
                                 fill="none"

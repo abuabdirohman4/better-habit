@@ -3,10 +3,16 @@ import { Habit, CreateHabitData } from "@/lib/types";
 import { mockHabits } from "@/lib/mock-data";
 
 export const useHabits = () => {
-    // For now, use mock data instead of API call
+    // Use real API call
     const { data, error, isLoading, mutate } = useSWR(
         "/api/habits",
-        () => Promise.resolve({ data: mockHabits }),
+        async (url: string) => {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Failed to fetch habits");
+            }
+            return response.json();
+        },
         {
             fallbackData: { data: mockHabits },
         }
@@ -29,7 +35,7 @@ export const useHabits = () => {
             const { data: newHabit } = await response.json();
 
             // Optimistic update
-            mutate((currentData) => {
+            mutate((currentData: any) => {
                 if (!currentData) return { data: [newHabit] };
                 return {
                     ...currentData,
@@ -60,7 +66,7 @@ export const useHabits = () => {
             const { data: updatedHabit } = await response.json();
 
             // Optimistic update
-            mutate((currentData) => {
+            mutate((currentData: any) => {
                 if (!currentData) return { data: [] };
                 return {
                     ...currentData,
@@ -87,7 +93,7 @@ export const useHabits = () => {
             }
 
             // Optimistic update
-            mutate((currentData) => {
+            mutate((currentData: any) => {
                 if (!currentData) return { data: [] };
                 return {
                     ...currentData,
