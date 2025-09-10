@@ -206,7 +206,6 @@ export default function Welcome() {
                                     value="coba"
                                     checked={rememberMe}
                                     onChange={() => {
-                                        console.log("rememberMe", rememberMe);
                                         if (!rememberMe) {
                                             setLocal(
                                                 LOCALKEY.clientid,

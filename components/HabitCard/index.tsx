@@ -13,7 +13,6 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
 
     const handleToggleCompletion = () => {
         setIsCompleted(!isCompleted);
-        console.log(`Toggling habit ${habit.id}`);
         // TODO: Implement actual toggle functionality with useHabitLogs
     };
 

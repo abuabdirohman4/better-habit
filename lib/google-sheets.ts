@@ -93,17 +93,24 @@ export const googleSheets = {
                             );
                     },
                     complete: (results) => {
+                        // Log warnings but don't fail on field count mismatches
                         if (results.errors.length > 0) {
-                            reject(
-                                new Error(
-                                    `CSV parsing errors: ${results.errors.map((e) => e.message).join(", ")}`
-                                )
+                            console.warn(
+                                "CSV parsing warnings:",
+                                results.errors.map((e) => e.message).join(", ")
                             );
-                        } else {
-                            resolve(results.data);
                         }
+
+                        // Filter out rows with too few fields
+                        const validData = results.data.filter((row: any) => {
+                            const fieldCount = Object.keys(row).length;
+                            return fieldCount >= 5; // Minimum required fields
+                        });
+
+                        resolve(validData);
                     },
                     error: (error: Error) => {
+                        console.error("CSV parsing error:", error);
                         reject(error);
                     },
                 });

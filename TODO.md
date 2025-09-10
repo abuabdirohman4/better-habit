@@ -3,8 +3,19 @@
 Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk membangun aplikasi habit tracker "Better Habit".
 
 ## LIST IDEA
- - [ ] Setting that have list of habit to archive
- - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
+
+- [ ] Setting that have list of habit to archive
+- [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
+
+## ISSUE TRACKER
+
+- [ ] isActive is false / 0 not hidden
+- [ ] Move from home to create so slow and no loading (all move pages)
+
+## REFACTORING
+
+- [ ] Change type "isActive" to 0 or 1
+- [ ] Remove Mock Data
 
 ## 📱 **1. Dashboard Page ("My Habits")**
 

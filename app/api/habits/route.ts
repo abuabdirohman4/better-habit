@@ -8,9 +8,6 @@ const HABITS_SHEET = "Habits";
 export async function GET() {
     try {
         if (!SPREADSHEET_ID) {
-            console.log(
-                "Google Spreadsheet ID not configured, using mock data"
-            );
             // Return mock data for development
             const mockHabits: Habit[] = [
                 {
@@ -48,26 +45,36 @@ export async function GET() {
         // Get habits from Google Sheets
         const habitsData = await googleSheets.getCSVWithAuth(
             SPREADSHEET_ID,
-            `${HABITS_SHEET}!A:K`
+            HABITS_SHEET
         );
 
         // Transform CSV data to Habit objects
-        const habits: Habit[] = habitsData.map((row: any, index: number) => ({
-            id: parseInt(row.id) || index + 1,
-            displayName: row.displayName || "",
-            iconName: row.iconName || "",
-            type: (row.type as "do" | "dont") || "do",
-            frequencyType:
-                (row.frequencyType as "daily" | "weekly" | "custom") || "daily",
-            frequencyDays: row.frequencyDays || "",
-            reminderTime: row.reminderTime || "07:00",
-            isReminderOn:
-                row.isReminderOn === "true" || row.isReminderOn === true,
-            goalValue: parseInt(row.goalValue) || 0,
-            goalUnit: row.goalUnit || "minutes",
-            isActive: row.isActive === "true" || row.isActive === true,
-            createdAt: row.createdAt || new Date().toISOString(),
-        }));
+        const habits: Habit[] = habitsData.map((row: any, index: number) => {
+            return {
+                id: parseInt(row.id) || index + 1,
+                displayName: row.displayName || row.displayname || "",
+                iconName: row.iconName || row.iconname || "",
+                type: (row.type as "do" | "dont") || "do",
+                frequencyType:
+                    row.frequencyType ||
+                    (row.frequencytype as "daily" | "weekly" | "custom") ||
+                    "daily",
+                frequencyDays: row.frequencyDays || row.frequencydays || "",
+                reminderTime: row.reminderTime || row.remindertime || "07:00",
+                isReminderOn:
+                    row.isReminderOn === "true" ||
+                    row.isreminderon === "true" ||
+                    row.isReminderOn === true,
+                goalValue: parseInt(row.goalValue || row.goalvalue) || 0,
+                goalUnit: row.goalUnit || row.goalunit || "minutes",
+                isActive:
+                    row.isActive === "true" ||
+                    row.isactive === "true" ||
+                    row.isActive === true,
+                createdAt:
+                    row.createdAt || row.createdat || new Date().toISOString(),
+            };
+        });
 
         return NextResponse.json({ data: habits });
     } catch (error) {
@@ -96,9 +103,6 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         if (!SPREADSHEET_ID) {
-            console.log(
-                "Google Spreadsheet ID not configured, using mock response"
-            );
             const habitData: CreateHabitData = await request.json();
 
             // Validate required fields
