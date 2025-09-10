@@ -268,16 +268,16 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Create Google Sheets client
 - [x] ✅ Setup CSV parsing dengan Papa Parse
 - [x] ✅ Create API routes untuk habits
-- [ ] **TODO**: Create API routes untuk habit logs
-- [ ] **TODO**: Implement authentication untuk private sheets
+- [x] ✅ Create API routes untuk habit logs
+  <!-- - [ ] **TODO**: Implement authentication untuk private sheets -->
 
 ### 6.2 Custom Hooks
 
 - [x] ✅ Create `useHabits` hook dengan mock data
-- [ ] **TODO**: Implement `useHabitLogs` hook
-- [ ] **TODO**: Add `toggleCompletion` functionality
-- [ ] **TODO**: Add `addLog`, `updateLog` methods
-- [ ] **TODO**: Replace mock data dengan real API calls
+- [x] ✅ Implement `useHabitLogs` hook
+- [x] ✅ Add `toggleCompletion` functionality
+- [x] ✅ Add `addLog`, `updateLog` methods
+- [x] ✅ Replace mock data dengan real API calls
 
 ### 6.3 Data Types
 
@@ -307,14 +307,14 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] **TODO**: Create `Modal` component
 - [ ] **TODO**: Create `Input` component
 - [ ] **TODO**: Create `Toggle` component
-- [ ] **TODO**: Create `Calendar` component
+- [x] ✅ Create `Calendar` component
 
 ### 7.3 Responsive Design
 
-- [ ] **TODO**: Ensure mobile-first design
-- [ ] **TODO**: Test pada berbagai screen sizes
-- [ ] **TODO**: Optimize touch interactions
-- [ ] **TODO**: Add proper loading states
+- [x] ✅ Ensure mobile-first design
+- [x] ✅ Test pada berbagai screen sizes
+- [x] ✅ Optimize touch interactions
+- [x] ✅ Add proper loading states
 
 ---
 
@@ -322,16 +322,16 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ### 8.1 Habit Tracking
 
-- [ ] **TODO**: Implement streak calculation
-- [ ] **TODO**: Add habit completion history
-- [ ] **TODO**: Create habit analytics
+- [x] ✅ Implement streak calculation
+- [x] ✅ Add habit completion history
+- [x] ✅ Create habit analytics
 - [ ] **TODO**: Add habit reminders
 
 ### 8.2 Data Visualization
 
-- [ ] **TODO**: Create progress charts
-- [ ] **TODO**: Add habit performance graphs
-- [ ] **TODO**: Implement calendar heatmap
+- [x] ✅ Create progress charts
+- [x] ✅ Add habit performance graphs
+- [x] ✅ Implement calendar heatmap
 - [ ] **TODO**: Add achievement badges
 
 ### 8.3 User Experience

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Habit } from "@/lib/types";
+import { useHabitLogs } from "@/hooks/useHabitLogs";
 
 interface HabitCardProps {
     habit: Habit;
@@ -9,11 +10,25 @@ interface HabitCardProps {
 }
 
 const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
+    const { isCompletedOnDate, toggleCompletion, isLoading } = useHabitLogs(
+        habit.id
+    );
     const [isCompleted, setIsCompleted] = useState(false);
 
-    const handleToggleCompletion = () => {
-        setIsCompleted(!isCompleted);
-        // TODO: Implement actual toggle functionality with useHabitLogs
+    // Check if habit is completed today
+    useEffect(() => {
+        const today = new Date().toISOString().split("T")[0];
+        setIsCompleted(isCompletedOnDate(today));
+    }, [isCompletedOnDate]);
+
+    const handleToggleCompletion = async () => {
+        try {
+            const today = new Date().toISOString().split("T")[0];
+            await toggleCompletion(today, habit.goalValue);
+            // The state will be updated automatically via useEffect when isCompletedOnDate changes
+        } catch (error) {
+            console.error("Error toggling habit completion:", error);
+        }
     };
 
     const getHabitIcon = (iconName: string) => {
