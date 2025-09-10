@@ -4,7 +4,6 @@ import { useHabits } from "@/hooks/useHabits";
 import Spinner from "@/components/Spinner";
 import WeeklyProgress from "@/components/WeeklyProgress";
 import HabitCard from "@/components/HabitCard";
-import FloatingAddButton from "@/components/FloatingAddButton";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
@@ -165,9 +164,6 @@ export default function DashboardPage() {
                     </div>
                 </div>
             </div>
-
-            {/* Floating Add Button */}
-            {/* <FloatingAddButton /> */}
 
             {/* Bottom spacing for navigation */}
             <div className="pb-20"></div>

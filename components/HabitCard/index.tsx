@@ -19,13 +19,13 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
     const getHabitIcon = (iconName: string) => {
         // Map icon names to actual icons based on mockup
         const iconMap: { [key: string]: string } = {
-            exercise_icon: "⚡",
-            book_icon: "📖",
+            exercise_icon: "💪",
+            book_icon: "📚",
             no_smoking_icon: "🚭",
             water_icon: "💧",
-            meditation_icon: "💡",
+            meditation_icon: "🧘",
             sleep_icon: "😴",
-            run_icon: "⚡",
+            run_icon: "🏃",
             read_icon: "📖",
             default: "✅",
         };
@@ -96,15 +96,15 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
 
     return (
         <div
-            className={`bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-200 p-4 ${className}`}
+            className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}
         >
             {/* Main Content */}
             <div className="flex items-center space-x-4">
                 {/* Icon */}
                 <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center ${getHabitCardColor(habit.iconName)}`}
+                    className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.iconName)} transition-all duration-300 hover:scale-110`}
                 >
-                    <div className="text-2xl text-white">
+                    <div className="text-2xl text-white drop-shadow-sm">
                         {getHabitIcon(habit.iconName)}
                     </div>
                 </div>
@@ -135,15 +135,15 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                 {/* Completion Button */}
                 <button
                     onClick={handleToggleCompletion}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
+                    className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-105 active:scale-95 ${
                         isCompleted
-                            ? "bg-habit-green text-white"
-                            : "bg-gray-200 text-gray-400 hover:bg-gray-300"
+                            ? "bg-gradient-to-r from-habit-green to-habit-blue text-white shadow-lg shadow-habit-green/30"
+                            : "bg-gray-100 text-gray-400 hover:bg-gray-200 hover:text-gray-600 border-2 border-gray-200 hover:border-gray-300"
                     }`}
                 >
                     {isCompleted ? (
                         <svg
-                            className="w-5 h-5"
+                            className="w-6 h-6"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -151,13 +151,13 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                             <path
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                strokeWidth={2}
+                                strokeWidth={2.5}
                                 d="M5 13l4 4L19 7"
                             />
                         </svg>
                     ) : (
                         <svg
-                            className="w-5 h-5"
+                            className="w-6 h-6"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -166,7 +166,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M5 13l4 4L19 7"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                             />
                         </svg>
                     )}

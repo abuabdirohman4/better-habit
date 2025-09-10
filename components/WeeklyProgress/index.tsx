@@ -33,52 +33,73 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ className = "" }) => {
     };
 
     const getBarColor = (percentage: number) => {
-        if (percentage >= 80) return "bg-habit-blue";
-        if (percentage >= 60) return "bg-habit-yellow";
-        return "bg-habit-red";
+        if (percentage >= 90) return "from-habit-green to-habit-blue";
+        if (percentage >= 80) return "from-habit-blue to-habit-purple";
+        if (percentage >= 60) return "from-habit-yellow to-habit-orange";
+        if (percentage >= 40) return "from-habit-orange to-habit-red";
+        return "from-habit-red to-habit-pink";
+    };
+
+    const getBarShadow = (percentage: number) => {
+        if (percentage >= 90) return "shadow-habit-green/30";
+        if (percentage >= 80) return "shadow-habit-blue/30";
+        if (percentage >= 60) return "shadow-habit-yellow/30";
+        if (percentage >= 40) return "shadow-habit-orange/30";
+        return "shadow-habit-red/30";
     };
 
     const getTextColor = (percentage: number) => {
+        if (percentage >= 90) return "text-habit-green";
         if (percentage >= 80) return "text-habit-blue";
         if (percentage >= 60) return "text-habit-yellow";
+        if (percentage >= 40) return "text-habit-orange";
         return "text-habit-red";
     };
 
+    const averageProgress = Math.round(
+        currentWeek.reduce((sum, val) => sum + val, 0) / currentWeek.length
+    );
+
     return (
-        <div className={`bg-white rounded-2xl shadow-lg p-6 ${className}`}>
+        <div
+            className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 ${className}`}
+        >
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold text-gray-800">
                     Weekly Progress
                 </h2>
-                <div className="text-2xl font-bold text-habit-blue">
-                    {Math.round(
-                        currentWeek.reduce((sum, val) => sum + val, 0) /
-                            currentWeek.length
-                    )}
-                    %
+                <div
+                    className={`text-3xl font-bold transition-colors duration-300 ${getTextColor(averageProgress)}`}
+                >
+                    {averageProgress}%
                 </div>
             </div>
 
             {/* Bar Chart */}
-            <div className="flex items-end justify-between space-x-2 mb-4">
+            <div className="flex items-end justify-between space-x-3 mb-4">
                 {currentWeek.map((percentage, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-center space-y-2"
+                        className="flex flex-col items-center space-y-3 group"
                     >
-                        <div className="w-8 h-20 bg-gray-200 rounded-full relative overflow-hidden">
+                        <div className="relative">
+                            <div className="w-10 h-24 bg-gray-100 rounded-2xl relative overflow-hidden shadow-inner">
+                                <div
+                                    className={`absolute bottom-0 w-full rounded-2xl transition-all duration-700 ease-out hover:scale-105 bg-gradient-to-t ${getBarColor(percentage)} shadow-lg ${getBarShadow(percentage)}`}
+                                    style={{
+                                        height: `${percentage}%`,
+                                        animationDelay: `${index * 100}ms`,
+                                    }}
+                                ></div>
+                            </div>
+                            {/* Percentage Label */}
                             <div
-                                className={`absolute bottom-0 w-full rounded-full transition-all duration-300 ${
-                                    percentage >= 80
-                                        ? "bg-gradient-to-t from-primary to-primary/80"
-                                        : percentage >= 60
-                                          ? "bg-gradient-to-t from-warning to-warning/80"
-                                          : "bg-gradient-to-t from-error to-error/80"
-                                }`}
-                                style={{ height: `${percentage}%` }}
-                            ></div>
+                                className={`absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs font-bold ${getTextColor(percentage)} opacity-0 group-hover:opacity-100 transition-opacity duration-200`}
+                            >
+                                {percentage}%
+                            </div>
                         </div>
-                        <div className="text-xs font-medium text-gray-600">
+                        <div className="text-xs font-semibold text-gray-600 group-hover:text-gray-800 transition-colors duration-200">
                             {getDayName(index)}
                         </div>
                     </div>

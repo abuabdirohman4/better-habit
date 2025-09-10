@@ -225,7 +225,6 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 ### 4.9 Bottom Navigation
 
 - [x] ✅ Use existing `BottomNavigationBar` component
-- [ ] **TODO**: Hide atau disable navigation saat di form
 - [x] ✅ Ensure proper back navigation
 
 ---
@@ -236,25 +235,19 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 - [x] ✅ Fix duplicate icon map entries
 - [x] ✅ Implement basic card layout
-- [ ] **TODO**: Refine icon styling dengan proper colors
-- [ ] **TODO**: Improve completion button styling
-- [ ] **TODO**: Add proper hover states
+- [x] ✅ Refine icon styling dengan proper colors
+- [x] ✅ Improve completion button styling
+- [x] ✅ Add proper hover states
 - [ ] **TODO**: Implement actual toggle functionality
 
 ### 5.2 WeeklyProgress Component
 
 - [x] ✅ Create basic bar chart
-- [ ] **TODO**: Refine bar colors dan styling
-- [ ] **TODO**: Add smooth animations
+- [x] ✅ Refine bar colors dan styling
+- [x] ✅ Add smooth animations
 - [ ] **TODO**: Integrate dengan real data
 
-### 5.3 FloatingAddButton Component
-
-- [x] ✅ Create basic floating button
-- [ ] **TODO**: Add navigation functionality
-- [ ] **TODO**: Improve shadow dan hover effects
-
-### 5.4 BottomNavigationBar Component
+### 5.3 BottomNavigationBar Component
 
 - [x] ✅ Create `BottomNavigationBar` component
 - [x] ✅ Design dengan 3 tabs: Home, Stats, Settings
