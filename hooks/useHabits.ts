@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import { Habit, CreateHabitData } from "@/lib/types";
-import { mockHabits } from "@/lib/mock-data";
 
 export const useHabits = () => {
     // Use real API call
@@ -13,9 +12,6 @@ export const useHabits = () => {
             }
             return response.json();
         },
-        {
-            fallbackData: { data: mockHabits },
-        }
     );
 
     const createHabit = async (habitData: CreateHabitData) => {

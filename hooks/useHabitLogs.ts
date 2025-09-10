@@ -53,9 +53,17 @@ export const useHabitLogs = (habitId: number) => {
             );
 
             if (existingLog) {
-                // If log exists, we could implement update/delete here
-                // For now, just return the existing log
-                return existingLog;
+                // If log exists, remove it (toggle off)
+                mutate((currentData: any) => {
+                    if (!currentData) return currentData;
+                    return {
+                        ...currentData,
+                        data: currentData.data.filter(
+                            (log: HabitLog) => log.date !== date
+                        ),
+                    };
+                }, false);
+                return null;
             } else {
                 // Create new log
                 const logData: CreateHabitLogData = {

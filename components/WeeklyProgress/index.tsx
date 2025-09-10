@@ -50,9 +50,11 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({ className = "" }) => {
                                 }
                             }
                         } catch (error) {
-                            // If API fails, use mock data as fallback
-                            const isCompleted = Math.random() > 0.3;
-                            if (isCompleted) completedHabits++;
+                            // If API fails, skip this habit
+                            console.error(
+                                `Error fetching logs for habit ${habit.id}:`,
+                                error
+                            );
                         }
                     }
                 }

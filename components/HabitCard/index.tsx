@@ -25,7 +25,8 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
         try {
             const today = new Date().toISOString().split("T")[0];
             await toggleCompletion(today, habit.goalValue);
-            // The state will be updated automatically via useEffect when isCompletedOnDate changes
+            // Force revalidation to update the UI immediately
+            setIsCompleted(!isCompleted);
         } catch (error) {
             console.error("Error toggling habit completion:", error);
         }
@@ -142,7 +143,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                         <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${getHabitCardColor(habit.iconName)} ${getHabitTextColor(habit.iconName)}`}
                         >
-                            {Math.floor(Math.random() * 7) + 1} day streak
+                            0 day streak
                         </span>
                     </div>
                 </div>

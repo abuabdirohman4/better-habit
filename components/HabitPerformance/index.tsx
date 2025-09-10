@@ -21,16 +21,16 @@ export default function HabitPerformance({
     habits,
     className = "",
 }: HabitPerformanceProps) {
-    // Mock data for habit performance
+    // Generate habit stats with real data (currently showing zeros)
     const generateHabitStats = (): HabitStats[] => {
         return habits.map((habit) => ({
             id: habit.id,
             name: habit.displayName,
             icon: habit.iconName,
-            streak: Math.floor(Math.random() * 15) + 1, // Random streak 1-15
-            successRate: Math.floor(Math.random() * 40) + 60, // Random success rate 60-100%
-            totalDays: Math.floor(Math.random() * 30) + 10, // Random total days 10-40
-            completedDays: Math.floor(Math.random() * 25) + 5, // Random completed days 5-30
+            streak: 0, // Will be calculated from real data
+            successRate: 0, // Will be calculated from real data
+            totalDays: 0, // Will be calculated from real data
+            completedDays: 0, // Will be calculated from real data
         }));
     };
 

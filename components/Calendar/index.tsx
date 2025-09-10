@@ -50,8 +50,8 @@ export default function Calendar({ className = "" }: CalendarProps) {
             if (isToday) {
                 status = "today";
             } else if (dayDate < today) {
-                // Mock data - randomly assign completed/missed for past days
-                status = Math.random() > 0.3 ? "completed" : "missed";
+                // No data available - mark as missed
+                status = "missed";
             }
 
             calendarData.push({ date: day, status });

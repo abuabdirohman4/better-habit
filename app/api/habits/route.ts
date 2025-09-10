@@ -8,38 +8,10 @@ const HABITS_SHEET = "Habits";
 export async function GET() {
     try {
         if (!SPREADSHEET_ID) {
-            // Return mock data for development
-            const mockHabits: Habit[] = [
-                {
-                    id: 1,
-                    displayName: "Morning Run",
-                    iconName: "run_icon",
-                    type: "do",
-                    frequencyType: "daily",
-                    frequencyDays: "",
-                    reminderTime: "07:00",
-                    isReminderOn: true,
-                    goalValue: 5,
-                    goalUnit: "km",
-                    isActive: true,
-                    createdAt: "2024-01-01T00:00:00Z",
-                },
-                {
-                    id: 2,
-                    displayName: "Meditation",
-                    iconName: "meditation_icon",
-                    type: "do",
-                    frequencyType: "daily",
-                    frequencyDays: "",
-                    reminderTime: "08:00",
-                    isReminderOn: true,
-                    goalValue: 10,
-                    goalUnit: "minutes",
-                    isActive: true,
-                    createdAt: "2024-01-01T00:00:00Z",
-                },
-            ];
-            return NextResponse.json({ data: mockHabits });
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
         }
 
         // Get habits from Google Sheets
@@ -79,57 +51,20 @@ export async function GET() {
         return NextResponse.json({ data: habits });
     } catch (error) {
         console.error("Error fetching habits:", error);
-        // Return mock data as fallback
-        const mockHabits: Habit[] = [
-            {
-                id: 1,
-                displayName: "Morning Run",
-                iconName: "run_icon",
-                type: "do",
-                frequencyType: "daily",
-                frequencyDays: "",
-                reminderTime: "07:00",
-                isReminderOn: true,
-                goalValue: 5,
-                goalUnit: "km",
-                isActive: true,
-                createdAt: "2024-01-01T00:00:00Z",
-            },
-        ];
-        return NextResponse.json({ data: mockHabits });
+        return NextResponse.json(
+            { error: "Failed to fetch habits" },
+            { status: 500 }
+        );
     }
 }
 
 export async function POST(request: NextRequest) {
     try {
         if (!SPREADSHEET_ID) {
-            const habitData: CreateHabitData = await request.json();
-
-            // Validate required fields
-            if (!habitData.displayName || !habitData.iconName) {
-                return NextResponse.json(
-                    { error: "Missing required fields" },
-                    { status: 400 }
-                );
-            }
-
-            // Create mock response
-            const newHabit: Habit = {
-                id: Date.now(),
-                displayName: habitData.displayName,
-                iconName: habitData.iconName,
-                type: habitData.type,
-                frequencyType: habitData.frequencyType,
-                frequencyDays: habitData.frequencyDays || "",
-                reminderTime: habitData.reminderTime || "07:00",
-                isReminderOn: habitData.isReminderOn,
-                goalValue: habitData.goalValue || 0,
-                goalUnit: habitData.goalUnit || "minutes",
-                isActive: true,
-                createdAt: new Date().toISOString(),
-            };
-
-            return NextResponse.json({ data: newHabit }, { status: 201 });
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
         }
 
         const habitData: CreateHabitData = await request.json();

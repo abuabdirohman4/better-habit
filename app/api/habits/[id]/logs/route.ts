@@ -11,24 +11,10 @@ export async function GET(
 ) {
     try {
         if (!SPREADSHEET_ID) {
-            // Return mock data for development
-            const mockLogs: HabitLog[] = [
-                {
-                    id: 1,
-                    habitId: parseInt(params.id),
-                    date: "2024-01-15",
-                    completedValue: 5,
-                    completedAt: "2024-01-15T07:30:00Z",
-                },
-                {
-                    id: 2,
-                    habitId: parseInt(params.id),
-                    date: "2024-01-14",
-                    completedValue: 3,
-                    completedAt: "2024-01-14T08:15:00Z",
-                },
-            ];
-            return NextResponse.json({ data: mockLogs });
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
         }
 
         // Get habit logs from Google Sheets
@@ -39,25 +25,8 @@ export async function GET(
                 HABIT_LOGS_SHEET
             );
         } catch (error) {
-            console.log("HabitLogs sheet not found, using mock data");
-            // Return mock data if sheet doesn't exist
-            const mockLogs: HabitLog[] = [
-                {
-                    id: 1,
-                    habitId: parseInt(params.id),
-                    date: "2024-01-15",
-                    completedValue: 5,
-                    completedAt: "2024-01-15T07:30:00Z",
-                },
-                {
-                    id: 2,
-                    habitId: parseInt(params.id),
-                    date: "2024-01-14",
-                    completedValue: 3,
-                    completedAt: "2024-01-14T08:15:00Z",
-                },
-            ];
-            return NextResponse.json({ data: mockLogs });
+            console.log("HabitLogs sheet not found");
+            return NextResponse.json({ data: [] });
         }
 
         // Filter logs for specific habit
@@ -76,17 +45,10 @@ export async function GET(
         return NextResponse.json({ data: habitLogs });
     } catch (error) {
         console.error("Error fetching habit logs:", error);
-        // Return mock data as fallback
-        const mockLogs: HabitLog[] = [
-            {
-                id: 1,
-                habitId: parseInt(params.id),
-                date: "2024-01-15",
-                completedValue: 5,
-                completedAt: "2024-01-15T07:30:00Z",
-            },
-        ];
-        return NextResponse.json({ data: mockLogs });
+        return NextResponse.json(
+            { error: "Failed to fetch habit logs" },
+            { status: 500 }
+        );
     }
 }
 
@@ -96,26 +58,10 @@ export async function POST(
 ) {
     try {
         if (!SPREADSHEET_ID) {
-            const logData: CreateHabitLogData = await request.json();
-
-            // Validate required fields
-            if (!logData.habitId || !logData.date) {
-                return NextResponse.json(
-                    { error: "Missing required fields" },
-                    { status: 400 }
-                );
-            }
-
-            // Create mock response
-            const newLog: HabitLog = {
-                id: Date.now(),
-                habitId: logData.habitId,
-                date: logData.date,
-                completedValue: logData.completedValue,
-                completedAt: new Date().toISOString(),
-            };
-
-            return NextResponse.json({ data: newLog }, { status: 201 });
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
         }
 
         const logData: CreateHabitLogData = await request.json();
