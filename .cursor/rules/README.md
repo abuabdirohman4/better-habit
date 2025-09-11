@@ -2,59 +2,60 @@
 
 ## 📋 Overview
 
-Template rules yang bisa digunakan untuk proyek apapun dengan kualitas yang sama seperti Better Habit.
+Template rules that can be used for any project with the same quality as Better Habit.
 
-## 🚀 Cara Penggunaan
+## 🚀 How to Use
 
 ### **1. Copy Template Rules**
 
 ```bash
-# Copy template rules ke proyek baru
+# Copy template rules to new project
 cp -r .cursor/rules/templates/ ../new-project/.cursor/rules/
 ```
 
-### **2. Customize untuk Proyek**
+### **2. Customize for Project**
 
-- Edit `project-overview.md` dengan detail proyek baru
-- Sesuaikan `coding-standards.md` dengan tech stack
-- Update `ui-ux-patterns.md` dengan design system
-- Modifikasi `api-integration.md` dengan data source
+- Edit `project-overview.md` with new project details
+- Adjust `coding-standards.md` with tech stack
+- Update `ui-ux-patterns.md` with design system
+- Modify `api-integration.md` with data source
 
-### **3. Pilih Rules yang Diperlukan**
+### **3. Choose Required Rules**
 
-- **Proyek Kecil**: 4 file dasar
-- **Proyek Menengah**: + api-integration.md
-- **Proyek Besar**: Semua 7 file
+- **Small Project**: 4 basic files
+- **Medium Project**: + api-integration.md + database-schema.md
+- **Large Project**: All 8 files
 
 ## 📁 File Structure
 
 ```
 .cursor/rules/
-├── README.md                    # Panduan penggunaan
-├── project-overview.md          # Overview proyek Better Habit
-├── coding-standards.md          # Standar coding Next.js + TypeScript
-├── ui-ux-patterns.md            # Pola UI/UX Tailwind + DaisyUI
-├── api-integration.md           # NextAuth + Prisma integration
-├── component-patterns.md        # Pola komponen Better Habit
-├── deployment-guidelines.md     # Panduan deployment Next.js
-└── customization-guide.md       # Panduan kustomisasi
+├── README.md                    # Usage guide
+├── project-overview.md          # Better Habit project overview
+├── coding-standards.md          # Next.js + TypeScript coding standards
+├── ui-ux-patterns.md            # Tailwind + DaisyUI UI/UX patterns
+├── api-integration.md           # NextAuth + Google Sheets integration
+├── component-patterns.md        # Better Habit component patterns
+├── database-schema.md           # Google Sheets database structure reference
+├── deployment-guidelines.md     # Next.js deployment guidelines
+└── customization-guide.md       # Customization guide
 ```
 
 ## 🎨 Customization Levels
 
-### **Level 1: Basic (5 menit)**
+### **Level 1: Basic (5 minutes)**
 
-- Ganti nama proyek
+- Change project name
 - Update tech stack
-- Sesuaikan warna utama
+- Adjust primary colors
 
-### **Level 2: Intermediate (15 menit)**
+### **Level 2: Intermediate (15 minutes)**
 
 - Customize component patterns
 - Update API integration
-- Sesuaikan deployment strategy
+- Adjust deployment strategy
 
-### **Level 3: Advanced (30 menit)**
+### **Level 3: Advanced (30 minutes)**
 
 - Full customization
 - Add project-specific patterns
@@ -78,26 +79,26 @@ find ../new-project/.cursor/rules/ -name "*.md" -exec sed -i 's/#1496F6/g' {} \;
 
 ## 📚 Best Practices
 
-1. **Always customize** untuk proyek spesifik
-2. **Keep templates updated** dengan best practices terbaru
-3. **Document changes** yang dibuat
-4. **Share templates** dengan tim untuk konsistensi
+1. **Always customize** for specific projects
+2. **Keep templates updated** with latest best practices
+3. **Document changes** you make
+4. **Share templates** with team for consistency
 5. **Version control** template rules
 
 ## 🆕 Template Updates
 
-Template ini akan diupdate secara berkala dengan:
+These templates will be updated regularly with:
 
-- Best practices terbaru
-- New patterns yang ditemukan
-- Bug fixes dan improvements
+- Latest best practices
+- New patterns discovered
+- Bug fixes and improvements
 - New technology support
 
 ## 🤝 Contributing
 
-Jika menemukan pattern baru atau improvement:
+If you find new patterns or improvements:
 
-1. Update template yang sesuai
-2. Test di proyek baru
-3. Document perubahan
-4. Share dengan tim
+1. Update the appropriate template
+2. Test in new project
+3. Document changes
+4. Share with team

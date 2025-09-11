@@ -1,6 +1,6 @@
 {
-    "name": "prj-habit-tracker",
-    "version": "0.1.0",
+    "name": "better-habit",
+    "version": "1.-.0",
     "private": true,
     "scripts": {
         "dev": "next dev",

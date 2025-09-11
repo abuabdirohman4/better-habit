@@ -112,13 +112,13 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                             </span>
                         )}
                     </p>
-                    <div className="flex items-center space-x-2">
+                    {/* <div className="flex items-center space-x-2">
                         <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${getHabitCardColor(habit.iconName)} ${getHabitTextColor(habit.iconName)}`}
                         >
                             0 day streak
                         </span>
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Completion Button */}
