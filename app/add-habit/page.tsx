@@ -24,7 +24,7 @@ export default function AddHabitPage() {
     });
 
     // UI state
-    const [selectedIcon, setSelectedIcon] = useState("run_icon");
+    const [selectedIcon, setSelectedIcon] = useState("");
     const [selectedFrequency, setSelectedFrequency] = useState("daily");
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [isReminderEnabled, setIsReminderEnabled] = useState(false);

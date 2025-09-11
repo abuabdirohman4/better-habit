@@ -1,0 +1,137 @@
+import { NextRequest, NextResponse } from "next/server";
+import { Habit } from "@/lib/types";
+import { googleSheets } from "@/lib/google-sheets";
+
+const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
+const HABITS_SHEET = "Habits";
+
+export async function PUT(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    try {
+        if (!SPREADSHEET_ID) {
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
+        }
+
+        const updates: Partial<Habit> = await request.json();
+        const habitId = parseInt(params.id);
+
+        // Get current habits to find the one to update
+        const habitsData = await googleSheets.getCSVWithAuth(
+            SPREADSHEET_ID,
+            HABITS_SHEET
+        );
+
+        const habitIndex = habitsData.findIndex(
+            (row: any) => parseInt(row.id) === habitId
+        );
+
+        if (habitIndex === -1) {
+            return NextResponse.json(
+                { error: "Habit not found" },
+                { status: 404 }
+            );
+        }
+
+        // Update the habit data
+        const updatedHabit = {
+            ...habitsData[habitIndex],
+            ...updates,
+        };
+
+        // Convert to Google Sheets format
+        const updatedRow = [
+            updatedHabit.id.toString(),
+            updatedHabit.displayName || updatedHabit.displayname || "",
+            updatedHabit.iconName || updatedHabit.iconname || "",
+            updatedHabit.type || "do",
+            updatedHabit.frequencyType || updatedHabit.frequencytype || "daily",
+            updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
+            updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
+            updatedHabit.isReminderOn ? "1" : "0",
+            (updatedHabit.goalValue || updatedHabit.goalvalue || 0).toString(),
+            updatedHabit.goalUnit || updatedHabit.goalunit || "minutes",
+            updatedHabit.isActive ? "1" : "0",
+            updatedHabit.createdAt || updatedHabit.createdat || new Date().toISOString(),
+        ];
+
+        // Update the specific row in Google Sheets
+        const range = `${HABITS_SHEET}!A${habitIndex + 2}:L${habitIndex + 2}`;
+        await googleSheets.updateValues(SPREADSHEET_ID, range, [updatedRow]);
+
+        // Create response object
+        const responseHabit: Habit = {
+            id: updatedHabit.id,
+            displayName: updatedHabit.displayName || updatedHabit.displayname || "",
+            iconName: updatedHabit.iconName || updatedHabit.iconname || "",
+            type: (updatedHabit.type as "do" | "dont") || "do",
+            frequencyType: (updatedHabit.frequencyType as "daily" | "weekly" | "custom") || "daily",
+            frequencyDays: updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
+            reminderTime: updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
+            isReminderOn: updatedHabit.isReminderOn || false,
+            goalValue: updatedHabit.goalValue || updatedHabit.goalvalue || 0,
+            goalUnit: updatedHabit.goalUnit || updatedHabit.goalunit || "minutes",
+            isActive: updatedHabit.isActive || false,
+            createdAt: updatedHabit.createdAt || updatedHabit.createdat || new Date().toISOString(),
+        };
+
+        return NextResponse.json({ data: responseHabit });
+    } catch (error) {
+        console.error("Error updating habit:", error);
+        return NextResponse.json(
+            { error: "Failed to update habit" },
+            { status: 500 }
+        );
+    }
+}
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
+    try {
+        if (!SPREADSHEET_ID) {
+            return NextResponse.json(
+                { error: "Google Sheets not configured" },
+                { status: 500 }
+            );
+        }
+
+        const habitId = parseInt(params.id);
+
+        // Get current habits to find the one to delete
+        const habitsData = await googleSheets.getCSVWithAuth(
+            SPREADSHEET_ID,
+            HABITS_SHEET
+        );
+
+        const habitIndex = habitsData.findIndex(
+            (row: any) => parseInt(row.id) === habitId
+        );
+
+        if (habitIndex === -1) {
+            return NextResponse.json(
+                { error: "Habit not found" },
+                { status: 404 }
+            );
+        }
+
+        // For Google Sheets, we'll clear the row instead of deleting it
+        // This is because Google Sheets API doesn't have a direct delete row method
+        const emptyRow = Array(12).fill(""); // 12 columns for habits
+        const range = `${HABITS_SHEET}!A${habitIndex + 2}:L${habitIndex + 2}`;
+        await googleSheets.updateValues(SPREADSHEET_ID, range, [emptyRow]);
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting habit:", error);
+        return NextResponse.json(
+            { error: "Failed to delete habit" },
+            { status: 500 }
+        );
+    }
+}

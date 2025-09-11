@@ -4,10 +4,10 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ## LIST IDEA
 
-- [ ] Add Many icon
+- [x] ✅ Add Many icon
 - [ ] Categorizing each habit
 - [ ] Show progress one week in dashboard for each habit
-- [ ] Setting that have list of habit to archive
+- [x] ✅ Setting that have list of habit to archive
 - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
 
 ## ISSUE TRACKER

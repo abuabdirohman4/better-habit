@@ -145,4 +145,29 @@ export const googleSheets = {
         });
         return response.data;
     },
+
+    async updateValues(spreadsheetId: string, range: string, values: any[][]) {
+        const { google } = await import("googleapis");
+
+        const auth = new google.auth.GoogleAuth({
+            credentials: {
+                client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+                private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(
+                    /\\n/g,
+                    "\n"
+                ),
+            },
+            scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+        });
+
+        const sheets = google.sheets({ version: "v4", auth });
+
+        const response = await sheets.spreadsheets.values.update({
+            spreadsheetId,
+            range,
+            valueInputOption: "RAW",
+            requestBody: { values },
+        });
+        return response.data;
+    },
 };
