@@ -17,8 +17,8 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ## REFACTORING
 
-- [ ] Delete prisma code
-- [ ] Change type "isActive" to 0 or 1
+- [x] ✅ Delete prisma code
+- [x] ✅ Change type "isActive" to 0 or 1
 - [ ] Remove Mock Data
 - [ ] Make habitId not too high
 

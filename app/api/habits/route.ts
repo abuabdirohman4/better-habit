@@ -34,14 +34,14 @@ export async function GET() {
                 frequencyDays: row.frequencyDays || row.frequencydays || "",
                 reminderTime: row.reminderTime || row.remindertime || "07:00",
                 isReminderOn:
-                    row.isReminderOn === "true" ||
-                    row.isreminderon === "true" ||
+                    row.isReminderOn === "1" ||
+                    row.isreminderon === "1" ||
                     row.isReminderOn === true,
                 goalValue: parseInt(row.goalValue || row.goalvalue) || 0,
                 goalUnit: row.goalUnit || row.goalunit || "minutes",
                 isActive:
-                    row.isActive === "true" ||
-                    row.isactive === "true" ||
+                    row.isActive === "1" ||
+                    row.isactive === "1" ||
                     row.isActive === true,
                 createdAt:
                     row.createdAt || row.createdat || new Date().toISOString(),
@@ -89,10 +89,10 @@ export async function POST(request: NextRequest) {
             habitData.frequencyType,
             habitData.frequencyDays || "",
             habitData.reminderTime || "07:00",
-            habitData.isReminderOn.toString(),
+            habitData.isReminderOn ? "1" : "0",
             habitData.goalValue?.toString() || "0",
             habitData.goalUnit || "minutes",
-            "true", // isActive
+            "1", // isActive
             new Date().toISOString(), // createdAt
         ];
 
