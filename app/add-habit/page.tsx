@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useHabits } from "@/hooks/useHabits";
 import { CreateHabitData } from "@/lib/types";
+import { AVAILABLE_ICONS } from "@/utils/habit-icons";
 
 export default function AddHabitPage() {
     const router = useRouter();
@@ -29,14 +30,7 @@ export default function AddHabitPage() {
     const [isReminderEnabled, setIsReminderEnabled] = useState(false);
 
     // Available icons
-    const availableIcons = [
-        { id: "run_icon", emoji: "🏃‍♂️", name: "Run" },
-        { id: "meditation_icon", emoji: "🧘‍♀️", name: "Meditation" },
-        { id: "water_icon", emoji: "💧", name: "Water" },
-        { id: "book_icon", emoji: "📚", name: "Read" },
-        { id: "sleep_icon", emoji: "😴", name: "Sleep" },
-        { id: "exercise_icon", emoji: "💪", name: "Exercise" },
-    ];
+    const availableIcons = AVAILABLE_ICONS;
 
     // Days of week
     const daysOfWeek = [

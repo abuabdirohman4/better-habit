@@ -1,6 +1,7 @@
 "use client";
 
 import { Habit } from "@/lib/types";
+import { getHabitIcon, getHabitCardColor, getHabitTextColor } from "@/utils/habit-icons";
 
 interface HabitPerformanceProps {
     habits: Habit[];
@@ -36,45 +37,6 @@ export default function HabitPerformance({
 
     const habitStats = generateHabitStats();
 
-    // Get habit card color based on icon
-    const getHabitCardColor = (icon: string) => {
-        const colorMap: { [key: string]: string } = {
-            run_icon: "bg-habit-green",
-            meditation_icon: "bg-habit-purple",
-            water_icon: "bg-habit-blue",
-            book_icon: "bg-habit-yellow",
-            sleep_icon: "bg-habit-indigo",
-            exercise_icon: "bg-habit-red",
-        };
-        return colorMap[icon] || "bg-habit-blue";
-    };
-
-    // Get habit text color
-    const getHabitTextColor = (icon: string) => {
-        const colorMap: { [key: string]: string } = {
-            run_icon: "text-habit-dark",
-            meditation_icon: "text-white",
-            water_icon: "text-white",
-            book_icon: "text-habit-dark",
-            sleep_icon: "text-white",
-            exercise_icon: "text-white",
-        };
-        return colorMap[icon] || "text-white";
-    };
-
-    // Get icon emoji
-    const getIconEmoji = (icon: string) => {
-        const iconMap: { [key: string]: string } = {
-            run_icon: "🏃‍♂️",
-            meditation_icon: "🧘‍♀️",
-            water_icon: "💧",
-            book_icon: "📚",
-            sleep_icon: "😴",
-            exercise_icon: "💪",
-        };
-        return iconMap[icon] || "📝";
-    };
-
     return (
         <div className={`w-full ${className}`}>
             {habitStats.length === 0 ? (
@@ -96,7 +58,7 @@ export default function HabitPerformance({
                                     )}`}
                                 >
                                     <span className="text-xl">
-                                        {getIconEmoji(stat.icon)}
+                                        {getHabitIcon(stat.icon)}
                                     </span>
                                 </div>
                                 <div>

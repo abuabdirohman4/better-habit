@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
+import { getHabitIcon, getHabitCardColor, getHabitTextColor } from "@/utils/habit-icons";
 
 interface HabitCardProps {
     habit: Habit;
@@ -50,54 +51,6 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
         } catch (error) {
             console.error("Error toggling habit completion:", error);
         }
-    };
-
-    const getHabitIcon = (iconName: string) => {
-        // Map icon names to actual icons based on mockup
-        const iconMap: { [key: string]: string } = {
-            exercise_icon: "💪",
-            book_icon: "📚",
-            no_smoking_icon: "🚭",
-            water_icon: "💧",
-            meditation_icon: "🧘",
-            sleep_icon: "😴",
-            run_icon: "🏃",
-            read_icon: "📖",
-            default: "✅",
-        };
-        return iconMap[iconName] || iconMap.default;
-    };
-
-    const getHabitCardColor = (iconName: string) => {
-        // Map icon names to card colors based on mockup
-        const colorMap: { [key: string]: string } = {
-            exercise_icon: "bg-card-green",
-            book_icon: "bg-card-blue",
-            no_smoking_icon: "bg-card-red",
-            water_icon: "bg-card-blue",
-            meditation_icon: "bg-card-purple",
-            sleep_icon: "bg-card-yellow",
-            run_icon: "bg-card-green",
-            read_icon: "bg-card-blue",
-            default: "bg-card-green",
-        };
-        return colorMap[iconName] || colorMap.default;
-    };
-
-    const getHabitTextColor = (iconName: string) => {
-        // Map icon names to text colors based on mockup
-        const colorMap: { [key: string]: string } = {
-            exercise_icon: "text-habit-green",
-            book_icon: "text-habit-blue",
-            no_smoking_icon: "text-habit-red",
-            water_icon: "text-habit-blue",
-            meditation_icon: "text-habit-purple",
-            sleep_icon: "text-habit-yellow",
-            run_icon: "text-habit-green",
-            read_icon: "text-habit-blue",
-            default: "text-habit-green",
-        };
-        return colorMap[iconName] || colorMap.default;
     };
 
     const getHabitTypeColor = (type: "do" | "dont") => {
