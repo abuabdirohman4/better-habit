@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
     const router = useRouter();
-    console.log("habits", habits);
 
     // Show loading while fetching habits
     if (isLoading) {
