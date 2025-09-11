@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import useSWR from "swr";
 import { HabitLog, CreateHabitLogData } from "@/lib/types";
 
@@ -63,7 +64,7 @@ export const useHabitLogs = (habitId: number) => {
                         ),
                     };
                 }, false);
-                return null;
+                return false; // Return false to indicate habit is now not completed
             } else {
                 // Create new log
                 const logData: CreateHabitLogData = {
@@ -71,20 +72,23 @@ export const useHabitLogs = (habitId: number) => {
                     date,
                     completedValue,
                 };
-                return await addLog(logData);
+                await addLog(logData);
+                return true; // Return true to indicate habit is now completed
             }
         } catch (err) {
             throw err;
         }
     };
 
-    const getLogForDate = (date: string): HabitLog | undefined => {
-        return data?.data?.find((log: HabitLog) => log.date === date);
-    };
+    const getLogForDate = useCallback((date: string): HabitLog | undefined => {
+        const log = data?.data?.find((log: HabitLog) => log.date === date);
+        return log;
+    }, [data?.data]);
 
-    const isCompletedOnDate = (date: string): boolean => {
-        return !!getLogForDate(date);
-    };
+    const isCompletedOnDate = useCallback((date: string): boolean => {
+        const completed = !!getLogForDate(date);
+        return completed;
+    }, [getLogForDate]);
 
     const getCompletionRate = (): number => {
         if (!data?.data || data.data.length === 0) return 0;

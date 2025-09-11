@@ -32,7 +32,7 @@ export default function StatisticsPage() {
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
-            <div className="bg-gradient-to-r from-habit-blue to-habit-purple px-7 pt-16 pb-8 text-white rounded-b-3xl">
+            <div className="bg-gradient-to-r from-habit-blue to-habit-purple px-7 py-8 text-white rounded-b-3xl">
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <h1 className="text-3xl font-bold mb-1">Statistics</h1>

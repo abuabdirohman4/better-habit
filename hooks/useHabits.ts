@@ -11,7 +11,7 @@ export const useHabits = () => {
                 throw new Error("Failed to fetch habits");
             }
             return response.json();
-        },
+        }
     );
 
     const createHabit = async (habitData: CreateHabitData) => {

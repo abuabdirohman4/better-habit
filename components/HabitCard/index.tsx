@@ -17,16 +17,36 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
 
     // Check if habit is completed today
     useEffect(() => {
-        const today = new Date().toISOString().split("T")[0];
-        setIsCompleted(isCompletedOnDate(today));
-    }, [isCompletedOnDate]);
+        // Use local date instead of UTC to match database
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        const todayString = `${year}-${month}-${day}`;
+
+        const completed = isCompletedOnDate(todayString);
+        setIsCompleted(completed);
+    }, [isCompletedOnDate, habit.id]);
 
     const handleToggleCompletion = async () => {
         try {
-            const today = new Date().toISOString().split("T")[0];
-            await toggleCompletion(today, habit.goalValue);
-            // Force revalidation to update the UI immediately
-            setIsCompleted(!isCompleted);
+            // Use local date instead of UTC to match database
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            const todayString = `${year}-${month}-${day}`;
+
+            const result = await toggleCompletion(todayString, habit.goalValue);
+
+            // Update state based on the result
+            if (result) {
+                // Log was created, so habit is now completed
+                setIsCompleted(true);
+            } else {
+                // Log was removed, so habit is now not completed
+                setIsCompleted(false);
+            }
         } catch (error) {
             console.error("Error toggling habit completion:", error);
         }

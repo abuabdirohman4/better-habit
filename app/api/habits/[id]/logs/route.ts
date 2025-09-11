@@ -24,24 +24,46 @@ export async function GET(
                 SPREADSHEET_ID,
                 HABIT_LOGS_SHEET
             );
+            console.log("Raw logs data from Google Sheets:", logsData);
         } catch (error) {
-            console.log("HabitLogs sheet not found");
+            console.log("HabitLogs sheet not found:", error);
             return NextResponse.json({ data: [] });
         }
 
         // Filter logs for specific habit
+        console.log("Filtering for habit ID:", params.id);
+        console.log("All logs data:", logsData);
+
         const habitLogs: HabitLog[] = logsData
-            .filter((row: any) => parseInt(row.habitId) === parseInt(params.id))
+            .filter((row: any) => {
+                // Check all possible field name variations
+                const habitId = row.habitId || row.habit_id || row.habitid;
+                console.log(
+                    "Checking row:",
+                    row,
+                    "habitId:",
+                    habitId,
+                    "params.id:",
+                    params.id
+                );
+                // Convert both to string for comparison since habitId might be string
+                return String(habitId) === String(params.id);
+            })
             .map((row: any, index: number) => ({
                 id: parseInt(row.id) || index + 1,
-                habitId: parseInt(row.habitId),
+                habitId: parseInt(row.habitId || row.habit_id || row.habitid),
                 date: row.date || "",
-                completedValue: row.completedValue
-                    ? parseInt(row.completedValue)
-                    : undefined,
-                completedAt: row.completedAt || new Date().toISOString(),
+                completedValue:
+                    row.completedValue || row.completed_value
+                        ? parseInt(row.completedValue || row.completed_value)
+                        : undefined,
+                completedAt:
+                    row.completedAt ||
+                    row.completed_at ||
+                    new Date().toISOString(),
             }));
 
+        console.log("Filtered habit logs:", habitLogs);
         return NextResponse.json({ data: habitLogs });
     } catch (error) {
         console.error("Error fetching habit logs:", error);

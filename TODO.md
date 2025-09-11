@@ -16,6 +16,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 - [ ] Change type "isActive" to 0 or 1
 - [ ] Remove Mock Data
+- [ ] Make habitId not too high
 
 ## 📱 **1. Dashboard Page ("My Habits")**
 

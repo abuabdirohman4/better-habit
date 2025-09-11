@@ -9,13 +9,14 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
     const router = useRouter();
+    console.log("habits", habits);
 
     // Show loading while fetching habits
     if (isLoading) {
         return (
-            <main className="bg-white pt-24 px-7">
+            <main className="bg-white pt-56">
                 <div className="flex justify-center items-center min-h-64">
-                    <Spinner className="h-10 w-10" />
+                    <Spinner className="h-28 w-28" />
                 </div>
             </main>
         );
@@ -36,7 +37,7 @@ export default function DashboardPage() {
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
-            <div className="bg-gradient-to-r from-habit-blue to-habit-purple px-7 pt-16 pb-8 text-white rounded-b-3xl">
+            <div className="bg-gradient-to-r from-habit-blue to-habit-purple px-7 py-8 text-white rounded-b-3xl">
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <h1 className="text-3xl font-bold mb-1">
@@ -78,12 +79,12 @@ export default function DashboardPage() {
             {/* Main Content */}
             <div className="px-7 -mt-4 relative z-10">
                 {/* Weekly Progress Section */}
-                <div className="mb-6">
+                {/* <div className="mb-6">
                     <WeeklyProgress />
-                </div>
+                </div> */}
 
                 {/* Today's Habits Section */}
-                <div className="mb-6">
+                <div className="mt-10 mb-6">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-bold text-gray-800">
                             Today&apos;s Habits
