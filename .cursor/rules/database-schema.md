@@ -24,7 +24,8 @@ interface Habit {
     id: number;                    // Primary key
     displayName: string;           // Habit name
     iconName: string;              // Icon name
-    type: "do" | "dont";          // Habit type
+    category: "Spiritual" | "Health" | "Development Self" | "To Dont List";
+    timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string;        // Days of the week (1-7)
     reminderTime?: string;         // Reminder time (HH:MM)

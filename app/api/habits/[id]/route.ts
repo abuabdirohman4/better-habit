@@ -48,7 +48,8 @@ export async function PUT(
             updatedHabit.id.toString(),
             updatedHabit.displayName || updatedHabit.displayname || "",
             updatedHabit.iconName || updatedHabit.iconname || "",
-            updatedHabit.type || "do",
+            updatedHabit.category || "Health",
+            updatedHabit.timeOfDay || updatedHabit.timeofday || "All Day",
             updatedHabit.frequencyType || updatedHabit.frequencytype || "daily",
             updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
             updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
@@ -60,7 +61,7 @@ export async function PUT(
         ];
 
         // Update the specific row in Google Sheets
-        const range = `${HABITS_SHEET}!A${habitIndex + 2}:L${habitIndex + 2}`;
+        const range = `${HABITS_SHEET}!A${habitIndex + 2}:M${habitIndex + 2}`;
         await googleSheets.updateValues(SPREADSHEET_ID, range, [updatedRow]);
 
         // Create response object
@@ -68,7 +69,8 @@ export async function PUT(
             id: updatedHabit.id,
             displayName: updatedHabit.displayName || updatedHabit.displayname || "",
             iconName: updatedHabit.iconName || updatedHabit.iconname || "",
-            type: (updatedHabit.type as "do" | "dont") || "do",
+            category: (updatedHabit.category as "Spiritual" | "Health" | "Development Self" | "To Dont List") || "Health",
+            timeOfDay: (updatedHabit.timeOfDay || updatedHabit.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
             frequencyType: (updatedHabit.frequencyType as "daily" | "weekly" | "custom") || "daily",
             frequencyDays: updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
             reminderTime: updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
@@ -122,8 +124,8 @@ export async function DELETE(
 
         // For Google Sheets, we'll clear the row instead of deleting it
         // This is because Google Sheets API doesn't have a direct delete row method
-        const emptyRow = Array(12).fill(""); // 12 columns for habits
-        const range = `${HABITS_SHEET}!A${habitIndex + 2}:L${habitIndex + 2}`;
+        const emptyRow = Array(13).fill(""); // 13 columns for habits
+        const range = `${HABITS_SHEET}!A${habitIndex + 2}:M${habitIndex + 2}`;
         await googleSheets.updateValues(SPREADSHEET_ID, range, [emptyRow]);
 
         return NextResponse.json({ success: true });

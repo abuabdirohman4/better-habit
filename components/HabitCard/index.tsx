@@ -53,12 +53,49 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
         }
     };
 
-    const getHabitTypeColor = (type: "do" | "dont") => {
-        return type === "do" ? "text-success" : "text-error";
+    const getCategoryColor = (category: string) => {
+        switch (category) {
+            case "Health":
+                return "text-green-600";
+            case "Spiritual":
+                return "text-purple-600";
+            case "Development Self":
+                return "text-blue-600";
+            case "To Dont List":
+                return "text-red-600";
+            default:
+                return "text-gray-600";
+        }
     };
 
-    const getHabitTypeBg = (type: "do" | "dont") => {
-        return type === "do" ? "bg-success/10" : "bg-error/10";
+    const getCategoryBg = (category: string) => {
+        switch (category) {
+            case "Health":
+                return "bg-green-100";
+            case "Spiritual":
+                return "bg-purple-100";
+            case "Development Self":
+                return "bg-blue-100";
+            case "To Dont List":
+                return "bg-red-100";
+            default:
+                return "bg-gray-100";
+        }
+    };
+
+    const getTimeOfDayColor = (timeOfDay: string) => {
+        switch (timeOfDay) {
+            case "Morning":
+                return "text-orange-600";
+            case "Afternoon":
+                return "text-yellow-600";
+            case "Evening":
+                return "text-indigo-600";
+            case "All Day":
+                return "text-gray-600";
+            default:
+                return "text-gray-600";
+        }
     };
 
     const formatReminderTime = (time?: string) => {
@@ -112,13 +149,18 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                             </span>
                         )}
                     </p>
-                    {/* <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 mb-2">
                         <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${getHabitCardColor(habit.iconName)} ${getHabitTextColor(habit.iconName)}`}
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryBg(habit.category)} ${getCategoryColor(habit.category)}`}
                         >
-                            0 day streak
+                            {habit.category}
                         </span>
-                    </div> */}
+                        <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium bg-gray-100 ${getTimeOfDayColor(habit.timeOfDay)}`}
+                        >
+                            {habit.timeOfDay}
+                        </span>
+                    </div>
                 </div>
 
                 {/* Completion Button */}

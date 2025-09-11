@@ -18,7 +18,8 @@ export default function EditHabitPage() {
     const [formData, setFormData] = useState<CreateHabitData>({
         displayName: "",
         iconName: "run_icon",
-        type: "do",
+        category: "Health",
+        timeOfDay: "Morning",
         frequencyType: "daily",
         frequencyDays: "",
         reminderTime: "07:00",
@@ -91,7 +92,8 @@ export default function EditHabitPage() {
             setFormData({
                 displayName: currentHabit.displayName,
                 iconName: currentHabit.iconName,
-                type: currentHabit.type,
+                category: currentHabit.category,
+                timeOfDay: currentHabit.timeOfDay,
                 frequencyType: currentHabit.frequencyType,
                 frequencyDays: currentHabit.frequencyDays || "",
                 reminderTime: currentHabit.reminderTime || "07:00",
@@ -298,35 +300,38 @@ export default function EditHabitPage() {
                         </div>
                     </div>
 
-                    {/* Habit Type */}
+                    {/* Category */}
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Habit Type
+                            Category
                         </h2>
-                        <div className="flex gap-4">
-                            <label className="flex items-center">
-                                <input
-                                    type="radio"
-                                    name="type"
-                                    value="do"
-                                    checked={formData.type === "do"}
-                                    onChange={(e) => handleInputChange("type", e.target.value)}
-                                    className="radio radio-primary mr-2"
-                                />
-                                <span className="text-lg">Do (Positive Habit)</span>
-                            </label>
-                            <label className="flex items-center">
-                                <input
-                                    type="radio"
-                                    name="type"
-                                    value="dont"
-                                    checked={formData.type === "dont"}
-                                    onChange={(e) => handleInputChange("type", e.target.value)}
-                                    className="radio radio-primary mr-2"
-                                />
-                                <span className="text-lg">Don't (Avoid Habit)</span>
-                            </label>
-                        </div>
+                        <select
+                            value={formData.category}
+                            onChange={(e) => handleInputChange("category", e.target.value)}
+                            className="select select-bordered w-full"
+                        >
+                            <option value="Health">Health</option>
+                            <option value="Spiritual">Spiritual</option>
+                            <option value="Development Self">Development Self</option>
+                            <option value="To Dont List">To Dont List</option>
+                        </select>
+                    </div>
+
+                    {/* Time of Day */}
+                    <div className="bg-white rounded-lg shadow-sm p-6">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                            Time of Day
+                        </h2>
+                        <select
+                            value={formData.timeOfDay}
+                            onChange={(e) => handleInputChange("timeOfDay", e.target.value)}
+                            className="select select-bordered w-full"
+                        >
+                            <option value="Morning">Morning</option>
+                            <option value="Afternoon">Afternoon</option>
+                            <option value="Evening">Evening</option>
+                            <option value="All Day">All Day</option>
+                        </select>
                     </div>
 
                     {/* Frequency */}

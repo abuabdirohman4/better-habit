@@ -14,7 +14,8 @@ export default function AddHabitPage() {
     const [formData, setFormData] = useState<CreateHabitData>({
         displayName: "",
         iconName: "run_icon",
-        type: "do",
+        category: "Health",
+        timeOfDay: "Morning",
         frequencyType: "daily",
         frequencyDays: "",
         reminderTime: "07:00",
@@ -222,6 +223,44 @@ export default function AddHabitPage() {
                             </button>
                         ))}
                     </div>
+                </div>
+
+                {/* Category Selection Section */}
+                <div>
+                    <label className="block text-lg font-semibold text-gray-800 mb-3">
+                        Category
+                    </label>
+                    <select
+                        value={formData.category}
+                        onChange={(e) =>
+                            handleInputChange("category", e.target.value)
+                        }
+                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                    >
+                        <option value="Health">Health</option>
+                        <option value="Spiritual">Spiritual</option>
+                        <option value="Development Self">Development Self</option>
+                        <option value="To Dont List">To Dont List</option>
+                    </select>
+                </div>
+
+                {/* Time of Day Selection Section */}
+                <div>
+                    <label className="block text-lg font-semibold text-gray-800 mb-3">
+                        Time of Day
+                    </label>
+                    <select
+                        value={formData.timeOfDay}
+                        onChange={(e) =>
+                            handleInputChange("timeOfDay", e.target.value)
+                        }
+                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                    >
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="All Day">All Day</option>
+                    </select>
                 </div>
 
                 {/* Frequency Selection Section */}

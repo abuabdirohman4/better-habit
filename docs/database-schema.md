@@ -17,7 +17,8 @@ Main table for storing user habit data.
 | `id` | Integer | Unique identifier for habit | `1, 2, 3` | ✅ |
 | `display_name` | String | Display name for habit | `"Morning Exercise"` | ✅ |
 | `icon_name` | String | Icon name for habit | `"exercise_icon"` | ✅ |
-| `type` | String | Habit type: "do" or "dont" | `"do"` | ✅ |
+| `category` | String | Habit category | `"Health"` | ✅ |
+| `time_of_day` | String | Time of day for habit | `"Morning"` | ✅ |
 | `frequency_type` | String | Frequency: "daily", "weekly", "custom" | `"daily"` | ✅ |
 | `frequency_days` | String | Days of the week (for weekly/custom) | `"1,2,3,4,5"` | ❌ |
 | `reminder_time` | String | Reminder time (HH:MM format) | `"07:00"` | ❌ |
@@ -30,12 +31,12 @@ Main table for storing user habit data.
 #### Sample Data
 
 ```csv
-id,display_name,icon_name,type,frequency_type,frequency_days,reminder_time,is_reminder_on,goal_value,goal_unit,is_active,created_at
-1,Morning Exercise,exercise_icon,do,daily,,07:00,1,30,minutes,1,2024-12-01 10:00:00
-2,Read Books,book_icon,do,weekly,"1,2,3,4,5",19:00,1,20,pages,1,2024-12-01 10:00:00
-3,No Smoking,no_smoking_icon,dont,daily,,,1,1,times,1,2024-12-01 10:00:00
-4,Meditation,meditation_icon,do,daily,,06:30,1,15,minutes,1,2024-12-01 10:00:00
-5,Drink Water,water_icon,do,daily,,,0,8,glasses,1,2024-12-01 10:00:00
+id,display_name,icon_name,category,time_of_day,frequency_type,frequency_days,reminder_time,is_reminder_on,goal_value,goal_unit,is_active,created_at
+1,Morning Exercise,exercise_icon,Health,Morning,daily,,07:00,1,30,minutes,1,2024-12-01 10:00:00
+2,Read Books,book_icon,Development Self,Evening,weekly,"1,2,3,4,5",19:00,1,20,pages,1,2024-12-01 10:00:00
+3,No Smoking,no_smoking_icon,To Dont List,All Day,daily,,,1,1,times,1,2024-12-01 10:00:00
+4,Meditation,meditation_icon,Spiritual,Morning,daily,,06:30,1,15,minutes,1,2024-12-01 10:00:00
+5,Drink Water,water_icon,Health,All Day,daily,,,0,8,glasses,1,2024-12-01 10:00:00
 ```
 
 ### 2. HabitLog Sheet
@@ -123,6 +124,8 @@ id,habit_id,date,completed_value,completed_at
 // Google Sheets headers → API response
 "display_name" → "displayName"
 "icon_name" → "iconName"
+"category" → "category"
+"time_of_day" → "timeOfDay"
 "frequency_type" → "frequencyType"
 "frequency_days" → "frequencyDays"
 "reminder_time" → "reminderTime"
@@ -152,7 +155,8 @@ isReminderOn: row.isReminderOn === "1" || row.isReminderOn === true
 ### 1. Habit Creation Rules
 - `id` must be unique and auto-increment
 - `display_name` cannot be empty and maximum 100 characters
-- `type` only accepts "do" or "dont"
+- `category` must be one of: "Spiritual", "Health", "Development Self", "To Dont List"
+- `time_of_day` must be one of: "Morning", "Afternoon", "Evening", "All Day"
 - `frequency_type` only accepts "daily", "weekly", or "custom"
 - `goal_value` must be positive integer
 - `goal_unit` cannot be empty

@@ -21,7 +21,9 @@ export default function ManageHabitsPage() {
     const { habits, isLoading, error, updateHabit, deleteHabit } = useHabits();
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState<"all" | "active" | "archived">("all");
-    const [sortBy, setSortBy] = useState<"name" | "created" | "type">("name");
+    const [filterCategory, setFilterCategory] = useState<"all" | "Health" | "Spiritual" | "Development Self" | "To Dont List">("all");
+    const [filterTimeOfDay, setFilterTimeOfDay] = useState<"all" | "Morning" | "Afternoon" | "Evening" | "All Day">("all");
+    const [sortBy, setSortBy] = useState<"name" | "created" | "category" | "timeOfDay">("name");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
     const [selectedHabits, setSelectedHabits] = useState<number[]>([]);
 
@@ -35,7 +37,11 @@ export default function ManageHabitsPage() {
                 filterType === "all" ||
                 (filterType === "active" && habit.isActive) ||
                 (filterType === "archived" && !habit.isActive);
-            return matchesSearch && matchesFilter;
+            const matchesCategory = 
+                filterCategory === "all" || habit.category === filterCategory;
+            const matchesTimeOfDay = 
+                filterTimeOfDay === "all" || habit.timeOfDay === filterTimeOfDay;
+            return matchesSearch && matchesFilter && matchesCategory && matchesTimeOfDay;
         })
         .sort((a: Habit, b: Habit) => {
             let comparison = 0;
@@ -46,8 +52,11 @@ export default function ManageHabitsPage() {
                 case "created":
                     comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
                     break;
-                case "type":
-                    comparison = a.type.localeCompare(b.type);
+                case "category":
+                    comparison = a.category.localeCompare(b.category);
+                    break;
+                case "timeOfDay":
+                    comparison = a.timeOfDay.localeCompare(b.timeOfDay);
                     break;
             }
             return sortOrder === "asc" ? comparison : -comparison;
@@ -197,7 +206,7 @@ export default function ManageHabitsPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-24">
                 {/* Filters and Search */}
                 <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* Search */}
                         <div className="relative">
                             <FontAwesomeIcon
@@ -213,56 +222,89 @@ export default function ManageHabitsPage() {
                             />
                         </div>
 
-                        <div className="flex gap-2">
-                            {/* Filter */}
-                            <div className="relative">
-                                <FontAwesomeIcon
-                                    icon={faFilter}
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                                />
-                                <select
-                                    value={filterType}
-                                    onChange={(e) =>
-                                        setFilterType(e.target.value as "all" | "active" | "archived")
-                                    }
-                                    className="select select-bordered w-full pl-10"
-                                >
-                                    <option value="all">All</option>
-                                    <option value="active">Active</option>
-                                    <option value="archived">Archived</option>
-                                </select>
-                            </div>
-
-                            {/* Sort */}
-                            <div className="relative">
-                                <FontAwesomeIcon
-                                    icon={faSort}
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-                                />
-                                <select
-                                    value={sortBy}
-                                    onChange={(e) =>
-                                        setSortBy(e.target.value as "name" | "created" | "type")
-                                    }
-                                    className="select select-bordered w-full pl-10"
-                                >
-                                    <option value="name">by Name</option>
-                                    <option value="created">by Created</option>
-                                    <option value="type">by Type</option>
-                                </select>
-                            </div>
-
-                            {/* Sort Order */}
-                            <button
-                                onClick={() =>
-                                    setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                        {/* Status Filter */}
+                        <div className="relative">
+                            <FontAwesomeIcon
+                                icon={faFilter}
+                                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                            />
+                            <select
+                                value={filterType}
+                                onChange={(e) =>
+                                    setFilterType(e.target.value as "all" | "active" | "archived")
                                 }
-                                className="btn btn-outline gap-2"
+                                className="select select-bordered w-full pl-10"
                             >
-                                <FontAwesomeIcon icon={faSort} />
-                                {sortOrder === "asc" ? "A-Z" : "Z-A"}
-                            </button>
+                                <option value="all">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="archived">Archived</option>
+                            </select>
                         </div>
+
+                        {/* Category Filter */}
+                        <div className="relative">
+                            <select
+                                value={filterCategory}
+                                onChange={(e) =>
+                                    setFilterCategory(e.target.value as "all" | "Health" | "Spiritual" | "Development Self" | "To Dont List")
+                                }
+                                className="select select-bordered w-full"
+                            >
+                                <option value="all">All Categories</option>
+                                <option value="Health">Health</option>
+                                <option value="Spiritual">Spiritual</option>
+                                <option value="Development Self">Development Self</option>
+                                <option value="To Dont List">To Dont List</option>
+                            </select>
+                        </div>
+
+                        {/* Time of Day Filter */}
+                        <div className="relative">
+                            <select
+                                value={filterTimeOfDay}
+                                onChange={(e) =>
+                                    setFilterTimeOfDay(e.target.value as "all" | "Morning" | "Afternoon" | "Evening" | "All Day")
+                                }
+                                className="select select-bordered w-full"
+                            >
+                                <option value="all">All Times</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Afternoon">Afternoon</option>
+                                <option value="Evening">Evening</option>
+                                <option value="All Day">All Day</option>
+                            </select>
+                        </div>
+
+                        {/* Sort */}
+                        <div className="relative">
+                            <FontAwesomeIcon
+                                icon={faSort}
+                                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                            />
+                            <select
+                                value={sortBy}
+                                onChange={(e) =>
+                                    setSortBy(e.target.value as "name" | "created" | "category" | "timeOfDay")
+                                }
+                                className="select select-bordered w-full pl-10"
+                            >
+                                <option value="name">Sort by Name</option>
+                                <option value="created">Sort by Created</option>
+                                <option value="category">Sort by Category</option>
+                                <option value="timeOfDay">Sort by Time</option>
+                            </select>
+                        </div>
+
+                        {/* Sort Order */}
+                        <button
+                            onClick={() =>
+                                setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                            }
+                            className="btn btn-outline gap-2"
+                        >
+                            <FontAwesomeIcon icon={faSort} />
+                            {sortOrder === "asc" ? "A-Z" : "Z-A"}
+                        </button>
                     </div>
                 </div>
 
@@ -342,7 +384,8 @@ export default function ManageHabitsPage() {
                                             />
                                         </th>
                                         <th>Habit</th>
-                                        <th>Type</th>
+                                        <th>Category</th>
+                                        <th>Time</th>
                                         <th>Frequency</th>
                                         <th>Goal</th>
                                         <th>Status</th>
@@ -459,8 +502,34 @@ function HabitRow({
     onRestore,
     onDelete,
 }: HabitRowProps) {
-    const getTypeColor = (type: string) => {
-        return type === "do" ? "badge-success" : "badge-error";
+    const getCategoryColor = (category: string) => {
+        switch (category) {
+            case "Health":
+                return "badge-success";
+            case "Spiritual":
+                return "badge-primary";
+            case "Development Self":
+                return "badge-info";
+            case "To Dont List":
+                return "badge-error";
+            default:
+                return "badge-neutral";
+        }
+    };
+
+    const getTimeOfDayColor = (timeOfDay: string) => {
+        switch (timeOfDay) {
+            case "Morning":
+                return "badge-warning";
+            case "Afternoon":
+                return "badge-secondary";
+            case "Evening":
+                return "badge-accent";
+            case "All Day":
+                return "badge-neutral";
+            default:
+                return "badge-neutral";
+        }
     };
 
     const getFrequencyText = (habit: Habit) => {
@@ -510,8 +579,13 @@ function HabitRow({
                 </div>
             </td>
             <td>
-                <span className={`text-white font-bold badge ${getTypeColor(habit.type)}`}>
-                    {habit.type === "do" ? "Do" : "Don't"}
+                <span className={`text-white font-bold badge ${getCategoryColor(habit.category)}`}>
+                    {habit.category}
+                </span>
+            </td>
+            <td>
+                <span className={`text-white font-bold badge ${getTimeOfDayColor(habit.timeOfDay)}`}>
+                    {habit.timeOfDay}
                 </span>
             </td>
             <td>

@@ -26,7 +26,8 @@ export async function GET() {
                 id: parseInt(row.id) || index + 1,
                 displayName: row.displayName || row.displayname || "",
                 iconName: row.iconName || row.iconname || "",
-                type: (row.type as "do" | "dont") || "do",
+                category: (row.category as "Spiritual" | "Health" | "Development Self" | "To Dont List") || "Health",
+                timeOfDay: (row.timeOfDay || row.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
                 frequencyType:
                     row.frequencyType ||
                     (row.frequencytype as "daily" | "weekly" | "custom") ||
@@ -85,7 +86,8 @@ export async function POST(request: NextRequest) {
             newId.toString(),
             habitData.displayName,
             habitData.iconName,
-            habitData.type,
+            habitData.category,
+            habitData.timeOfDay,
             habitData.frequencyType,
             habitData.frequencyDays || "",
             habitData.reminderTime || "07:00",
@@ -97,7 +99,7 @@ export async function POST(request: NextRequest) {
         ];
 
         // Append to Google Sheets
-        await googleSheets.appendValues(SPREADSHEET_ID, `${HABITS_SHEET}!A:L`, [
+        await googleSheets.appendValues(SPREADSHEET_ID, `${HABITS_SHEET}!A:M`, [
             newHabitRow,
         ]);
 
@@ -106,7 +108,8 @@ export async function POST(request: NextRequest) {
             id: newId,
             displayName: habitData.displayName,
             iconName: habitData.iconName,
-            type: habitData.type,
+            category: habitData.category,
+            timeOfDay: habitData.timeOfDay,
             frequencyType: habitData.frequencyType,
             frequencyDays: habitData.frequencyDays || "",
             reminderTime: habitData.reminderTime || "07:00",
