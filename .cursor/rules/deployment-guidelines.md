@@ -6,25 +6,23 @@
 
 ```bash
 # Production environment variables
-DATABASE_URL="postgresql://username:password@host:5432/better_habit_prod"
 NEXTAUTH_URL="https://your-domain.com"
 NEXTAUTH_SECRET="your-production-secret-key"
 GOOGLE_CLIENT_ID="your-production-google-client-id"
 GOOGLE_CLIENT_SECRET="your-production-google-client-secret"
+GOOGLE_SHEET_ID="your-production-google-sheet-id"
+GOOGLE_SERVICE_ACCOUNT_EMAIL="your-service-account@project.iam.gserviceaccount.com"
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key here\n-----END PRIVATE KEY-----"
 NODE_ENV="production"
 ```
 
-### Database Setup
+### Google Sheets Setup
 
 ```bash
-# Generate Prisma client for production
-npx prisma generate
-
-# Run database migrations
-npx prisma migrate deploy
-
-# Optional: Seed database with initial data
-npx prisma db seed
+# No database setup required - using Google Sheets
+# Ensure Google Sheets API is enabled
+# Verify service account has access to the spreadsheet
+# Test API connection with your credentials
 ```
 
 ## Vercel Deployment
@@ -39,11 +37,13 @@ npx prisma db seed
     "devCommand": "npm run dev",
     "installCommand": "npm install",
     "env": {
-        "DATABASE_URL": "@database_url",
         "NEXTAUTH_URL": "@nextauth_url",
         "NEXTAUTH_SECRET": "@nextauth_secret",
         "GOOGLE_CLIENT_ID": "@google_client_id",
-        "GOOGLE_CLIENT_SECRET": "@google_client_secret"
+        "GOOGLE_CLIENT_SECRET": "@google_client_secret",
+        "GOOGLE_SHEET_ID": "@google_sheet_id",
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL": "@google_service_account_email",
+        "GOOGLE_PRIVATE_KEY": "@google_private_key"
     },
     "functions": {
         "app/api/**/*.ts": {
@@ -73,10 +73,10 @@ npx prisma db seed
     - Navigate to Project Settings
     - Add all required environment variables
 
-3. **Database Setup**
-    - Use Vercel Postgres or external PostgreSQL
-    - Update DATABASE_URL in environment variables
-    - Run migrations: `npx prisma migrate deploy`
+3. **Google Sheets Setup**
+    - Ensure Google Sheets API is enabled
+    - Verify service account has access to the spreadsheet
+    - Test API connection with your credentials
 
 ## Docker Deployment
 

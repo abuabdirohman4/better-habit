@@ -244,18 +244,19 @@ export interface CreateHabitLogData {
 ```typescript
 // app/api/auth/[...nextauth].ts
 import NextAuth from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { prisma } from "@/lib/prisma";
 import GoogleProvider from "next-auth/providers/google";
 
-export const authOptions = {
-    adapter: PrismaAdapter(prisma),
+export default NextAuth({
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
     ],
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+    },
     callbacks: {
         session: async ({ session, token }) => {
             if (session?.user) {
@@ -270,12 +271,7 @@ export const authOptions = {
             return token;
         },
     },
-    session: {
-        strategy: "jwt",
-    },
-};
-
-export default NextAuth(authOptions);
+});
 ```
 
 ### Session Management
