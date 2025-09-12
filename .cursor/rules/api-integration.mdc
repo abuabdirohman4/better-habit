@@ -1,3 +1,9 @@
+---
+description: "API integration patterns, Google Sheets setup, and data management guidelines"
+globs: ["**/api/**/*.ts", "**/lib/**/*.ts", "**/hooks/**/*.ts", "**/utils/**/*.ts"]
+alwaysApply: true
+---
+
 # API Integration & Data Management
 
 ## SWR Configuration

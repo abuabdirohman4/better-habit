@@ -1,3 +1,9 @@
+---
+description: "Deployment guidelines, production setup, and infrastructure best practices"
+globs: ["**/vercel.json", "**/Dockerfile", "**/docker-compose.yml", "**/next.config.*", "**/.env*", "**/package.json"]
+alwaysApply: true
+---
+
 # Deployment Guidelines
 
 ## Production Environment Setup

@@ -9,6 +9,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] Show progress one week in dashboard for each habit
 - [x] ✅ Setting that have list of habit to archive
 - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
+- [ ] Grouping time of day based current time
 
 ## ISSUE TRACKER
 
@@ -24,7 +25,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 ## 📱 **1. Dashboard Page ("My Habits")**
 
-### 1.1 Layout & Structure
+<!-- ### 1.1 Layout & Structure
 
 - [x] ✅ Create `/dashboard` route dan `page.tsx`
 - [x] ✅ Setup main layout dengan `min-h-screen bg-gray-50`
@@ -37,7 +38,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Display "Good Morning!" greeting
 - [x] ✅ Display "Let's build great habits today" subtitle
 - [x] ✅ Add user avatar/profile icon (top right)
-- [x] ✅ Create "Current Streak" card dengan star icon
+- [x] ✅ Create "Current Streak" card dengan star icon -->
 
 ### 1.3 Weekly Progress Section
 
@@ -63,7 +64,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Display percentage ("33%")
 - [ ] 🔄 **TODO**: Calculate real completion percentage
 
-### 1.6 Floating Add Button
+<!-- ### 1.6 Floating Add Button
 
 - [x] ✅ Create `FloatingAddButton` component
 - [x] ✅ Style sebagai circular blue button
@@ -232,7 +233,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Use existing `BottomNavigationBar` component
 - [x] ✅ Ensure proper back navigation
 
----
+---  -->
 
 ## 🔧 **5. Component Refinements**
 
@@ -245,7 +246,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Add proper hover states
 - [ ] **TODO**: Implement actual toggle functionality
 
-### 5.2 WeeklyProgress Component
+<!-- ### 5.2 WeeklyProgress Component
 
 - [x] ✅ Create basic bar chart
 - [x] ✅ Refine bar colors dan styling
@@ -263,18 +264,18 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Add smooth transitions dan hover effects
 - [x] ✅ Ensure mobile-friendly touch targets
 
----
+--- -->
 
 ## 🗄️ **6. Data Management & API Integration**
 
-### 6.1 Google Sheets Integration
+<!-- ### 6.1 Google Sheets Integration
 
 - [x] ✅ Install dependencies (SWR, Papa Parse, Google APIs)
 - [x] ✅ Create Google Sheets client
 - [x] ✅ Setup CSV parsing dengan Papa Parse
 - [x] ✅ Create API routes untuk habits
 - [x] ✅ Create API routes untuk habit logs
-  <!-- - [ ] **TODO**: Implement authentication untuk private sheets -->
+- [ ] **TODO**: Implement authentication untuk private sheets
 
 ### 6.2 Custom Hooks
 
@@ -282,7 +283,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Implement `useHabitLogs` hook
 - [x] ✅ Add `toggleCompletion` functionality
 - [x] ✅ Add `addLog`, `updateLog` methods
-- [x] ✅ Replace mock data dengan real API calls
+- [x] ✅ Replace mock data dengan real API calls -->
 
 ### 6.3 Data Types
 
@@ -314,12 +315,12 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] **TODO**: Create `Toggle` component
 - [x] ✅ Create `Calendar` component
 
-### 7.3 Responsive Design
+<!-- ### 7.3 Responsive Design
 
 - [x] ✅ Ensure mobile-first design
 - [x] ✅ Test pada berbagai screen sizes
 - [x] ✅ Optimize touch interactions
-- [x] ✅ Add proper loading states
+- [x] ✅ Add proper loading states -->
 
 ---
 
@@ -432,6 +433,3 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - **Week 4**: API integration, testing, dan deployment
 
 ---
-
-_Last Updated: $(date)_
-_Status: In Progress_ 🚀

@@ -1,3 +1,9 @@
+---
+description: "Coding standards, best practices, and development guidelines for Better Habit"
+globs: ["**/*.tsx", "**/*.ts", "**/*.js", "**/*.jsx", "**/components/**/*", "**/hooks/**/*", "**/utils/**/*"]
+alwaysApply: true
+---
+
 # Coding Standards & Best Practices
 
 ## Code Style

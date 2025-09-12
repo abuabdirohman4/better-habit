@@ -1,3 +1,9 @@
+---
+description: "Database schema reference, data validation, and Google Sheets integration patterns"
+globs: ["**/lib/**/*.ts", "**/api/**/*.ts", "**/hooks/**/*.ts", "**/types.ts", "**/google-sheets.ts"]
+alwaysApply: true
+---
+
 # Database Schema Reference
 
 ## Overview

@@ -1,3 +1,9 @@
+---
+description: "Component patterns, UI/UX guidelines, and React best practices for Better Habit"
+globs: ["**/components/**/*", "**/*.tsx", "**/*.jsx", "**/app/**/*.tsx"]
+alwaysApply: true
+---
+
 # Component Patterns & Best Practices
 
 ## Component Architecture

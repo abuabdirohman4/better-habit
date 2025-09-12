@@ -1,3 +1,9 @@
+---
+description: "Better Habit project overview and technical specifications"
+globs: ["**/*.tsx", "**/*.ts", "**/*.js", "**/*.jsx", "**/package.json", "**/next.config.*"]
+alwaysApply: true
+---
+
 # Better Habit - Project Overview
 
 ## Project Description
