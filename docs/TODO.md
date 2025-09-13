@@ -293,37 +293,36 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] **SKIP**: Add validation schemas (Zod/Joi/Yup)
 - [ ] **SKIP**: Add error handling types (ApiResponse, ApiError, ValidationError)
 
---- -->
+---
 
 ## 🎨 **7. UI/UX Improvements**
 
-<!-- ### 7.1 Design System
+### 7.1 Design System
 
 - [x] ✅ Setup Tailwind CSS dengan DaisyUI
 - [x] ✅ Define color palette (Primary #1496F6, Success #10b981)
 - [x] ✅ Setup Inter font family
 - [x] ✅ Create consistent spacing system
 - [x] ✅ Add animation utilities
-- [x] ✅ Create responsive breakpoints -->
+- [x] ✅ Create responsive breakpoints
 
 ### 7.2 Component Library
 
 - [x] ✅ Create `Button` component
 - [x] ✅ Create `Spinner` component
-- [x] ✅ Create 
-`Modal` component (reusable)
+- [x] ✅ Create `Modal` component (reusable)
 - [x] ✅ Create `Input` component (reusable)
 - [x] ✅ Create `Toggle` component (reusable)
 - [x] ✅ Create `Calendar` component
 
-<!-- ### 7.3 Responsive Design
+### 7.3 Responsive Design
 
 - [x] ✅ Ensure mobile-first design
 - [x] ✅ Test pada berbagai screen sizes
 - [x] ✅ Optimize touch interactions
-- [x] ✅ Add proper loading states -->
+- [x] ✅ Add proper loading states
 
----
+--- -->
 
 ## 🚀 **8. Advanced Features**
 
