@@ -12,6 +12,11 @@ export const useAllHabitLogs = () => {
                 throw new Error("Failed to fetch habit logs");
             }
             return response.json();
+        },
+        {
+            revalidateOnFocus: false, // Prevent revalidation on focus
+            revalidateOnReconnect: false, // Prevent revalidation on reconnect
+            dedupingInterval: 60000, // Cache for 1 minute
         }
     );
 
@@ -70,16 +75,42 @@ export const useHabitLogs = (habitId: number) => {
 
             if (existingLog) {
                 // If log exists, remove it (toggle off)
-                mutate((currentData: any) => {
-                    if (!currentData) return currentData;
-                    return {
-                        ...currentData,
-                        data: currentData.data.filter(
-                            (log: HabitLog) => !(log.habitId === habitId && log.date === date)
-                        ),
-                    };
-                }, false);
-                return false; // Return false to indicate habit is now not completed
+                try {
+                    const response = await fetch(`/api/habit-logs?habitId=${habitId}&date=${date}`, {
+                        method: "DELETE",
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to delete habit log");
+                    }
+
+                    // Update cache optimistically
+                    mutate((currentData: any) => {
+                        if (!currentData) return currentData;
+                        return {
+                            ...currentData,
+                            data: currentData.data.filter(
+                                (log: HabitLog) => !(log.habitId === habitId && log.date === date)
+                            ),
+                        };
+                    }, false); // false = don't revalidate from server
+                    
+                    console.log("Log deleted from database and cache");
+                    return false; // Return false to indicate habit is now not completed
+                } catch (error) {
+                    console.error("Error deleting log:", error);
+                    // Fallback to cache-only delete
+                    mutate((currentData: any) => {
+                        if (!currentData) return currentData;
+                        return {
+                            ...currentData,
+                            data: currentData.data.filter(
+                                (log: HabitLog) => !(log.habitId === habitId && log.date === date)
+                            ),
+                        };
+                    }, false);
+                    return false;
+                }
             } else {
                 // Create new log
                 const logData: CreateHabitLogData = {

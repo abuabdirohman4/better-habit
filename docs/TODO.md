@@ -55,16 +55,16 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Create `HabitCard` component
 - [x] ✅ Implement habit list dengan mock data
 - [x] ✅ Add completion toggle buttons
-- [ ] 🔄 **TODO**: Implement actual toggle functionality dengan `useHabitLogs`
+- [x] ✅ Implement actual toggle functionality dengan `useHabitLogs` (with true database delete)
 
-### 1.5 Today's Progress Section
+<!-- ### 1.5 Today's Progress Section
 
 - [x] ✅ Display "Today's Progress" title
 - [x] ✅ Show completion count ("1 of 3 completed")
 - [x] ✅ Display percentage ("33%")
 - [x] ✅ Calculate real completion percentage (optimized with single /api/habit-logs endpoint)
 
-<!-- ### 1.6 Floating Add Button
+### 1.6 Floating Add Button
 
 - [x] ✅ Create `FloatingAddButton` component
 - [x] ✅ Style sebagai circular blue button
