@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import { useHabits } from "@/hooks/useHabits";
 import { CreateHabitData, Habit } from "@/lib/types";
 import { AVAILABLE_ICONS } from "@/utils/habit-icons";
+import Input from "@/components/Input";
+import Toggle from "@/components/Toggle";
 
 export default function EditHabitPage() {
     const router = useRouter();
@@ -264,15 +266,12 @@ export default function EditHabitPage() {
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Habit Name */}
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Habit Name
-                        </h2>
-                        <input
+                        <Input
                             type="text"
+                            label="Habit Name"
                             value={formData.displayName}
                             onChange={(e) => handleInputChange("displayName", e.target.value)}
                             placeholder="Enter habit name"
-                            className="input input-bordered w-full"
                             required
                         />
                     </div>
@@ -409,13 +408,13 @@ export default function EditHabitPage() {
                             Goal
                         </h2>
                         <div className="flex gap-4">
-                            <input
+                            <Input
                                 type="number"
                                 value={formData.goalValue}
                                 onChange={(e) => handleInputChange("goalValue", parseInt(e.target.value) || 0)}
                                 placeholder="0"
-                                className="input input-bordered flex-1"
-                                min="1"
+                                className="flex-1"
+                                min={1}
                                 required
                             />
                             <select
@@ -441,15 +440,12 @@ export default function EditHabitPage() {
                             Reminder
                         </h2>
                         <div className="space-y-4">
-                            <label className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={isReminderEnabled}
-                                    onChange={(e) => handleReminderToggle(e.target.checked)}
-                                    className="toggle toggle-primary mr-3"
-                                />
-                                <span>Enable reminder</span>
-                            </label>
+                            <Toggle
+                                checked={isReminderEnabled}
+                                onChange={handleReminderToggle}
+                                label="Enable reminder"
+                                color="primary"
+                            />
 
                             {isReminderEnabled && (
                                 <div>

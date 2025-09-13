@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useHabits } from "@/hooks/useHabits";
 import { CreateHabitData } from "@/lib/types";
 import { AVAILABLE_ICONS } from "@/utils/habit-icons";
+import Input from "@/components/Input";
+import Toggle from "@/components/Toggle";
 
 export default function AddHabitPage() {
     const router = useRouter();
@@ -179,21 +181,16 @@ export default function AddHabitPage() {
             {/* Form */}
             <form onSubmit={handleSubmit} className="px-7 py-6 space-y-8">
                 {/* Habit Name Section */}
-                <div>
-                    <label className="block text-lg font-semibold text-gray-800 mb-3">
-                        Habit Name
-                    </label>
-                    <input
-                        type="text"
-                        value={formData.displayName}
-                        onChange={(e) =>
-                            handleInputChange("displayName", e.target.value)
-                        }
-                        placeholder="e.g. Morning Run"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
-                        required
-                    />
-                </div>
+                <Input
+                    type="text"
+                    label="Habit Name"
+                    value={formData.displayName}
+                    onChange={(e) => handleInputChange("displayName", e.target.value)}
+                    placeholder="e.g. Morning Run"
+                    required
+                    className="text-lg"
+                    inputClassName="rounded-2xl"
+                />
 
                 {/* Icon Selection Section */}
                 <div>
@@ -318,30 +315,12 @@ export default function AddHabitPage() {
                         Reminder
                     </label>
                     <div className="space-y-4">
-                        <div className="flex items-center justify-between">
-                            <span className="text-gray-700">
-                                Enable reminder
-                            </span>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleReminderToggle(!isReminderEnabled)
-                                }
-                                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                    isReminderEnabled
-                                        ? "bg-habit-blue"
-                                        : "bg-gray-200"
-                                }`}
-                            >
-                                <span
-                                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                        isReminderEnabled
-                                            ? "translate-x-6"
-                                            : "translate-x-1"
-                                    }`}
-                                />
-                            </button>
-                        </div>
+                        <Toggle
+                            checked={isReminderEnabled}
+                            onChange={handleReminderToggle}
+                            label="Enable reminder"
+                            color="primary"
+                        />
 
                         {isReminderEnabled && (
                             <div>
@@ -375,7 +354,7 @@ export default function AddHabitPage() {
                         Goal (optional)
                     </label>
                     <div className="flex space-x-3">
-                        <input
+                        <Input
                             type="number"
                             value={formData.goalValue}
                             onChange={(e) =>
@@ -385,8 +364,9 @@ export default function AddHabitPage() {
                                 )
                             }
                             placeholder="e.g. 5"
-                            className="flex-1 px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
-                            min="0"
+                            className="flex-1"
+                            inputClassName="rounded-2xl"
+                            min={0}
                         />
                         <select
                             value={formData.goalUnit}

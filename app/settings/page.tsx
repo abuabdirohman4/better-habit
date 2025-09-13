@@ -1,6 +1,14 @@
 "use client";
 
+import { useState } from "react";
+import Modal from "@/components/Modal";
+import Toggle from "@/components/Toggle";
+import Input from "@/components/Input";
+
 export default function SettingsPage() {
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [notifications, setNotifications] = useState(true);
+    const [darkMode, setDarkMode] = useState(false);
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
@@ -73,41 +81,20 @@ export default function SettingsPage() {
                             Notifications
                         </h2>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium text-gray-800">
-                                        Push Notifications
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        Receive habit reminders
-                                    </p>
-                                </div>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        className="sr-only peer"
-                                        defaultChecked
-                                    />
-                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-habit-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-habit-blue"></div>
-                                </label>
-                            </div>
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium text-gray-800">
-                                        Email Reminders
-                                    </p>
-                                    <p className="text-sm text-gray-600">
-                                        Get daily progress emails
-                                    </p>
-                                </div>
-                                <label className="relative inline-flex items-center cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        className="sr-only peer"
-                                    />
-                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-habit-blue/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-habit-blue"></div>
-                                </label>
-                            </div>
+                            <Toggle
+                                checked={notifications}
+                                onChange={setNotifications}
+                                label="Push Notifications"
+                                helperText="Receive habit reminders"
+                                color="primary"
+                            />
+                            <Toggle
+                                checked={false}
+                                onChange={() => {}}
+                                label="Email Reminders"
+                                helperText="Get daily progress emails"
+                                color="primary"
+                            />
                         </div>
                     </div>
 
@@ -154,6 +141,37 @@ export default function SettingsPage() {
 
             {/* Bottom spacing for navigation */}
             <div className="pb-20"></div>
+
+            {/* Delete Account Modal */}
+            <Modal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                title="Delete Account"
+                size="md"
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-600">
+                        Are you sure you want to delete your account? This action cannot be undone.
+                    </p>
+                    <div className="flex gap-3 justify-end">
+                        <button
+                            onClick={() => setShowDeleteModal(false)}
+                            className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={() => {
+                                // Handle delete account
+                                setShowDeleteModal(false);
+                            }}
+                            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </main>
     );
 }

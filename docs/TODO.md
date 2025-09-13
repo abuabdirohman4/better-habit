@@ -310,9 +310,10 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 - [x] ✅ Create `Button` component
 - [x] ✅ Create `Spinner` component
-- [ ] **TODO**: Create `Modal` component (reusable)
-- [ ] **TODO**: Create `Input` component (reusable)
-- [ ] **TODO**: Create `Toggle` component (reusable)
+- [x] ✅ Create 
+`Modal` component (reusable)
+- [x] ✅ Create `Input` component (reusable)
+- [x] ✅ Create `Toggle` component (reusable)
 - [x] ✅ Create `Calendar` component
 
 <!-- ### 7.3 Responsive Design
