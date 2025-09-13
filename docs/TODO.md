@@ -23,9 +23,9 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Remove Mock Data
 - [ ] Make habitId not too high
 
-## 📱 **1. Dashboard Page ("My Habits")**
+<!-- ## 📱 **1. Dashboard Page ("My Habits")**
 
-<!-- ### 1.1 Layout & Structure
+### 1.1 Layout & Structure
 
 - [x] ✅ Create `/dashboard` route dan `page.tsx`
 - [x] ✅ Setup main layout dengan `min-h-screen bg-gray-50`
@@ -38,7 +38,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Display "Good Morning!" greeting
 - [x] ✅ Display "Let's build great habits today" subtitle
 - [x] ✅ Add user avatar/profile icon (top right)
-- [x] ✅ Create "Current Streak" card dengan star icon -->
+- [x] ✅ Create "Current Streak" card dengan star icon
 
 ### 1.3 Weekly Progress Section
 
@@ -57,7 +57,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Add completion toggle buttons
 - [x] ✅ Implement actual toggle functionality dengan `useHabitLogs` (with true database delete)
 
-<!-- ### 1.5 Today's Progress Section
+### 1.5 Today's Progress Section
 
 - [x] ✅ Display "Today's Progress" title
 - [x] ✅ Show completion count ("1 of 3 completed")
@@ -233,7 +233,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Use existing `BottomNavigationBar` component
 - [x] ✅ Ensure proper back navigation
 
----  -->
+---
 
 ## 🔧 **5. Component Refinements**
 
@@ -244,7 +244,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Refine icon styling dengan proper colors
 - [x] ✅ Improve completion button styling
 - [x] ✅ Add proper hover states
-- [ ] **TODO**: Implement actual toggle functionality
+- [x] ✅ **COMPLETED**: Implement actual toggle functionality
 
 <!-- ### 5.2 WeeklyProgress Component
 
@@ -264,11 +264,11 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Add smooth transitions dan hover effects
 - [x] ✅ Ensure mobile-friendly touch targets
 
---- -->
+---
 
 ## 🗄️ **6. Data Management & API Integration**
 
-<!-- ### 6.1 Google Sheets Integration
+### 6.1 Google Sheets Integration
 
 - [x] ✅ Install dependencies (SWR, Papa Parse, Google APIs)
 - [x] ✅ Create Google Sheets client
@@ -283,36 +283,36 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Implement `useHabitLogs` hook
 - [x] ✅ Add `toggleCompletion` functionality
 - [x] ✅ Add `addLog`, `updateLog` methods
-- [x] ✅ Replace mock data dengan real API calls -->
+- [x] ✅ Replace mock data dengan real API calls
 
 ### 6.3 Data Types
 
 - [x] ✅ Define `Habit` interface
 - [x] ✅ Define `HabitLog` interface
 - [x] ✅ Define `CreateHabitData` interface
-- [ ] **TODO**: Add validation schemas
-- [ ] **TODO**: Add error handling types
+- [ ] **SKIP**: Add validation schemas (Zod/Joi/Yup)
+- [ ] **SKIP**: Add error handling types (ApiResponse, ApiError, ValidationError)
 
----
+--- -->
 
 ## 🎨 **7. UI/UX Improvements**
 
-### 7.1 Design System
+<!-- ### 7.1 Design System
 
 - [x] ✅ Setup Tailwind CSS dengan DaisyUI
 - [x] ✅ Define color palette (Primary #1496F6, Success #10b981)
 - [x] ✅ Setup Inter font family
-- [ ] **TODO**: Create consistent spacing system
-- [ ] **TODO**: Add animation utilities
-- [ ] **TODO**: Create responsive breakpoints
+- [x] ✅ Create consistent spacing system
+- [x] ✅ Add animation utilities
+- [x] ✅ Create responsive breakpoints -->
 
 ### 7.2 Component Library
 
 - [x] ✅ Create `Button` component
 - [x] ✅ Create `Spinner` component
-- [ ] **TODO**: Create `Modal` component
-- [ ] **TODO**: Create `Input` component
-- [ ] **TODO**: Create `Toggle` component
+- [ ] **TODO**: Create `Modal` component (reusable)
+- [ ] **TODO**: Create `Input` component (reusable)
+- [ ] **TODO**: Create `Toggle` component (reusable)
 - [x] ✅ Create `Calendar` component
 
 <!-- ### 7.3 Responsive Design
@@ -340,12 +340,12 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Implement calendar heatmap
 - [ ] **TODO**: Add achievement badges
 
-### 8.3 User Experience
+<!-- ### 8.3 User Experience
 
-- [ ] **TODO**: Add haptic feedback
-- [ ] **TODO**: Implement pull-to-refresh
-- [ ] **TODO**: Add offline support
-- [ ] **TODO**: Create onboarding flow
+- [ ] **SKIP**: Add haptic feedback
+- [ ] **SKIP**: Implement pull-to-refresh
+- [ ] **SKIP**: Add offline support
+- [ ] **SKIP**: Create onboarding flow
 
 ---
 
@@ -372,16 +372,16 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] **TODO**: Optimize images
 - [ ] **TODO**: Add performance monitoring
 
----
+--- -->
 
 ## 📦 **10. Deployment & Production**
 
 ### 10.1 Environment Setup
 
-- [ ] **TODO**: Setup environment variables
-- [ ] **TODO**: Configure Google Sheets credentials
-- [ ] **TODO**: Setup production database
-- [ ] **TODO**: Configure domain dan SSL
+- [x] ✅ Setup environment variables
+- [x] ✅ Configure Google Sheets credentials
+- [x] ✅ Setup production database
+- [x] ✅ Configure domain dan SSL
 
 ### 10.2 Build Optimization
 
@@ -414,22 +414,5 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [ ] **TODO**: Add FAQ section
 - [ ] **TODO**: Create video tutorials
 - [ ] **TODO**: Setup help center
-
----
-
-## 🎯 **Priority Levels**
-
-- **🔴 High Priority**: Core functionality (Dashboard, Bottom Navigation, Add Habit, Data Management)
-- **🟡 Medium Priority**: Statistics page, Advanced features
-- **🟢 Low Priority**: Testing, Documentation, Advanced UI
-
----
-
-## 📅 **Estimated Timeline**
-
-- **Week 1**: Complete Dashboard page, Bottom Navigation, dan basic components
-- **Week 2**: Implement Add New Habit page dan form handling
-- **Week 3**: Create Statistics page dan data visualization
-- **Week 4**: API integration, testing, dan deployment
 
 ---
