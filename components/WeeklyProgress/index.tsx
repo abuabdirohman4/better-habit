@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useHabits } from "@/hooks/useHabits";
-import { useHabitLogs } from "@/hooks/useHabitLogs";
 
 interface WeeklyProgressProps {
     className?: string;

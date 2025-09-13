@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { HabitLog, CreateHabitLogData } from "@/lib/types";
 import { googleSheets } from "@/lib/google-sheets";
+import { CreateHabitLogData, HabitLog } from "@/lib/types";
 
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 const HABIT_LOGS_SHEET = "HabitLogs";
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest) {
     try {
         if (!SPREADSHEET_ID) {
             return NextResponse.json(
@@ -17,39 +14,24 @@ export async function GET(
             );
         }
 
-        // Get habit logs from Google Sheets
-        let logsData: any[] = [];
-        try {
-            logsData = await googleSheets.getCSVWithAuth(
-                SPREADSHEET_ID,
-                HABIT_LOGS_SHEET
-            );
-        } catch (error) {
-            return NextResponse.json({ data: [] });
-        }
+        // Get all habit logs from Google Sheets
+        const logsData = await googleSheets.getCSVWithAuth(
+            SPREADSHEET_ID,
+            HABIT_LOGS_SHEET
+        );
 
-        const habitLogs: HabitLog[] = logsData
-            .filter((row: any) => {
-                // Check all possible field name variations
-                const habitId = row.habitId || row.habit_id || row.habitid;
-                // Convert both to string for comparison since habitId might be string
-                return String(habitId) === String(params.id);
-            })
-            .map((row: any, index: number) => ({
-                id: parseInt(row.id) || index + 1,
-                habitId: parseInt(row.habitId || row.habit_id || row.habitid),
-                date: row.date || "",
-                completedValue:
-                    row.completedValue || row.completed_value
-                        ? parseInt(row.completedValue || row.completed_value)
-                        : undefined,
-                completedAt:
-                    row.completedAt ||
-                    row.completed_at ||
-                    new Date().toISOString(),
-            }));
+        // Transform data to match our interface
+        const transformedLogs = logsData.map((log: any) => ({
+            id: parseInt(log.id),
+            habitId: parseInt(log.habitId || log.habit_id || log.habitid),
+            date: log.date,
+            completedValue: log.completedValue || log.completed_value 
+                ? parseInt(log.completedValue || log.completed_value) 
+                : undefined,
+            completedAt: log.completedAt || log.completed_at,
+        }));
 
-        return NextResponse.json({ data: habitLogs });
+        return NextResponse.json({ data: transformedLogs });
     } catch (error) {
         console.error("Error fetching habit logs:", error);
         return NextResponse.json(
@@ -59,10 +41,7 @@ export async function GET(
     }
 }
 
-export async function POST(
-    request: NextRequest,
-    { params }: { params: { id: string } }
-) {
+export async function POST(request: NextRequest) {
     try {
         if (!SPREADSHEET_ID) {
             return NextResponse.json(

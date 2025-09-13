@@ -2,10 +2,10 @@ import { useCallback } from "react";
 import useSWR from "swr";
 import { HabitLog, CreateHabitLogData } from "@/lib/types";
 
-export const useHabitLogs = (habitId: number) => {
-    // Use real API call
+// Hook untuk mengambil semua habit logs
+export const useAllHabitLogs = () => {
     const { data, error, isLoading, mutate } = useSWR(
-        habitId ? `/api/habits/${habitId}/logs` : null,
+        "/api/habit-logs",
         async (url: string) => {
             const response = await fetch(url);
             if (!response.ok) {
@@ -15,9 +15,24 @@ export const useHabitLogs = (habitId: number) => {
         }
     );
 
+    return {
+        logs: data?.data || [],
+        isLoading,
+        error: error?.message,
+        mutate,
+    };
+};
+
+// Hook untuk mengambil habit logs untuk habit tertentu
+export const useHabitLogs = (habitId: number) => {
+    const { logs, isLoading, mutate } = useAllHabitLogs();
+    
+    // Filter logs for this specific habit
+    const habitLogs = logs.filter((log: any) => log.habitId === habitId);
+
     const addLog = async (logData: CreateHabitLogData) => {
         try {
-            const response = await fetch(`/api/habits/${habitId}/logs`, {
+            const response = await fetch('/api/habit-logs', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +64,7 @@ export const useHabitLogs = (habitId: number) => {
     const toggleCompletion = async (date: string, completedValue?: number) => {
         try {
             // Check if log already exists for this date
-            const existingLog = data?.data?.find(
+            const existingLog = habitLogs.find(
                 (log: HabitLog) => log.date === date
             );
 
@@ -60,7 +75,7 @@ export const useHabitLogs = (habitId: number) => {
                     return {
                         ...currentData,
                         data: currentData.data.filter(
-                            (log: HabitLog) => log.date !== date
+                            (log: HabitLog) => !(log.habitId === habitId && log.date === date)
                         ),
                     };
                 }, false);
@@ -81,9 +96,9 @@ export const useHabitLogs = (habitId: number) => {
     };
 
     const getLogForDate = useCallback((date: string): HabitLog | undefined => {
-        const log = data?.data?.find((log: HabitLog) => log.date === date);
+        const log = habitLogs.find((log: HabitLog) => log.date === date);
         return log;
-    }, [data?.data]);
+    }, [habitLogs]);
 
     const isCompletedOnDate = useCallback((date: string): boolean => {
         const completed = !!getLogForDate(date);
@@ -91,14 +106,14 @@ export const useHabitLogs = (habitId: number) => {
     }, [getLogForDate]);
 
     const getCompletionRate = (): number => {
-        if (!data?.data || data.data.length === 0) return 0;
+        if (!habitLogs || habitLogs.length === 0) return 0;
 
         // Calculate completion rate for the last 7 days
         const today = new Date();
         const sevenDaysAgo = new Date(today);
         sevenDaysAgo.setDate(today.getDate() - 7);
 
-        const recentLogs = data.data.filter((log: HabitLog) => {
+        const recentLogs = habitLogs.filter((log: HabitLog) => {
             const logDate = new Date(log.date);
             return logDate >= sevenDaysAgo && logDate <= today;
         });
@@ -107,9 +122,9 @@ export const useHabitLogs = (habitId: number) => {
     };
 
     return {
-        logs: data?.data || [],
+        logs: habitLogs,
         isLoading,
-        error: error?.message,
+        error: null,
         addLog,
         toggleCompletion,
         getLogForDate,

@@ -6,15 +6,15 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 
 - [x] ✅ Add Many icon
 - [x] ✅ Categorizing each habit
-- [ ] Show progress one week in dashboard for each habit
 - [x] ✅ Setting that have list of habit to archive
+- [ ] Show progress one week in dashboard for each habit
 - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
 - [ ] Grouping time of day based current time
 
 ## ISSUE TRACKER
 
 - [x] ✅ isActive is false / 0 not hidden
-- [ ] Move from home to create so slow and no loading (all move pages)
+- [x] ✅ Move from home to create so slow and no loading (all move pages)
 
 ## REFACTORING
 
@@ -62,7 +62,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Display "Today's Progress" title
 - [x] ✅ Show completion count ("1 of 3 completed")
 - [x] ✅ Display percentage ("33%")
-- [ ] 🔄 **TODO**: Calculate real completion percentage
+- [x] ✅ Calculate real completion percentage (optimized with single /api/habit-logs endpoint)
 
 <!-- ### 1.6 Floating Add Button
 

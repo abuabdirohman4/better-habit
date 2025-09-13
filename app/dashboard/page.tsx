@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useHabits } from "@/hooks/useHabits";
+import { useAllHabitLogs } from "@/hooks/useHabitLogs";
 import Spinner from "@/components/Spinner";
-import WeeklyProgress from "@/components/WeeklyProgress";
 import HabitCard from "@/components/HabitCard";
 import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
+    const { logs, isLoading: logsLoading } = useAllHabitLogs();
     const router = useRouter();
     
     // Initialize state from localStorage or default values
@@ -66,8 +67,30 @@ export default function DashboardPage() {
         }));
     };
 
-    // Show loading while fetching habits
-    if (isLoading) {
+    // Get active habits for filtering
+    const activeHabits = habits.filter((habit: any) => habit.isActive);
+    
+    // Calculate today's progress
+    const todayProgress = useMemo(() => {
+        const today = new Date().toISOString().split('T')[0];
+        const todayLogs = logs.filter((log: any) => log.date === today);
+        const completedHabitIds = todayLogs.map((log: any) => log.habitId);
+        const completedCount = activeHabits.filter((habit: any) => 
+            completedHabitIds.includes(habit.id)
+        ).length;
+        
+        const totalHabits = activeHabits.length;
+        const percentage = totalHabits > 0 ? Math.round((completedCount / totalHabits) * 100) : 0;
+        
+        return {
+            totalHabits,
+            completedCount,
+            percentage
+        };
+    }, [logs, activeHabits]);
+
+    // Show loading while fetching habits or logs
+    if (isLoading || logsLoading) {
         return (
             <main className="bg-white pt-56">
                 <div className="flex justify-center items-center min-h-64">
@@ -118,14 +141,14 @@ export default function DashboardPage() {
                     <div>
                         <p className="text-white/80 text-lg">Today&apos;s Progress</p>
                         <p className="text-sm font-bold">
-                            {habits.filter((h: any) => h.isActive).length > 0
-                                ? `${Math.floor(Math.random() * habits.length) + 1} of ${habits.length} completed`
+                            {todayProgress.totalHabits > 0
+                                ? `${todayProgress.completedCount} of ${todayProgress.totalHabits} completed`
                                 : "No habits today"}
                         </p>
                     </div>
                     <div className="w-12 h-12 bg-habit-yellow rounded-full flex items-center justify-center">
                         <p className="text-base font-bold text-white">
-                            {habits.length > 0 ? "33%" : "0"}
+                            {todayProgress.totalHabits > 0 ? `${todayProgress.percentage}%` : "0%"}
                         </p>
                     </div>
                 </div>
@@ -168,7 +191,7 @@ export default function DashboardPage() {
                         </div>
                     </div>
 
-                    {habits.length === 0 ? (
+                    {activeHabits.length === 0 ? (
                         <div className="text-center py-12 bg-white rounded-2xl">
                             <div className="text-gray-400 mb-4">
                                 <svg
@@ -197,9 +220,9 @@ export default function DashboardPage() {
                         <div className="space-y-6">
                             {/* Group habits by time of day */}
                             {["Morning", "Afternoon", "Evening", "All Day"].map((timeOfDay) => {
-                                const timeHabits = habits.filter((habit: any) => habit.timeOfDay === timeOfDay);
+                                const timeActiveHabits = habits.filter((habit: any) => habit.timeOfDay === timeOfDay && habit.isActive);
                                 
-                                if (timeHabits.length === 0) return null;
+                                if (timeActiveHabits.length === 0) return null;
 
                                 return (
                                     <div key={timeOfDay} className="bg-white rounded-2xl p-4 hover:bg-blue-50 hover:shadow-md transition-all duration-200 group border border-transparent hover:border-blue-200">
@@ -234,7 +257,7 @@ export default function DashboardPage() {
                                                 {timeOfDay}
                                             </h3>
                                             <span className="text-sm text-gray-500">
-                                                ({timeHabits.length} habit{timeHabits.length !== 1 ? 's' : ''})
+                                                ({timeActiveHabits.length} habit{timeActiveHabits.length !== 1 ? 's' : ''})
                                             </span>
                                             <div className="ml-auto">
                                                 <svg
@@ -256,12 +279,12 @@ export default function DashboardPage() {
                                         </div>
                                         {!collapsedSections[timeOfDay] && (
                                             <div className="space-y-3 mt-4">
-                                                {timeHabits.map((habit: any) => (
-                                <HabitCard key={habit.id} habit={habit} />
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                                {timeActiveHabits.map((habit: any) => (
+                                                    <HabitCard key={habit.id} habit={habit} />
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                 );
                             })}
                         </div>

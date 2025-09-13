@@ -211,7 +211,7 @@ export default function EditHabitPage() {
                         Habit Not Found
                     </h2>
                     <p className="text-gray-600 mb-4">
-                        The habit you're trying to edit doesn't exist.
+                        The habit you&apos;re trying to edit doesn&apos;t exist.
                     </p>
                     <button
                         onClick={() => router.push("/manage-habits")}
