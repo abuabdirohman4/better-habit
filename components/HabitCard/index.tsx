@@ -97,7 +97,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                 return "text-green-600";
             case "Spiritual":
                 return "text-purple-600";
-            case "Development Self":
+            case "Mind":
                 return "text-blue-600";
             case "To Dont List":
                 return "text-red-600";
@@ -112,7 +112,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                 return "bg-green-100";
             case "Spiritual":
                 return "bg-purple-100";
-            case "Development Self":
+            case "Mind":
                 return "bg-blue-100";
             case "To Dont List":
                 return "bg-red-100";

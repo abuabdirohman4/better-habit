@@ -236,7 +236,7 @@ export default function AddHabitPage() {
                     >
                         <option value="Health">Health</option>
                         <option value="Spiritual">Spiritual</option>
-                        <option value="Development Self">Development Self</option>
+                        <option value="Mind">Mind</option>
                         <option value="To Dont List">To Dont List</option>
                     </select>
                 </div>

@@ -7,7 +7,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Add Many icon
 - [x] ✅ Categorizing each habit
 - [x] ✅ Setting that have list of habit to archive
-- [ ] Show progress one week in dashboard for each habit
+- [x] ✅ Show progress one week in dashboard for each habit
 - [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
 - [ ] Grouping time of day based current time
 

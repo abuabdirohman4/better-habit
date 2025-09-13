@@ -33,7 +33,7 @@ Main table for storing user habit data.
 ```csv
 id,display_name,icon_name,category,time_of_day,frequency_type,frequency_days,reminder_time,is_reminder_on,goal_value,goal_unit,is_active,created_at
 1,Morning Exercise,exercise_icon,Health,Morning,daily,,07:00,1,30,minutes,1,2024-12-01 10:00:00
-2,Read Books,book_icon,Development Self,Evening,weekly,"1,2,3,4,5",19:00,1,20,pages,1,2024-12-01 10:00:00
+2,Read Books,book_icon,Mind,Evening,weekly,"1,2,3,4,5",19:00,1,20,pages,1,2024-12-01 10:00:00
 3,No Smoking,no_smoking_icon,To Dont List,All Day,daily,,,1,1,times,1,2024-12-01 10:00:00
 4,Meditation,meditation_icon,Spiritual,Morning,daily,,06:30,1,15,minutes,1,2024-12-01 10:00:00
 5,Drink Water,water_icon,Health,All Day,daily,,,0,8,glasses,1,2024-12-01 10:00:00
@@ -155,7 +155,7 @@ isReminderOn: row.isReminderOn === "1" || row.isReminderOn === true
 ### 1. Habit Creation Rules
 - `id` must be unique and auto-increment
 - `display_name` cannot be empty and maximum 100 characters
-- `category` must be one of: "Spiritual", "Health", "Development Self", "To Dont List"
+- `category` must be one of: "Spiritual", "Health", "Mind", "To Dont List"
 - `time_of_day` must be one of: "Morning", "Afternoon", "Evening", "All Day"
 - `frequency_type` only accepts "daily", "weekly", or "custom"
 - `goal_value` must be positive integer

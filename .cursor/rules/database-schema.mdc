@@ -30,7 +30,7 @@ interface Habit {
     id: number;                    // Primary key
     displayName: string;           // Habit name
     iconName: string;              // Icon name
-    category: "Spiritual" | "Health" | "Development Self" | "To Dont List";
+    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
     timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string;        // Days of the week (1-7)

@@ -69,7 +69,7 @@ export async function PUT(
             id: updatedHabit.id,
             displayName: updatedHabit.displayName || updatedHabit.displayname || "",
             iconName: updatedHabit.iconName || updatedHabit.iconname || "",
-            category: (updatedHabit.category as "Spiritual" | "Health" | "Development Self" | "To Dont List") || "Health",
+            category: (updatedHabit.category as "Spiritual" | "Health" | "Mind" | "To Dont List") || "Health",
             timeOfDay: (updatedHabit.timeOfDay || updatedHabit.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
             frequencyType: (updatedHabit.frequencyType as "daily" | "weekly" | "custom") || "daily",
             frequencyDays: updatedHabit.frequencyDays || updatedHabit.frequencydays || "",

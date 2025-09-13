@@ -2,7 +2,7 @@ export interface Habit {
     id: number;
     displayName: string;
     iconName: string;
-    category: "Spiritual" | "Health" | "Development Self" | "To Dont List";
+    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
     timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string; // e.g., "1,2,3,4,5" for weekdays
@@ -31,7 +31,7 @@ export interface GoogleSheetsResponse {
 export interface CreateHabitData {
     displayName: string;
     iconName: string;
-    category: "Spiritual" | "Health" | "Development Self" | "To Dont List";
+    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
     timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string;

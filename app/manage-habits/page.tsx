@@ -21,7 +21,7 @@ export default function ManageHabitsPage() {
     const { habits, isLoading, error, updateHabit, deleteHabit } = useHabits();
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState<"all" | "active" | "archived">("all");
-    const [filterCategory, setFilterCategory] = useState<"all" | "Health" | "Spiritual" | "Development Self" | "To Dont List">("all");
+    const [filterCategory, setFilterCategory] = useState<"all" | "Health" | "Spiritual" | "Mind" | "To Dont List">("all");
     const [filterTimeOfDay, setFilterTimeOfDay] = useState<"all" | "Morning" | "Afternoon" | "Evening" | "All Day">("all");
     const [sortBy, setSortBy] = useState<"name" | "created" | "category" | "timeOfDay">("name");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -246,14 +246,14 @@ export default function ManageHabitsPage() {
                             <select
                                 value={filterCategory}
                                 onChange={(e) =>
-                                    setFilterCategory(e.target.value as "all" | "Health" | "Spiritual" | "Development Self" | "To Dont List")
+                                    setFilterCategory(e.target.value as "all" | "Health" | "Spiritual" | "Mind" | "To Dont List")
                                 }
                                 className="select select-bordered w-full"
                             >
                                 <option value="all">All Categories</option>
                                 <option value="Health">Health</option>
                                 <option value="Spiritual">Spiritual</option>
-                                <option value="Development Self">Development Self</option>
+                                <option value="Mind">Mind</option>
                                 <option value="To Dont List">To Dont List</option>
                             </select>
                         </div>
@@ -508,7 +508,7 @@ function HabitRow({
                 return "badge-success";
             case "Spiritual":
                 return "badge-primary";
-            case "Development Self":
+            case "Mind":
                 return "badge-info";
             case "To Dont List":
                 return "badge-error";

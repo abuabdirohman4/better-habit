@@ -26,7 +26,7 @@ export async function GET() {
                 id: parseInt(row.id) || index + 1,
                 displayName: row.displayName || row.displayname || "",
                 iconName: row.iconName || row.iconname || "",
-                category: (row.category as "Spiritual" | "Health" | "Development Self" | "To Dont List") || "Health",
+                category: (row.category as "Spiritual" | "Health" | "Mind" | "To Dont List") || "Health",
                 timeOfDay: (row.timeOfDay || row.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
                 frequencyType:
                     row.frequencyType ||
