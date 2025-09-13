@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
 import { getHabitIcon, getHabitCardColor, getHabitTextColor } from "@/utils/habit-icons";
+import { DAYS_OF_WEEK } from "@/utils/constants";
 
 interface HabitCardProps {
     habit: Habit;
@@ -11,7 +12,7 @@ interface HabitCardProps {
 }
 
 const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
-    const { isCompletedOnDate, toggleCompletion, isLoading } = useHabitLogs(
+    const { isCompletedOnDate, toggleCompletion, isLoading, logs } = useHabitLogs(
         habit.id
     );
     const [isCompleted, setIsCompleted] = useState(false);
@@ -28,6 +29,43 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
         const completed = isCompletedOnDate(todayString);
         setIsCompleted(completed);
     }, [isCompletedOnDate, habit.id]);
+
+    // Calculate weekly progress (last 7 days)
+    const getWeeklyProgress = () => {
+        const today = new Date();
+        const weekDays = [];
+        
+        // Get current day of week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+        const currentDay = today.getDay();
+        
+        // Calculate days since Monday (if today is Sunday, go back 6 days to get Monday)
+        const daysSinceMonday = currentDay === 0 ? 6 : currentDay - 1;
+        
+        // Get Monday of current week
+        const monday = new Date(today);
+        monday.setDate(today.getDate() - daysSinceMonday);
+        
+        // Get 7 days starting from Monday
+        for (let i = 0; i < 7; i++) {
+            const date = new Date(monday);
+            date.setDate(monday.getDate() + i);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            const dateString = `${year}-${month}-${day}`;
+            
+            weekDays.push({
+                date: dateString,
+                completed: isCompletedOnDate(dateString),
+                dayName: DAYS_OF_WEEK[i]
+            });
+        }
+        
+        return weekDays;
+    };
+
+    const weeklyProgress = getWeeklyProgress();
+    const completedCount = weeklyProgress.filter(day => day.completed).length;
 
     const handleToggleCompletion = async () => {
         try {
@@ -121,15 +159,11 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
     };
 
     return (
-        <div
-            className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}
-        >
+        <div className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}>
             {/* Main Content */}
             <div className="flex items-center space-x-4">
                 {/* Icon */}
-                <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.iconName)} transition-all duration-300 hover:scale-110`}
-                >
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.iconName)} transition-all duration-300 hover:scale-110`}>
                     <div className="text-2xl text-white drop-shadow-sm">
                         {getHabitIcon(habit.iconName)}
                     </div>
@@ -137,10 +171,10 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
 
                 {/* Habit Details */}
                 <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-lg mb-1">
+                    <h3 className="font-semibold text-gray-800 text-lg">
                         {habit.displayName}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-2">
+                    <div className="text-sm text-gray-600 mb-3">
                         {habit.goalValue} {habit.goalUnit}
                         {habit.reminderTime && habit.isReminderOn && (
                             <span>
@@ -148,18 +182,28 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                                 • {formatReminderTime(habit.reminderTime)}
                             </span>
                         )}
-                    </p>
-                    <div className="flex items-center space-x-2 mb-2">
+                    </div>
+                    {/* <div className="flex items-center space-x-2 mt-3 mb-4">
                         <span
                             className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryBg(habit.category)} ${getCategoryColor(habit.category)}`}
                         >
                             {habit.category}
                         </span>
                         <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium bg-gray-100 ${getTimeOfDayColor(habit.timeOfDay)}`}
+                            className={`px-2 py-1 rounded-full text-xs font-medium bg-gray-100 ${getCategoryBg(habit.category)} ${getCategoryColor(habit.category)}`}
                         >
                             {habit.timeOfDay}
                         </span>
+                    </div> */}
+                    <div className="flex items-center space-x-1">
+                        <div className="flex space-x-2">
+                            {weeklyProgress.map((day, index) => (
+                                <div
+                                    key={index}
+                                    className={`w-4 h-4 rounded-full transition-all duration-200 ${ day.completed ? "bg-habit-green" : "bg-gray-200"}`}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
 
