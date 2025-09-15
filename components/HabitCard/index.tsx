@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
+import { useOfflineHabits } from "@/hooks/usePWA";
 import { getHabitIcon, getHabitCardColor, getHabitTextColor } from "@/utils/habit-icons";
 import { DAYS_OF_WEEK } from "@/utils/constants";
 
@@ -16,6 +17,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
     const { isCompletedOnDate, toggleCompletion, isLoading, logs } = useHabitLogs(
         habit.id
     );
+    const { storeHabitCompletion } = useOfflineHabits();
     const [isCompleted, setIsCompleted] = useState(false);
 
     // Check if habit is completed on target date
@@ -37,6 +39,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
         const completed = isCompletedOnDate(dateToCheck);
         setIsCompleted(completed);
     }, [isCompletedOnDate, habit.id, targetDate]);
+
 
     // Calculate weekly progress (7 days around target date)
     const weeklyProgress = useMemo(() => {
@@ -97,18 +100,29 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
                 dateToToggle = `${year}-${month}-${day}`;
             }
 
-            const result = await toggleCompletion(dateToToggle);
-
-            // Update state based on the result
-            if (result) {
-                // Log was created, so habit is now completed
-                setIsCompleted(true);
+            // Check if online
+            if (navigator.onLine) {
+                const result = await toggleCompletion(dateToToggle);
+                
+                // Update state based on the result
+                if (result) {
+                    setIsCompleted(true);
+                } else {
+                    setIsCompleted(false);
+                }
             } else {
-                // Log was removed, so habit is now not completed
-                setIsCompleted(false);
+                // Store offline for later sync
+                const newCompleted = !isCompleted;
+                storeHabitCompletion(habit.id, dateToToggle, newCompleted);
+                setIsCompleted(newCompleted);
             }
         } catch (error) {
             console.error("Error toggling habit completion:", error);
+            // Fallback to offline storage
+            const newCompleted = !isCompleted;
+            const fallbackDate = targetDate || new Date().toISOString().split('T')[0];
+            storeHabitCompletion(habit.id, fallbackDate, newCompleted);
+            setIsCompleted(newCompleted);
         }
     };
 
