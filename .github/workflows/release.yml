@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm run lint
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ## What's Changed
+            
+            See [CHANGELOG.md](CHANGELOG.md) for detailed changes.
+            
+            ## Installation
+            
+            ```bash
+            npm install
+            npm run build
+            npm start
+            ```
+            
+            ## Features
+            
+            - Habit tracking and management
+            - PWA support for mobile installation
+            - Google Sheets integration
+            - Responsive design with Tailwind CSS
+            - User authentication with NextAuth.js
+            - Calendar and weekly progress views
+            - Habit performance analytics
+            
+            ## Technical Stack
+            
+            - Next.js 14 with App Router
+            - TypeScript for type safety
+            - SWR for data fetching and caching
+            - Google Sheets API integration
+            - NextAuth.js for authentication
+            - Tailwind CSS + DaisyUI for styling
+            - PWA with next-pwa
+          draft: false
+          prerelease: false
