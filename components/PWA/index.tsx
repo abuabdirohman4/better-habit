@@ -16,7 +16,7 @@ export default function PWAComponents() {
             setDeferredPrompt(e);
             // Show install prompt after user engagement
             setTimeout(() => {
-                setShowInstallPrompt(true);
+                setShowInstallPrompt(false);
             }, 3000); // Show after 3 seconds
         };
 

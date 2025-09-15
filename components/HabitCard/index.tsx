@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
 import { useOfflineHabits } from "@/hooks/usePWA";
@@ -14,6 +15,7 @@ interface HabitCardProps {
 }
 
 const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate }) => {
+    const router = useRouter();
     const { isCompletedOnDate, toggleCompletion, isLoading, logs } = useHabitLogs(
         habit.id
     );
@@ -135,10 +137,20 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
         });
     };
 
+    // Handle navigation to habit statistics
+    const handleCardClick = () => {
+        router.push(`/habits/${habit.id}`);
+    };
+
     return (
         <div className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}>
             {/* Main Content */}
             <div className="flex items-center space-x-4">
+                {/* Clickable area for card content */}
+                <div 
+                    className="flex items-center space-x-4 flex-1 cursor-pointer hover:bg-gray-50 rounded-xl p-2 -m-2 transition-colors"
+                    onClick={handleCardClick}
+                >
                 {/* Icon */}
                 <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.iconName)} transition-all duration-300 hover:scale-110`}>
                     <div className="text-2xl text-white drop-shadow-sm">
@@ -175,6 +187,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
                             ))}
                         </div>
                     </div>
+                </div>
                 </div>
 
                 {/* Completion Button */}

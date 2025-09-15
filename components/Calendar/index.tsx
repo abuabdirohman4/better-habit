@@ -4,6 +4,9 @@ import { useState } from "react";
 
 interface CalendarProps {
     className?: string;
+    currentDate?: Date;
+    habitLogs?: any[];
+    habitId?: number;
 }
 
 interface DayData {
@@ -11,8 +14,14 @@ interface DayData {
     status: "completed" | "missed" | "today" | "future" | "empty";
 }
 
-export default function Calendar({ className = "" }: CalendarProps) {
-    const [currentDate, setCurrentDate] = useState(new Date());
+export default function Calendar({ 
+    className = "", 
+    currentDate: propCurrentDate,
+    habitLogs = [],
+    habitId
+}: CalendarProps) {
+    const [internalCurrentDate, setInternalCurrentDate] = useState(new Date());
+    const currentDate = propCurrentDate || internalCurrentDate;
 
     // Get current month and year
     const currentMonth = currentDate.getMonth();
@@ -22,10 +31,11 @@ export default function Calendar({ className = "" }: CalendarProps) {
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
     const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
     const daysInMonth = lastDayOfMonth.getDate();
-    const firstDayWeekday = firstDayOfMonth.getDay();
+    // Convert Sunday=0 to Monday=0 format (Sunday becomes 6, Monday becomes 0)
+    const firstDayWeekday = (firstDayOfMonth.getDay() + 6) % 7;
 
-    // Day names
-    const dayNames = ["S", "M", "T", "W", "T", "F", "S"];
+    // Day names (Monday to Sunday)
+    const dayNames = ["M", "T", "W", "T", "F", "S", "S"];
 
     // Generate calendar data
     const generateCalendarData = (): DayData[] => {
@@ -45,13 +55,30 @@ export default function Calendar({ className = "" }: CalendarProps) {
                 dayDate.getMonth() === today.getMonth() &&
                 dayDate.getFullYear() === today.getFullYear();
 
+            // Check if this day has a habit log
+            // Format: YYYY-MM-DD using local time to avoid timezone issues
+            const year = currentYear;
+            const month = String(currentMonth + 1).padStart(2, '0');
+            const dayStr = String(day).padStart(2, '0');
+            const dateString = `${year}-${month}-${dayStr}`;
+            const hasLog = habitLogs.some(log => log.date === dateString);
+            
+            // Quick debug for user reported dates
+            if (day >= 8 && day <= 12 && habitLogs.length > 0) {
+                const logForDay = habitLogs.find(log => log.date === dateString);
+                if (logForDay) {
+                    console.log(`Found log for ${dateString}:`, logForDay);
+                }
+            }
+
             let status: DayData["status"] = "future";
 
             if (isToday) {
-                status = "today";
+                status = hasLog ? "completed" : "today";
             } else if (dayDate < today) {
-                // No data available - mark as missed
-                status = "missed";
+                status = hasLog ? "completed" : "missed";
+            } else {
+                status = "future";
             }
 
             calendarData.push({ date: day, status });
@@ -61,14 +88,21 @@ export default function Calendar({ className = "" }: CalendarProps) {
     };
 
     const calendarData = generateCalendarData();
+    
+    // Debug current date being displayed
+    console.log(`Calendar showing: ${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`);
 
-    // Navigation functions
+    // Navigation functions (only for internal use when no prop is provided)
     const goToPreviousMonth = () => {
-        setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+        if (!propCurrentDate) {
+            setInternalCurrentDate(new Date(currentYear, currentMonth - 1, 1));
+        }
     };
 
     const goToNextMonth = () => {
-        setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+        if (!propCurrentDate) {
+            setInternalCurrentDate(new Date(currentYear, currentMonth + 1, 1));
+        }
     };
 
     // Get status color
