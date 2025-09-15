@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useHabits } from "@/hooks/useHabits";
 import { useAllHabitLogs } from "@/hooks/useHabitLogs";
+import { useSetGlobalLoading } from "@/hooks/useGlobalLoading";
 import Spinner from "@/components/Spinner";
 import HabitCard from "@/components/HabitCard";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { useRouter } from "next/navigation";
 export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
     const { logs, isLoading: logsLoading } = useAllHabitLogs();
+    const setGlobalLoading = useSetGlobalLoading();
     const router = useRouter();
     
     // Initialize state from localStorage or default values
@@ -53,6 +55,11 @@ export default function DashboardPage() {
         const day = String(today.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
     });
+
+    // Update global loading state
+    useEffect(() => {
+        setGlobalLoading(isLoading || logsLoading);
+    }, [isLoading, logsLoading, setGlobalLoading]);
 
     // Save collapse state to localStorage whenever it changes
     useEffect(() => {
@@ -132,16 +139,7 @@ export default function DashboardPage() {
         };
     }, [logs, activeHabits, selectedDate]);
 
-    // Show loading while fetching habits or logs
-    if (isLoading || logsLoading) {
-        return (
-            <main className="bg-white pt-56">
-                <div className="flex justify-center items-center min-h-64">
-                    <Spinner className="h-28 w-28" />
-                </div>
-            </main>
-        );
-    }
+    // Loading is now handled by splash screen
 
     // Show error state
     if (error) {

@@ -4,7 +4,7 @@ import "./globals.css";
 import SWRProvider from "@/components/SWRProvider";
 import BottomNavigationBar from "@/components/BottomNavigationBar";
 import PWAComponents from "@/components/PWA";
-import SplashScreen from "@/components/PWA/SplashScreen";
+import LoadingHandler from "@/components/PWA/LoadingHandler";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,12 +23,13 @@ export const metadata: Metadata = {
             { url: "/img/logo.svg", sizes: "512x512", type: "image/svg+xml" },
         ],
     },
-    viewport: {
-        width: "device-width",
-        initialScale: 1,
-        maximumScale: 1,
-        userScalable: false,
-    },
+};
+
+export const viewport = {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
     themeColor: "#1496F6",
 };
 
@@ -51,7 +52,7 @@ export default function RootLayout({
                 className={`${inter.className} min-h-screen shadow-2xl bg-white`}
             >
                 <PWAComponents />
-                <SplashScreen />
+                <LoadingHandler />
                 <SWRProvider>
                     {children}
                     <BottomNavigationBar />

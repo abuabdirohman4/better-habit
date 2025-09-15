@@ -3,17 +3,35 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-export default function SplashScreen() {
+interface SplashScreenProps {
+    isLoading?: boolean;
+    minDisplayTime?: number; // Minimum display time in milliseconds
+}
+
+export default function SplashScreen({ 
+    isLoading = false, 
+    minDisplayTime = 1500 
+}: SplashScreenProps) {
     const [showSplash, setShowSplash] = useState(true);
+    const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
     useEffect(() => {
-        // Hide splash screen after 2 seconds
-        const timer = setTimeout(() => {
-            setShowSplash(false);
-        }, 2000);
+        // Ensure splash screen shows for minimum time
+        const minTimer = setTimeout(() => {
+            setMinTimeElapsed(true);
+        }, minDisplayTime);
 
-        return () => clearTimeout(timer);
-    }, []);
+        return () => clearTimeout(minTimer);
+    }, [minDisplayTime]);
+
+    useEffect(() => {
+        // Hide splash screen when both conditions are met:
+        // 1. Minimum display time has elapsed
+        // 2. Data loading is complete
+        if (minTimeElapsed && !isLoading) {
+            setShowSplash(false);
+        }
+    }, [minTimeElapsed, isLoading]);
 
     if (!showSplash) return null;
 
