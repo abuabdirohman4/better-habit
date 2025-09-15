@@ -21,7 +21,7 @@ export default function HabitStatisticsPage() {
     
     // Find the specific habit
     const habit = useMemo(() => {
-        return habits.find(h => h.id === habitId);
+        return habits.find((h: any) => h.id === habitId);
     }, [habits, habitId]);
     
     // Calculate habit statistics for current month
@@ -32,7 +32,7 @@ export default function HabitStatisticsPage() {
         const currentYear = currentDate.getFullYear();
         
         // Filter logs for current month
-        const monthLogs = logs.filter(log => {
+        const monthLogs = logs.filter((log: any) => {
             const logDate = new Date(log.date);
             return logDate.getMonth() === currentMonth && logDate.getFullYear() === currentYear;
         });
@@ -44,7 +44,7 @@ export default function HabitStatisticsPage() {
         
         while (true) {
             const dateString = checkDate.toISOString().split('T')[0];
-            const hasLog = logs.some(log => log.date === dateString);
+            const hasLog = logs.some((log: any) => log.date === dateString);
             
             if (hasLog) {
                 streak++;
