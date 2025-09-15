@@ -10,6 +10,7 @@
   "categories": ["productivity", "health", "lifestyle"],
   "lang": "en",
   "scope": "/",
+  "display_override": ["window-controls-overlay"],
   "icons": [
     {
       "src": "/img/logo.svg",
