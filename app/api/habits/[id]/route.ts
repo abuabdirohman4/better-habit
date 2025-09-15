@@ -47,6 +47,7 @@ export async function PUT(
         const updatedRow = [
             updatedHabit.id.toString(),
             updatedHabit.displayName || updatedHabit.displayname || "",
+            updatedHabit.description || "",
             updatedHabit.iconName || updatedHabit.iconname || "",
             updatedHabit.category || "Health",
             updatedHabit.timeOfDay || updatedHabit.timeofday || "All Day",
@@ -54,8 +55,6 @@ export async function PUT(
             updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
             updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
             updatedHabit.isReminderOn ? "1" : "0",
-            (updatedHabit.goalValue || updatedHabit.goalvalue || 0).toString(),
-            updatedHabit.goalUnit || updatedHabit.goalunit || "minutes",
             updatedHabit.isActive ? "1" : "0",
             updatedHabit.createdAt || updatedHabit.createdat || new Date().toISOString(),
         ];
@@ -68,6 +67,7 @@ export async function PUT(
         const responseHabit: Habit = {
             id: updatedHabit.id,
             displayName: updatedHabit.displayName || updatedHabit.displayname || "",
+            description: updatedHabit.description || "",
             iconName: updatedHabit.iconName || updatedHabit.iconname || "",
             category: (updatedHabit.category as "Spiritual" | "Health" | "Mind" | "To Dont List") || "Health",
             timeOfDay: (updatedHabit.timeOfDay || updatedHabit.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
@@ -75,8 +75,6 @@ export async function PUT(
             frequencyDays: updatedHabit.frequencyDays || updatedHabit.frequencydays || "",
             reminderTime: updatedHabit.reminderTime || updatedHabit.remindertime || "07:00",
             isReminderOn: updatedHabit.isReminderOn || false,
-            goalValue: updatedHabit.goalValue || updatedHabit.goalvalue || 0,
-            goalUnit: updatedHabit.goalUnit || updatedHabit.goalunit || "minutes",
             isActive: updatedHabit.isActive || false,
             createdAt: updatedHabit.createdAt || updatedHabit.createdat || new Date().toISOString(),
         };

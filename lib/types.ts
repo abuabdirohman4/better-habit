@@ -1,6 +1,7 @@
 export interface Habit {
     id: number;
     displayName: string;
+    description: string; // e.g., "30 minutes workout", "Read 20 pages", "No smoking"
     iconName: string;
     category: "Spiritual" | "Health" | "Mind" | "To Dont List";
     timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
@@ -8,8 +9,6 @@ export interface Habit {
     frequencyDays?: string; // e.g., "1,2,3,4,5" for weekdays
     reminderTime?: string; // e.g., "07:00"
     isReminderOn: boolean;
-    goalValue: number;
-    goalUnit: string; // e.g., "minutes", "km", "pages"
     isActive: boolean;
     createdAt: string;
 }
@@ -30,6 +29,7 @@ export interface GoogleSheetsResponse {
 // Helper types for form data
 export interface CreateHabitData {
     displayName: string;
+    description: string;
     iconName: string;
     category: "Spiritual" | "Health" | "Mind" | "To Dont List";
     timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
@@ -37,8 +37,6 @@ export interface CreateHabitData {
     frequencyDays?: string;
     reminderTime?: string;
     isReminderOn: boolean;
-    goalValue: number;
-    goalUnit: string;
 }
 
 export interface CreateHabitLogData {

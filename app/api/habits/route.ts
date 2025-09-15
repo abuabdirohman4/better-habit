@@ -25,6 +25,7 @@ export async function GET() {
             return {
                 id: parseInt(row.id) || index + 1,
                 displayName: row.displayName || row.displayname || "",
+                description: row.description || "",
                 iconName: row.iconName || row.iconname || "",
                 category: (row.category as "Spiritual" | "Health" | "Mind" | "To Dont List") || "Health",
                 timeOfDay: (row.timeOfDay || row.timeofday as "Morning" | "Afternoon" | "Evening" | "All Day") || "All Day",
@@ -38,8 +39,6 @@ export async function GET() {
                     row.isReminderOn === "1" ||
                     row.isreminderon === "1" ||
                     row.isReminderOn === true,
-                goalValue: parseInt(row.goalValue || row.goalvalue) || 0,
-                goalUnit: row.goalUnit || row.goalunit || "minutes",
                 isActive:
                     row.isActive === "1" ||
                     row.isactive === "1" ||
@@ -85,6 +84,7 @@ export async function POST(request: NextRequest) {
         const newHabitRow = [
             newId.toString(),
             habitData.displayName,
+            habitData.description || "",
             habitData.iconName,
             habitData.category,
             habitData.timeOfDay,
@@ -92,8 +92,6 @@ export async function POST(request: NextRequest) {
             habitData.frequencyDays || "",
             habitData.reminderTime || "07:00",
             habitData.isReminderOn ? "1" : "0",
-            habitData.goalValue?.toString() || "0",
-            habitData.goalUnit || "minutes",
             "1", // isActive
             new Date().toISOString(), // createdAt
         ];
@@ -107,6 +105,7 @@ export async function POST(request: NextRequest) {
         const newHabit: Habit = {
             id: newId,
             displayName: habitData.displayName,
+            description: habitData.description || "",
             iconName: habitData.iconName,
             category: habitData.category,
             timeOfDay: habitData.timeOfDay,
@@ -114,8 +113,6 @@ export async function POST(request: NextRequest) {
             frequencyDays: habitData.frequencyDays || "",
             reminderTime: habitData.reminderTime || "07:00",
             isReminderOn: habitData.isReminderOn,
-            goalValue: habitData.goalValue || 0,
-            goalUnit: habitData.goalUnit || "minutes",
             isActive: true,
             createdAt: new Date().toISOString(),
         };

@@ -387,7 +387,7 @@ export default function ManageHabitsPage() {
                                         <th>Category</th>
                                         <th>Time</th>
                                         <th>Frequency</th>
-                                        <th>Goal</th>
+                                        <th>Description</th>
                                         <th>Status</th>
                                         <th>Created</th>
                                         <th>Actions</th>
@@ -595,7 +595,7 @@ function HabitRow({
             </td>
             <td>
                 <span className="text-sm text-gray-600">
-                    {habit.goalValue} {habit.goalUnit}
+                    {habit.description || "No description"}
                 </span>
             </td>
             <td>

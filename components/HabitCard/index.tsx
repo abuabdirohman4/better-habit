@@ -76,7 +76,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
             const day = String(today.getDate()).padStart(2, "0");
             const todayString = `${year}-${month}-${day}`;
 
-            const result = await toggleCompletion(todayString, habit.goalValue);
+            const result = await toggleCompletion(todayString);
 
             // Update state based on the result
             if (result) {
@@ -175,7 +175,7 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "" }) => {
                         {habit.displayName}
                     </h3>
                     <div className="text-sm text-gray-600 mb-3">
-                        {habit.goalValue} {habit.goalUnit}
+                        {habit.description}
                         {habit.reminderTime && habit.isReminderOn && (
                             <span>
                                 {" "}

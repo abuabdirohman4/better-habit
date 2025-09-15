@@ -11,6 +11,7 @@ export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
     const { logs, isLoading: logsLoading } = useAllHabitLogs();
     const router = useRouter();
+    console.log('habits', habits)
     
     // Initialize state from localStorage or default values
     const getInitialCollapseState = (): Record<string, boolean> => {

@@ -8,8 +8,9 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Categorizing each habit
 - [x] ✅ Setting that have list of habit to archive
 - [x] ✅ Show progress one week in dashboard for each habit
-- [ ] Take note time for pray, time actually did (like 3 km from 5 km target)
-- [ ] Grouping time of day based current time
+<!-- - [ ] **SKIP** Take note time for pray, time actually did (like 3 km from 5 km target) -->
+- [ ] Showing top group time of day based current time
+- [ ] Click habit will appear detail habit with achievement in 1 month + Insight Utama in bottom + graph penyelesaian bulanan (gemini mockup)
 
 ## ISSUE TRACKER
 
@@ -22,6 +23,7 @@ Berdasarkan mockup yang diberikan, berikut adalah TODO list lengkap untuk memban
 - [x] ✅ Change type "isActive" to 0 or 1
 - [x] ✅ Remove Mock Data
 - [ ] Make habitId not too high
+- [ ] Handle completed value that not used
 
 <!-- ## 📱 **1. Dashboard Page ("My Habits")**
 

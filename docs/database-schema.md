@@ -16,6 +16,7 @@ Main table for storing user habit data.
 |--------|------|-------------|---------|----------|
 | `id` | Integer | Unique identifier for habit | `1, 2, 3` | ✅ |
 | `display_name` | String | Display name for habit | `"Morning Exercise"` | ✅ |
+| `description` | String | Habit description/goal | `"30 minutes workout"` | ❌ |
 | `icon_name` | String | Icon name for habit | `"exercise_icon"` | ✅ |
 | `category` | String | Habit category | `"Health"` | ✅ |
 | `time_of_day` | String | Time of day for habit | `"Morning"` | ✅ |
@@ -23,20 +24,18 @@ Main table for storing user habit data.
 | `frequency_days` | String | Days of the week (for weekly/custom) | `"1,2,3,4,5"` | ❌ |
 | `reminder_time` | String | Reminder time (HH:MM format) | `"07:00"` | ❌ |
 | `is_reminder_on` | Boolean | Reminder active status | `1` or `0` | ✅ |
-| `goal_value` | Integer | Target value for habit | `30` | ✅ |
-| `goal_unit` | String | Unit for goal | `"minutes"` | ✅ |
 | `is_active` | Boolean | Habit active status | `1` or `0` | ✅ |
 | `created_at` | String | Creation timestamp | `"2024-12-01 10:00:00"` | ✅ |
 
 #### Sample Data
 
 ```csv
-id,display_name,icon_name,category,time_of_day,frequency_type,frequency_days,reminder_time,is_reminder_on,goal_value,goal_unit,is_active,created_at
-1,Morning Exercise,exercise_icon,Health,Morning,daily,,07:00,1,30,minutes,1,2024-12-01 10:00:00
-2,Read Books,book_icon,Mind,Evening,weekly,"1,2,3,4,5",19:00,1,20,pages,1,2024-12-01 10:00:00
-3,No Smoking,no_smoking_icon,To Dont List,All Day,daily,,,1,1,times,1,2024-12-01 10:00:00
-4,Meditation,meditation_icon,Spiritual,Morning,daily,,06:30,1,15,minutes,1,2024-12-01 10:00:00
-5,Drink Water,water_icon,Health,All Day,daily,,,0,8,glasses,1,2024-12-01 10:00:00
+id,display_name,icon_name,category,time_of_day,frequency_type,frequency_days,reminder_time,is_reminder_on,description,is_active,created_at
+1,Morning Exercise,exercise_icon,Health,Morning,daily,,07:00,1,30 minutes workout,1,2024-12-01 10:00:00
+2,Read Books,book_icon,Mind,Evening,weekly,"1,2,3,4,5",19:00,1,Read 20 pages,1,2024-12-01 10:00:00
+3,No Smoking,no_smoking_icon,To Dont List,All Day,daily,,,1,No smoking today,1,2024-12-01 10:00:00
+4,Meditation,meditation_icon,Spiritual,Morning,daily,,06:30,1,15 minutes meditation,1,2024-12-01 10:00:00
+5,Drink Water,water_icon,Health,All Day,daily,,,0,8 glasses of water,1,2024-12-01 10:00:00
 ```
 
 ### 2. HabitLog Sheet
@@ -123,6 +122,7 @@ id,habit_id,date,completed_value,completed_at
 ```typescript
 // Google Sheets headers → API response
 "display_name" → "displayName"
+"description" → "description"
 "icon_name" → "iconName"
 "category" → "category"
 "time_of_day" → "timeOfDay"
@@ -130,8 +130,6 @@ id,habit_id,date,completed_value,completed_at
 "frequency_days" → "frequencyDays"
 "reminder_time" → "reminderTime"
 "is_reminder_on" → "isReminderOn"
-"goal_value" → "goalValue"
-"goal_unit" → "goalUnit"
 "is_active" → "isActive"
 "created_at" → "createdAt"
 "completed_value" → "completedValue"
@@ -142,7 +140,7 @@ id,habit_id,date,completed_value,completed_at
 ```typescript
 // String to Number
 id: parseInt(row.id)
-goalValue: parseInt(row.goalValue) || 1
+description: row.description || ""
 completedValue: row.completedValue ? parseInt(row.completedValue) : undefined
 
 // String to Boolean
@@ -155,11 +153,10 @@ isReminderOn: row.isReminderOn === "1" || row.isReminderOn === true
 ### 1. Habit Creation Rules
 - `id` must be unique and auto-increment
 - `display_name` cannot be empty and maximum 100 characters
+- `description` is optional and can be empty
 - `category` must be one of: "Spiritual", "Health", "Mind", "To Dont List"
 - `time_of_day` must be one of: "Morning", "Afternoon", "Evening", "All Day"
 - `frequency_type` only accepts "daily", "weekly", or "custom"
-- `goal_value` must be positive integer
-- `goal_unit` cannot be empty
 
 ### 2. Habit Log Rules
 - `habit_id` must reference existing Habits

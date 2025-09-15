@@ -26,8 +26,7 @@ export default function EditHabitPage() {
         frequencyDays: "",
         reminderTime: "07:00",
         isReminderOn: false,
-        goalValue: 0,
-        goalUnit: "minutes",
+        description: "",
     });
 
     // UI state
@@ -100,8 +99,7 @@ export default function EditHabitPage() {
                 frequencyDays: currentHabit.frequencyDays || "",
                 reminderTime: currentHabit.reminderTime || "07:00",
                 isReminderOn: currentHabit.isReminderOn,
-                goalValue: currentHabit.goalValue,
-                goalUnit: currentHabit.goalUnit,
+                description: currentHabit.description,
             });
 
             setSelectedIcon(currentHabit.iconName);
@@ -168,10 +166,7 @@ export default function EditHabitPage() {
             return;
         }
 
-        if (formData.goalValue <= 0) {
-            alert("Please enter a valid goal value");
-            return;
-        }
+        // Description is optional, no validation needed
 
         if (selectedFrequency !== "daily" && selectedDays.length === 0) {
             alert("Please select at least one day for this frequency");
@@ -402,36 +397,18 @@ export default function EditHabitPage() {
                         </div>
                     </div>
 
-                    {/* Goal */}
+                    {/* Description */}
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                            Goal
+                            Description
                         </h2>
-                        <div className="flex gap-4">
-                            <Input
-                                type="number"
-                                value={formData.goalValue}
-                                onChange={(e) => handleInputChange("goalValue", parseInt(e.target.value) || 0)}
-                                placeholder="0"
-                                className="flex-1"
-                                min={1}
-                                required
-                            />
-                            <select
-                                value={formData.goalUnit}
-                                onChange={(e) => handleInputChange("goalUnit", e.target.value)}
-                                className="select select-bordered"
-                            >
-                                <option value="minutes">Minutes</option>
-                                <option value="hours">Hours</option>
-                                <option value="times">Times</option>
-                                <option value="pages">Pages</option>
-                                <option value="glasses">Glasses</option>
-                                <option value="km">Kilometers</option>
-                                <option value="steps">Steps</option>
-                                <option value="calories">Calories</option>
-                            </select>
-                        </div>
+                        <Input
+                            type="text"
+                            value={formData.description}
+                            onChange={(e) => handleInputChange("description", e.target.value)}
+                            placeholder="e.g. 30 minutes workout, Read 20 pages, No smoking"
+                            className="w-full"
+                        />
                     </div>
 
                     {/* Reminder */}

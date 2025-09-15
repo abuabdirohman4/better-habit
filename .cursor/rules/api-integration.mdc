@@ -198,14 +198,14 @@ export const googleSheets = {
 export interface Habit {
     id: number;
     displayName: string;
+    description: string; // e.g., "30 minutes workout", "Read 20 pages", "No smoking"
     iconName: string;
-    type: "do" | "dont";
+    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
+    timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string; // e.g., "1,2,3,4,5" for weekdays
     reminderTime?: string; // e.g., "07:00"
     isReminderOn: boolean;
-    goalValue: number;
-    goalUnit: string; // e.g., "minutes", "km", "pages"
     isActive: boolean;
     createdAt: string;
 }
@@ -226,14 +226,14 @@ export interface GoogleSheetsResponse {
 // Helper types for form data
 export interface CreateHabitData {
     displayName: string;
+    description: string;
     iconName: string;
-    type: "do" | "dont";
+    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
+    timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
     frequencyType: "daily" | "weekly" | "custom";
     frequencyDays?: string;
     reminderTime?: string;
     isReminderOn: boolean;
-    goalValue: number;
-    goalUnit: string;
 }
 
 export interface CreateHabitLogData {
@@ -323,17 +323,17 @@ return <UserDashboard user={session.user} />;
 ```typescript
 // Google Sheets structure
 // Sheet 1: Habits
-// Columns: id, display_name, icon_name, type, frequency_type, frequency_days, reminder_time, is_reminder_on, goal_value, goal_unit, is_active, created_at
+// Columns: id, display_name, icon_name, category, time_of_day, frequency_type, frequency_days, reminder_time, is_reminder_on, description, is_active, created_at
 
 // Sheet 2: HabitLog
 // Columns: id, habit_id, date, completed_value, completed_at
 
 // Example CSV structure:
 // Habits sheet:
-// id,display_name,icon_name,type,frequency_type,frequency_days,reminder_time,is_reminder_on,goal_value,goal_unit,is_active,created_at
-// 1,Morning Exercise,exercise_icon,do,daily,,07:00,1,30,minutes,1,2024-12-01 10:00
-// 2,Read Books,book_icon,do,weekly,1,2,3,4,5,19:00,1,20,pages,1,2024-12-01 10:00
-// 3,No Smoking,no_smoking_icon,dont,daily,,,1,1,times,1,2024-12-01 10:00
+// id,display_name,icon_name,category,time_of_day,frequency_type,frequency_days,reminder_time,is_reminder_on,description,is_active,created_at
+// 1,Morning Exercise,exercise_icon,Health,Morning,daily,,07:00,1,30 minutes workout,1,2024-12-01 10:00
+// 2,Read Books,book_icon,Mind,Evening,weekly,"1,2,3,4,5",19:00,1,Read 20 pages,1,2024-12-01 10:00
+// 3,No Smoking,no_smoking_icon,To Dont List,All Day,daily,,,1,No smoking today,1,2024-12-01 10:00
 
 // HabitLog sheet:
 // id,habit_id,date,completed_value,completed_at
@@ -361,6 +361,7 @@ export const habitsApi = {
             const transformedHabits = habits.map((row: any) => ({
                 id: parseInt(row.id),
                 displayName: row.displayName,
+                description: row.description || "",
                 iconName: row.iconName,
                 type: row.type as "do" | "dont",
                 frequencyType: row.frequencyType as
@@ -371,8 +372,6 @@ export const habitsApi = {
                 reminderTime: row.reminderTime || undefined,
                 isReminderOn:
                     row.isReminderOn === "1" || row.isReminderOn === true,
-                goalValue: parseInt(row.goalValue) || 1,
-                goalUnit: row.goalUnit,
                 isActive: row.isActive === "1" || row.isActive === true,
                 createdAt: row.createdAt,
             }));
@@ -397,14 +396,13 @@ export const habitsApi = {
         const newHabit: Habit = {
             id,
             displayName: habitData.displayName,
+            description: habitData.description,
             iconName: habitData.iconName,
             type: habitData.type,
             frequencyType: habitData.frequencyType,
             frequencyDays: habitData.frequencyDays,
             reminderTime: habitData.reminderTime,
             isReminderOn: habitData.isReminderOn,
-            goalValue: habitData.goalValue,
-            goalUnit: habitData.goalUnit,
             isActive: true,
             createdAt: now,
         };
@@ -413,14 +411,13 @@ export const habitsApi = {
             [
                 newHabit.id.toString(),
                 newHabit.displayName,
+                newHabit.description,
                 newHabit.iconName,
                 newHabit.type,
                 newHabit.frequencyType,
                 newHabit.frequencyDays || "",
                 newHabit.reminderTime || "",
                 newHabit.isReminderOn ? "1" : "0",
-                newHabit.goalValue.toString(),
-                newHabit.goalUnit,
                 newHabit.isActive ? "1" : "0",
                 newHabit.createdAt,
             ],
@@ -601,14 +598,13 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const habitData: CreateHabitData = {
             displayName: body.displayName,
+            description: body.description,
             iconName: body.iconName,
             type: body.type,
             frequencyType: body.frequencyType,
             frequencyDays: body.frequencyDays,
             reminderTime: body.reminderTime,
             isReminderOn: body.isReminderOn,
-            goalValue: body.goalValue,
-            goalUnit: body.goalUnit,
         };
 
         const habit = await habitsApi.create(habitData);

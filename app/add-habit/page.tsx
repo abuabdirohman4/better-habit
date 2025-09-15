@@ -22,8 +22,7 @@ export default function AddHabitPage() {
         frequencyDays: "",
         reminderTime: "07:00",
         isReminderOn: false,
-        goalValue: 0,
-        goalUnit: "minutes",
+        description: "",
     });
 
     // UI state
@@ -86,15 +85,6 @@ export default function AddHabitPage() {
         "23:30",
     ];
 
-    // Unit options
-    const unitOptions = [
-        { value: "minutes", label: "minutes" },
-        { value: "hours", label: "hours" },
-        { value: "km", label: "km" },
-        { value: "pages", label: "pages" },
-        { value: "glasses", label: "glasses" },
-        { value: "times", label: "times" },
-    ];
 
     // Handle form changes
     const handleInputChange = (field: keyof CreateHabitData, value: any) => {
@@ -348,40 +338,21 @@ export default function AddHabitPage() {
                     </div>
                 </div>
 
-                {/* Goal Settings Section */}
+                {/* Description Section */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-800 mb-3">
-                        Goal (optional)
+                        Description (optional)
                     </label>
-                    <div className="flex space-x-3">
-                        <Input
-                            type="number"
-                            value={formData.goalValue}
-                            onChange={(e) =>
-                                handleInputChange(
-                                    "goalValue",
-                                    parseInt(e.target.value) || 0
-                                )
-                            }
-                            placeholder="e.g. 5"
-                            className="flex-1"
-                            inputClassName="rounded-2xl"
-                            min={0}
-                        />
-                        <select
-                            value={formData.goalUnit}
-                            onChange={(e) =>
-                                handleInputChange("goalUnit", e.target.value)
-                            }
-                            className="px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
-                        >
-                            {unitOptions.map((unit) => (
-                                <option key={unit.value} value={unit.value}>
-                                    {unit.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    <Input
+                        type="text"
+                        value={formData.description}
+                        onChange={(e) =>
+                            handleInputChange("description", e.target.value)
+                        }
+                        placeholder="e.g. 30 minutes workout, Read 20 pages, No smoking"
+                        className="w-full"
+                        inputClassName="rounded-2xl"
+                    />
                 </div>
 
                 {/* Save Button */}
