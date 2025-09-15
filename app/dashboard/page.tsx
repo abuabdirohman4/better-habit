@@ -11,7 +11,6 @@ export default function DashboardPage() {
     const { habits, isLoading, error } = useHabits();
     const { logs, isLoading: logsLoading } = useAllHabitLogs();
     const router = useRouter();
-    console.log('habits', habits)
     
     // Initialize state from localStorage or default values
     const getInitialCollapseState = (): Record<string, boolean> => {
@@ -45,6 +44,15 @@ export default function DashboardPage() {
 
     // State for collapsed sections
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(getInitialCollapseState);
+    
+    // State for selected date navigation
+    const [selectedDate, setSelectedDate] = useState<string>(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    });
 
     // Save collapse state to localStorage whenever it changes
     useEffect(() => {
@@ -71,11 +79,45 @@ export default function DashboardPage() {
     // Get active habits for filtering
     const activeHabits = habits.filter((habit: any) => habit.isActive);
     
-    // Calculate today's progress
-    const todayProgress = useMemo(() => {
-        const today = new Date().toISOString().split('T')[0];
-        const todayLogs = logs.filter((log: any) => log.date === today);
-        const completedHabitIds = todayLogs.map((log: any) => log.habitId);
+    // Helper functions for date navigation
+    const formatDisplayDate = (dateString: string) => {
+        const date = new Date(dateString + 'T00:00:00');
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+
+        const todayString = today.toISOString().split('T')[0];
+        const yesterdayString = yesterday.toISOString().split('T')[0];
+        const tomorrowString = tomorrow.toISOString().split('T')[0];
+
+        if (dateString === todayString) return "Today";
+        if (dateString === yesterdayString) return "Yesterday";
+        if (dateString === tomorrowString) return "Tomorrow";
+        
+        return date.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+    };
+
+    const navigateDate = (direction: 'prev' | 'next') => {
+        const currentDate = new Date(selectedDate + 'T00:00:00');
+        const newDate = new Date(currentDate);
+        newDate.setDate(currentDate.getDate() + (direction === 'next' ? 1 : -1));
+        
+        const year = newDate.getFullYear();
+        const month = String(newDate.getMonth() + 1).padStart(2, "0");
+        const day = String(newDate.getDate()).padStart(2, "0");
+        setSelectedDate(`${year}-${month}-${day}`);
+    };
+
+    // Calculate selected date's progress
+    const selectedDateProgress = useMemo(() => {
+        const selectedDateLogs = logs.filter((log: any) => log.date === selectedDate);
+        const completedHabitIds = selectedDateLogs.map((log: any) => log.habitId);
         const completedCount = activeHabits.filter((habit: any) => 
             completedHabitIds.includes(habit.id)
         ).length;
@@ -88,7 +130,7 @@ export default function DashboardPage() {
             completedCount,
             percentage
         };
-    }, [logs, activeHabits]);
+    }, [logs, activeHabits, selectedDate]);
 
     // Show loading while fetching habits or logs
     if (isLoading || logsLoading) {
@@ -123,33 +165,24 @@ export default function DashboardPage() {
                             Good Morning!
                         </h1>
                         <p className="text-white/90">
-                            Let&apos;s build great habits today
+                            Let&apos;s build great habits today!
                         </p>
-                    </div>
-                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                        <svg
-                            className="w-6 h-6"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
                     </div>
                 </div>
 
-                {/* Today's Progress Section */}
+                {/* Selected Date Progress Section */}
                 <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between">
                     <div>
-                        <p className="text-white/80 text-lg">Today&apos;s Progress</p>
+                        <p className="text-white/80 text-lg">{formatDisplayDate(selectedDate)}&apos;s Progress</p>
                         <p className="text-sm font-bold">
-                            {todayProgress.totalHabits > 0
-                                ? `${todayProgress.completedCount} of ${todayProgress.totalHabits} completed`
-                                : "No habits today"}
+                            {selectedDateProgress.totalHabits > 0
+                                ? `${selectedDateProgress.completedCount} of ${selectedDateProgress.totalHabits} completed`
+                                : "No habits for this date"}
                         </p>
                     </div>
                     <div className="w-12 h-12 bg-habit-yellow rounded-full flex items-center justify-center">
                         <p className="text-base font-bold text-white">
-                            {todayProgress.totalHabits > 0 ? `${todayProgress.percentage}%` : "0%"}
+                            {selectedDateProgress.totalHabits > 0 ? `${selectedDateProgress.percentage}%` : "0%"}
                         </p>
                     </div>
                 </div>
@@ -157,38 +190,53 @@ export default function DashboardPage() {
 
             {/* Main Content */}
             <div className="px-7 -mt-4 relative z-10">
-                {/* Today's Habits Section */}
+                {/* Habits Section with Date Navigation */}
                 <div className="mt-10 mb-6">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-bold text-gray-800">
-                            Today&apos;s Habits
+                            {formatDisplayDate(selectedDate)}
                         </h2>
-                        <div className="flex gap-2">
-                        <button
-                                onClick={() => router.push("/manage-habits")}
-                                className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-1"
-                        >
-                            <svg
-                                    className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                        <div className="flex items-center gap-2">
+                            {/* Date Navigation */}
+                            <button
+                                onClick={() => navigateDate('prev')}
+                                className="w-10 h-10 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                title="Previous Day"
                             >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                                    />
+                                <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
                                         strokeWidth={2}
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                />
-                            </svg>
-                                Manage
-                        </button>
+                                        d="M15 19l-7-7 7-7"
+                                    />
+                                </svg>
+                            </button>
+                            
+                            <button
+                                onClick={() => navigateDate('next')}
+                                className="w-10 h-10 bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200 transition-colors flex items-center justify-center"
+                                title="Next Day"
+                            >
+                                <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5l7 7-7 7"
+                                    />
+                                </svg>
+                            </button>
                         </div>
                     </div>
 
@@ -281,7 +329,11 @@ export default function DashboardPage() {
                                         {!collapsedSections[timeOfDay] && (
                                             <div className="space-y-3 mt-4">
                                                 {timeActiveHabits.map((habit: any) => (
-                                                    <HabitCard key={habit.id} habit={habit} />
+                                                    <HabitCard 
+                                                        key={habit.id} 
+                                                        habit={habit} 
+                                                        targetDate={selectedDate}
+                                                    />
                                                 ))}
                                             </div>
                                         )}
