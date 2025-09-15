@@ -30,7 +30,7 @@ export const viewport = {
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
-    themeColor: "#1496F6",
+    themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -42,11 +42,14 @@ export default function RootLayout({
         <html lang="en" className="mx-auto max-w-md bg-white dark:bg-white">
             <head>
                 <link rel="manifest" href="/manifest.json" />
-                <meta name="theme-color" content="#1496F6" />
+                <meta name="theme-color" content="#ffffff" />
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
                 <meta name="apple-mobile-web-app-title" content="Better Habit" />
                 <link rel="apple-touch-icon" href="/img/logo.svg" />
+                <meta name="msapplication-TileColor" content="#ffffff" />
+                <meta name="msapplication-navbutton-color" content="#ffffff" />
+                <meta name="application-name" content="Better Habit" />
             </head>
             <body
                 className={`${inter.className} min-h-screen shadow-2xl bg-white`}

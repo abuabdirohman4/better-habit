@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- [Describe your bug fixes here]
+- [Example: Fixed calendar not displaying habit completions correctly]
+- [Example: Resolved PWA installation issues on iOS Safari]
+
 ### Added
 - Versioning system implementation
 - Automated release scripts
