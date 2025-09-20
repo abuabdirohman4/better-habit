@@ -181,8 +181,12 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
                                         day.completed 
                                             ? "bg-habit-green" 
                                             : "bg-gray-200"
+                                    } ${
+                                        day.isTargetDate 
+                                            ? "ring-2 ring-habit-blue ring-offset-1" 
+                                            : ""
                                     }`}
-                                    title={`${day.dayName} - ${day.date} ${day.completed ? '(Completed)' : '(Not completed)'} ${day.isTargetDate ? '(Selected date)' : ''}`}
+                                    title={`${day.dayName} - ${day.date} ${day.completed ? '(Completed)' : '(Not completed)'} ${day.isTargetDate ? '(Today - Click to complete)' : ''}`}
                                 />
                             ))}
                         </div>
