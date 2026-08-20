@@ -2,7 +2,7 @@
   "name": "Better Habit",
   "short_name": "Better Habit",
   "description": "A smart habit tracking app to help you build better habits",
-  "start_url": "/",
+  "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#ffffff",

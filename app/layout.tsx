@@ -3,14 +3,22 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SWRProvider from "@/components/SWRProvider";
 import BottomNavigationBar from "@/components/BottomNavigationBar";
+import AppShell from "@/components/AppShell";
 import PWAComponents from "@/components/PWA";
 import LoadingHandler from "@/components/PWA/LoadingHandler";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Better Habit",
-    description: "A smart habit tracking app to help you build better habits",
+    title: "Better Habit — Build small habits, build your better self",
+    description:
+        "A free habit tracker with monthly goals, streaks, positive and negative habits, and stale-habit reminders. Installs like an app.",
+    openGraph: {
+        title: "Better Habit — Build small habits, build your better self",
+        description:
+            "A free habit tracker with monthly goals, streaks, positive and negative habits, and stale-habit reminders.",
+        type: "website",
+    },
     manifest: "/manifest.json",
     appleWebApp: {
         capable: true,
@@ -42,7 +50,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className="mx-auto max-w-md bg-white dark:bg-white">
+        <html lang="en" className="bg-white dark:bg-white">
             <head>
                 <link rel="manifest" href="/manifest.json" />
                 <meta name="theme-color" content="#ffffff" />
@@ -60,7 +68,7 @@ export default function RootLayout({
                 <PWAComponents />
                 <LoadingHandler />
                 <SWRProvider>
-                    {children}
+                    <AppShell>{children}</AppShell>
                     <BottomNavigationBar />
                 </SWRProvider>
             </body>

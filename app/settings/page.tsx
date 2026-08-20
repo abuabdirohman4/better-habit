@@ -3,16 +3,40 @@
 import { useState } from "react";
 import Modal from "@/components/Modal";
 import Toggle from "@/components/Toggle";
-import Input from "@/components/Input";
+import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import {
+    usePWAInstall,
+    setDeferredPrompt,
+    setIsInstalled,
+    isIOS,
+} from "@/lib/pwa-install";
 
 export default function SettingsPage() {
     const router = useRouter();
     const supabase = createClient();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showSignOutModal, setShowSignOutModal] = useState(false);
+    const [isSigningOut, setIsSigningOut] = useState(false);
     const [notifications, setNotifications] = useState(true);
-    const [darkMode, setDarkMode] = useState(false);
+
+    const { deferredPrompt, isInstalled } = usePWAInstall();
+    const canInstall = !isInstalled && !!deferredPrompt;
+
+    const handleInstall = async () => {
+        if (!deferredPrompt) return;
+        await deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") setIsInstalled(true);
+        setDeferredPrompt(null);
+    };
+
+    const handleSignOut = async () => {
+        setIsSigningOut(true);
+        await supabase.auth.signOut();
+        router.replace("/");
+    };
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Header with Gradient Background */}
@@ -130,18 +154,94 @@ export default function SettingsPage() {
                         </div>
                     </div>
 
+                    {/* Install App Section */}
+                    <div className="bg-white rounded-2xl p-6">
+                        <h2 className="text-lg font-semibold text-gray-800 mb-1">
+                            Install App
+                        </h2>
+                        <p className="text-sm text-gray-500 mb-4">
+                            Pasang Better Habit di perangkat untuk akses cepat
+                            dan tampilan full-screen.
+                        </p>
+
+                        {isInstalled ? (
+                            <div className="flex items-center gap-2 text-sm font-medium text-habit-green">
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2.5}
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M5 13l4 4L19 7"
+                                    />
+                                </svg>
+                                Sudah terpasang di perangkat ini
+                            </div>
+                        ) : canInstall ? (
+                            <button
+                                onClick={handleInstall}
+                                className="flex w-full items-center justify-center gap-2 rounded-xl bg-habit-blue px-4 py-3 font-medium text-white transition-colors hover:brightness-110"
+                            >
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 3v12m0 0l-5-5m5 5l5-5M3 15v4a2 2 0 002 2h14a2 2 0 002-2v-4"
+                                    />
+                                </svg>
+                                Install Better Habit
+                            </button>
+                        ) : isIOS() ? (
+                            <p className="text-sm text-gray-500">
+                                Di Safari: tap tombol <strong>Share</strong>{" "}
+                                lalu pilih <strong>Add to Home Screen</strong>
+                            </p>
+                        ) : (
+                            <p className="text-sm text-gray-500">
+                                Buka Better Habit di Chrome, lalu tap ikon
+                                install di address bar
+                            </p>
+                        )}
+                    </div>
+
                     {/* Account Section */}
                     <div className="bg-white rounded-2xl p-6">
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                        <h2 className="text-lg font-semibold text-gray-800 mb-1">
                             Account
                         </h2>
+                        <p className="text-sm text-gray-500 mb-4">
+                            Keluar dari sesi akunmu di perangkat ini.
+                        </p>
                         <button
-                            onClick={async () => {
-                                await supabase.auth.signOut();
-                                router.push("/");
-                            }}
-                            className="w-full px-4 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors font-medium"
+                            onClick={() => setShowSignOutModal(true)}
+                            className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-500 px-4 py-3 font-medium text-white transition-colors hover:bg-red-600"
                         >
+                            <svg
+                                className="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth={2}
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                />
+                            </svg>
                             Sign Out
                         </button>
                     </div>
@@ -161,6 +261,40 @@ export default function SettingsPage() {
 
             {/* Bottom spacing for navigation */}
             <div className="pb-20"></div>
+
+            {/* Sign Out Confirmation */}
+            <Modal
+                isOpen={showSignOutModal}
+                onClose={() => !isSigningOut && setShowSignOutModal(false)}
+                title="Sign Out"
+                size="md"
+            >
+                <div className="space-y-4">
+                    <p className="text-gray-600">
+                        Yakin mau keluar? Kamu perlu masuk lagi untuk melihat
+                        kebiasaanmu.
+                    </p>
+                    <div className="flex gap-3 justify-end">
+                        <button
+                            onClick={() => setShowSignOutModal(false)}
+                            disabled={isSigningOut}
+                            className="px-4 py-2 text-gray-600 transition-colors hover:text-gray-800 disabled:opacity-50"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            onClick={handleSignOut}
+                            disabled={isSigningOut}
+                            className="flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-white transition-colors hover:bg-red-600 disabled:opacity-50"
+                        >
+                            {isSigningOut && (
+                                <Spinner className="h-4 w-4 fill-white text-red-300" />
+                            )}
+                            {isSigningOut ? "Keluar..." : "Sign Out"}
+                        </button>
+                    </div>
+                </div>
+            </Modal>
 
             {/* Delete Account Modal */}
             <Modal
