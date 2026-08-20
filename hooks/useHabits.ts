@@ -1,10 +1,12 @@
+import { useMemo } from "react";
 import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import { Habit, CreateHabitData } from "@/lib/types";
 
-const supabase = createClient();
 
 export const useHabits = () => {
+    const supabase = useMemo(() => createClient(), []);
+
     const { data, error, isLoading, mutate } = useSWR(
         "habits",
         async (): Promise<Habit[]> => {

@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     },
 };
 
+// Semua halaman bergantung pada sesi Supabase — tidak ada yang bisa di-prerender statis.
+export const dynamic = "force-dynamic";
+
 export const viewport = {
     width: "device-width",
     initialScale: 1,

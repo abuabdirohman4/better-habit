@@ -1,12 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import useSWR from "swr";
 import { createClient } from "@/lib/supabase/client";
 import { HabitCompletion } from "@/lib/types";
 
-const supabase = createClient();
 
 // Semua completion milik user (RLS membatasi ke user login)
 export const useAllHabitLogs = () => {
+    const supabase = useMemo(() => createClient(), []);
+
     const { data, error, isLoading, mutate } = useSWR(
         "habit_completions",
         async (): Promise<HabitCompletion[]> => {
@@ -34,6 +35,7 @@ export const useAllHabitLogs = () => {
 
 // Completion untuk satu habit
 export const useHabitLogs = (habitId: string, dailyTarget: number = 1) => {
+    const supabase = useMemo(() => createClient(), []);
     const { logs, isLoading, mutate } = useAllHabitLogs();
 
     const habitLogs = logs.filter(
