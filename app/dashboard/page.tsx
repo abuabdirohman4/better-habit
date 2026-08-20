@@ -5,23 +5,23 @@ import { useHabits } from "@/hooks/useHabits";
 import { useAllHabitLogs } from "@/hooks/useHabitLogs";
 import { useSetGlobalLoading } from "@/hooks/useGlobalLoading";
 import HabitCard from "@/components/HabitCard";
+import StaleHabitsBanner from "@/components/StaleHabitsBanner";
 import { Habit, HabitCompletion } from "@/lib/types";
+import {
+    toDateString,
+    todayWIB,
+    isDueOn,
+    findStaleHabits,
+} from "@/utils/habit-stats";
 
-const localDateString = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-};
+const localDateString = toDateString;
 
 export default function DashboardPage() {
-    const { habits, isLoading, error } = useHabits();
+    const { habits, isLoading, error, updateHabit } = useHabits();
     const { logs, isLoading: logsLoading } = useAllHabitLogs();
     const setGlobalLoading = useSetGlobalLoading();
 
-    const [selectedDate, setSelectedDate] = useState<string>(() =>
-        localDateString(new Date())
-    );
+    const [selectedDate, setSelectedDate] = useState<string>(() => todayWIB());
 
     useEffect(() => {
         setGlobalLoading(isLoading || logsLoading);
@@ -37,7 +37,7 @@ export default function DashboardPage() {
         const tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
 
-        if (dateString === localDateString(today)) return "Today";
+        if (dateString === todayWIB()) return "Today";
         if (dateString === localDateString(yesterday)) return "Yesterday";
         if (dateString === localDateString(tomorrow)) return "Tomorrow";
 
@@ -56,7 +56,14 @@ export default function DashboardPage() {
         setSelectedDate(localDateString(currentDate));
     };
 
-    // Progress tanggal terpilih: habit "completed" bila jumlah completion >= daily_target
+    // Habit yang jatuh tempo pada tanggal terpilih (daily tiap hari, weekly tiap Senin).
+    // Flexible tidak pernah wajib harian — dinilai lewat monthly_goal, bukan di sini.
+    const dueHabits = useMemo(
+        () => activeHabits.filter((habit: Habit) => isDueOn(habit, selectedDate)),
+        [activeHabits, selectedDate]
+    );
+
+    // Progress: penyebut = habit yang jatuh tempo, bukan semua habit aktif.
     const selectedDateProgress = useMemo(() => {
         const countByHabit: Record<string, number> = {};
         logs.forEach((log: HabitCompletion) => {
@@ -66,19 +73,38 @@ export default function DashboardPage() {
             }
         });
 
-        const completedCount = activeHabits.filter(
+        const completedCount = dueHabits.filter(
             (habit: Habit) =>
                 (countByHabit[habit.id] || 0) >= habit.daily_target
         ).length;
 
-        const totalHabits = activeHabits.length;
+        // Habit flexible yang dicentang tetap dihitung sebagai bonus.
+        const bonusCount = activeHabits.filter(
+            (habit: Habit) =>
+                !isDueOn(habit, selectedDate) &&
+                (countByHabit[habit.id] || 0) >= habit.daily_target
+        ).length;
+
+        const totalHabits = dueHabits.length;
         const percentage =
             totalHabits > 0
                 ? Math.round((completedCount / totalHabits) * 100)
                 : 0;
 
-        return { totalHabits, completedCount, percentage };
-    }, [logs, activeHabits, selectedDate]);
+        return { totalHabits, completedCount, bonusCount, percentage };
+    }, [logs, dueHabits, activeHabits, selectedDate]);
+
+    // Habit lama tak tersentuh — kandidat arsip (hanya tampil saat melihat hari ini).
+    const staleHabits = useMemo(
+        () => findStaleHabits(habits, logs, todayWIB()),
+        [habits, logs]
+    );
+
+    const handleArchiveStale = async (habitIds: string[]) => {
+        await Promise.all(
+            habitIds.map((id) => updateHabit(id, { is_archived: true }))
+        );
+    };
 
     if (error) {
         return (
@@ -115,7 +141,10 @@ export default function DashboardPage() {
                         <p className="text-sm font-bold">
                             {selectedDateProgress.totalHabits > 0
                                 ? `${selectedDateProgress.completedCount} of ${selectedDateProgress.totalHabits} completed`
-                                : "No habits for this date"}
+                                : "No habits due for this date"}
+                            {selectedDateProgress.bonusCount > 0
+                                ? ` · +${selectedDateProgress.bonusCount} bonus`
+                                : ""}
                         </p>
                     </div>
                     <div className="w-12 h-12 bg-habit-yellow rounded-full flex items-center justify-center">
@@ -130,7 +159,14 @@ export default function DashboardPage() {
 
             {/* Main Content */}
             <div className="px-7 -mt-4 relative z-10">
-                <div className="mt-10 mb-6">
+                <div className="mt-10">
+                    <StaleHabitsBanner
+                        stale={staleHabits}
+                        onArchive={handleArchiveStale}
+                    />
+                </div>
+
+                <div className="mb-6">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-2xl font-bold text-gray-800">
                             {formatDisplayDate(selectedDate)}

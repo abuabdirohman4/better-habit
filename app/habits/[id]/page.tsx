@@ -7,6 +7,7 @@ import { useHabitLogs } from "@/hooks/useHabitLogs";
 import Calendar from "@/components/Calendar";
 import Spinner from "@/components/Spinner";
 import { Habit, HabitCompletion } from "@/lib/types";
+import { buildCompletedDates, monthlyProgress } from "@/utils/habit-stats";
 
 export default function HabitStatisticsPage() {
     const params = useParams();
@@ -39,10 +40,8 @@ export default function HabitStatisticsPage() {
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();
 
-        // Distinct completed dates (multiple completions/day count once)
-        const completedDates = new Set(
-            logs.map((log: HabitCompletion) => log.date)
-        );
+        // Tanggal yang mencapai daily_target (sama dengan hitungan better-planner)
+        const completedDates = buildCompletedDates(logs, habit.daily_target);
 
         const monthDays = Array.from(completedDates).filter((date) => {
             const logDate = new Date(date + "T00:00:00");
@@ -81,11 +80,19 @@ export default function HabitStatisticsPage() {
                 ? Math.round((monthDays.length / daysInMonth) * 100)
                 : 0;
 
+        const goalProgress = monthlyProgress(
+            habit,
+            logs,
+            currentYear,
+            currentMonth + 1
+        );
+
         return {
             streak,
             successRate,
             completedDays: monthDays.length,
             totalDaysInMonth: daysInMonth,
+            goalProgress,
         };
     }, [habit, logs, currentDate]);
 
@@ -295,9 +302,33 @@ export default function HabitStatisticsPage() {
                         </div>
                         <div className="text-center p-4 bg-gray-50 rounded-xl">
                             <p className="text-2xl font-bold text-gray-600">
-                                {habitStats?.totalDaysInMonth || 0}
+                                {habitStats?.goalProgress.goal || 0}
                             </p>
-                            <p className="text-sm text-gray-600">Total Days</p>
+                            <p className="text-sm text-gray-600">
+                                Monthly Goal
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Monthly goal progress */}
+                    <div className="mt-4">
+                        <div className="flex justify-between text-sm mb-2">
+                            <span className="text-gray-600">
+                                Goal progress
+                            </span>
+                            <span className="font-semibold text-gray-800">
+                                {habitStats?.goalProgress.completed || 0}/
+                                {habitStats?.goalProgress.goal || 0} (
+                                {habitStats?.goalProgress.percentage || 0}%)
+                            </span>
+                        </div>
+                        <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-gradient-to-r from-habit-green to-habit-blue transition-all duration-500"
+                                style={{
+                                    width: `${Math.min(100, habitStats?.goalProgress.percentage || 0)}%`,
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
