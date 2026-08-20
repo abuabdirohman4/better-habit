@@ -1,6 +1,9 @@
 {
     "name": "better-habit",
     "version": "1.0.2",
+    "engines": {
+        "node": ">=22"
+    },
     "private": true,
     "scripts": {
         "dev": "next dev",

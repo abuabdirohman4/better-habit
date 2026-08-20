@@ -42,7 +42,7 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
                     </svg>
                 ),
                 path: "/dashboard",
-                isActive: pathname === "/dashboard" || pathname === "/",
+                isActive: pathname === "/dashboard",
             },
             {
                 id: "manage",
@@ -78,6 +78,9 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
     const handleNavigation = (path: string) => {
         router.push(path);
     };
+
+    // Halaman login belum punya sesi — nav ke halaman terproteksi tidak berguna di sana.
+    if (pathname === "/") return null;
 
     return (
         <nav
