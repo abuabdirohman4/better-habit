@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
-import { useOfflineHabits } from "@/hooks/usePWA";
-import { getHabitIcon, getHabitCardColor, getHabitTextColor } from "@/utils/habit-icons";
+import {
+    getHabitIcon,
+    getHabitCardColor,
+} from "@/utils/habit-icons";
 import { DAYS_OF_WEEK } from "@/utils/constants";
 
 interface HabitCardProps {
@@ -14,184 +16,109 @@ interface HabitCardProps {
     targetDate?: string; // Optional date prop for viewing specific dates
 }
 
-const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate }) => {
+const localDateString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+};
+
+const HabitCard: React.FC<HabitCardProps> = ({
+    habit,
+    className = "",
+    targetDate,
+}) => {
     const router = useRouter();
-    const { isCompletedOnDate, toggleCompletion, isLoading, logs } = useHabitLogs(
-        habit.id
-    );
-    const { storeHabitCompletion } = useOfflineHabits();
-    const [isCompleted, setIsCompleted] = useState(false);
+    const { isCompletedOnDate, getCountForDate, toggleCompletion } =
+        useHabitLogs(habit.id, habit.daily_target);
 
-    // Check if habit is completed on target date
-    useEffect(() => {
-        // Use target date if provided, otherwise use today
-        let dateToCheck: string;
-        
-        if (targetDate) {
-            dateToCheck = targetDate;
-        } else {
-            // Use local date instead of UTC to match database
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, "0");
-            const day = String(today.getDate()).padStart(2, "0");
-            dateToCheck = `${year}-${month}-${day}`;
-        }
+    const dateToCheck = targetDate || localDateString(new Date());
+    const isCompleted = isCompletedOnDate(dateToCheck);
+    const countForDate = getCountForDate(dateToCheck);
 
-        const completed = isCompletedOnDate(dateToCheck);
-        setIsCompleted(completed);
-    }, [isCompletedOnDate, habit.id, targetDate]);
-
-
-    // Calculate weekly progress (7 days around target date)
+    // Weekly progress (Monday-based week around target date)
     const weeklyProgress = useMemo(() => {
-        const weekDays = [];
-        
-        // Use target date if provided, otherwise use today
-        let referenceDate: Date;
-        if (targetDate) {
-            referenceDate = new Date(targetDate + 'T00:00:00');
-        } else {
-            referenceDate = new Date();
-        }
-        
-        // Get current day of week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+        const referenceDate = targetDate
+            ? new Date(targetDate + "T00:00:00")
+            : new Date();
         const currentDay = referenceDate.getDay();
-        
-        // Calculate days since Monday (if current day is Sunday, go back 6 days to get Monday)
         const daysSinceMonday = currentDay === 0 ? 6 : currentDay - 1;
-        
-        // Get Monday of the week containing the reference date
         const monday = new Date(referenceDate);
         monday.setDate(referenceDate.getDate() - daysSinceMonday);
-        
-        // Get 7 days starting from Monday
+
+        const weekDays = [];
         for (let i = 0; i < 7; i++) {
             const date = new Date(monday);
             date.setDate(monday.getDate() + i);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-            const dateString = `${year}-${month}-${day}`;
-            
+            const dateString = localDateString(date);
             weekDays.push({
                 date: dateString,
                 completed: isCompletedOnDate(dateString),
                 dayName: DAYS_OF_WEEK[i],
-                isTargetDate: targetDate ? dateString === targetDate : dateString === new Date().toISOString().split('T')[0]
+                isTargetDate: dateString === dateToCheck,
             });
         }
-        
         return weekDays;
-    }, [isCompletedOnDate, targetDate]);
-    const completedCount = weeklyProgress.filter(day => day.completed).length;
+    }, [isCompletedOnDate, targetDate, dateToCheck]);
 
     const handleToggleCompletion = async () => {
         try {
-            // Use target date if provided, otherwise use today
-            let dateToToggle: string;
-            
-            if (targetDate) {
-                dateToToggle = targetDate;
-            } else {
-                // Use local date instead of UTC to match database
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = String(today.getMonth() + 1).padStart(2, "0");
-                const day = String(today.getDate()).padStart(2, "0");
-                dateToToggle = `${year}-${month}-${day}`;
-            }
-
-            // Check if online
-            if (navigator.onLine) {
-                const result = await toggleCompletion(dateToToggle);
-                
-                // Update state based on the result
-                if (result) {
-                    setIsCompleted(true);
-                } else {
-                    setIsCompleted(false);
-                }
-            } else {
-                // Store offline for later sync
-                const newCompleted = !isCompleted;
-                storeHabitCompletion(habit.id, dateToToggle, newCompleted);
-                setIsCompleted(newCompleted);
-            }
+            await toggleCompletion(dateToCheck);
         } catch (error) {
             console.error("Error toggling habit completion:", error);
-            // Fallback to offline storage
-            const newCompleted = !isCompleted;
-            const fallbackDate = targetDate || new Date().toISOString().split('T')[0];
-            storeHabitCompletion(habit.id, fallbackDate, newCompleted);
-            setIsCompleted(newCompleted);
         }
     };
 
-    const formatReminderTime = (time?: string) => {
-        if (!time) return "";
-        return new Date(`2000-01-01T${time}`).toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-        });
-    };
-
-    // Handle navigation to habit statistics
     const handleCardClick = () => {
         router.push(`/habits/${habit.id}`);
     };
 
     return (
-        <div className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}>
-            {/* Main Content */}
+        <div
+            className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}
+        >
             <div className="flex items-center space-x-4">
-                {/* Clickable area for card content */}
-                <div 
+                <div
                     className="flex items-center space-x-4 flex-1 cursor-pointer hover:bg-gray-50 rounded-xl p-2 -m-2 transition-colors"
                     onClick={handleCardClick}
                 >
-                {/* Icon */}
-                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.iconName)} transition-all duration-300 hover:scale-110`}>
-                    <div className="text-2xl text-white drop-shadow-sm">
-                        {getHabitIcon(habit.iconName)}
-                    </div>
-                </div>
-
-                {/* Habit Details */}
-                <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 text-lg">
-                        {habit.displayName}
-                    </h3>
-                    <div className="text-sm text-gray-600 mb-3">
-                        {habit.description}
-                        {habit.reminderTime && habit.isReminderOn && (
-                            <span>
-                                {" "}
-                                • {formatReminderTime(habit.reminderTime)}
-                            </span>
-                        )}
-                    </div>
-                    <div className="flex items-center space-x-1">
-                        <div className="flex space-x-2">
-                            {weeklyProgress.map((day, index) => (
-                                <div
-                                    key={index}
-                                    className={`w-4 h-4 rounded-full transition-all duration-200 relative ${
-                                        day.completed 
-                                            ? "bg-habit-green" 
-                                            : "bg-gray-200"
-                                    } ${
-                                        day.isTargetDate 
-                                            ? "ring-2 ring-habit-blue ring-offset-1" 
-                                            : ""
-                                    }`}
-                                    title={`${day.dayName} - ${day.date} ${day.completed ? '(Completed)' : '(Not completed)'} ${day.isTargetDate ? '(Today - Click to complete)' : ''}`}
-                                />
-                            ))}
+                    {/* Icon */}
+                    <div
+                        className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${getHabitCardColor(habit.category)} transition-all duration-300 hover:scale-110`}
+                    >
+                        <div className="text-2xl text-white drop-shadow-sm">
+                            {getHabitIcon(habit.category)}
                         </div>
                     </div>
-                </div>
+
+                    {/* Habit Details */}
+                    <div className="flex-1">
+                        <h3 className="font-semibold text-gray-800 text-lg">
+                            {habit.name}
+                        </h3>
+                        <div className="text-sm text-gray-600 mb-3">
+                            {habit.description}
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <div className="flex space-x-2">
+                                {weeklyProgress.map((day, index) => (
+                                    <div
+                                        key={index}
+                                        className={`w-4 h-4 rounded-full transition-all duration-200 relative ${
+                                            day.completed
+                                                ? "bg-habit-green"
+                                                : "bg-gray-200"
+                                        } ${
+                                            day.isTargetDate
+                                                ? "ring-2 ring-habit-blue ring-offset-1"
+                                                : ""
+                                        }`}
+                                        title={`${day.dayName} - ${day.date} ${day.completed ? "(Completed)" : "(Not completed)"}`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Completion Button */}
@@ -217,6 +144,10 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, className = "", targetDate
                                 d="M5 13l4 4L19 7"
                             />
                         </svg>
+                    ) : habit.daily_target > 1 ? (
+                        <span className="text-sm font-bold">
+                            {countForDate}/{habit.daily_target}
+                        </span>
                     ) : (
                         <svg
                             className="w-6 h-6"

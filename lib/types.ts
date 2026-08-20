@@ -1,46 +1,64 @@
+export type HabitCategory =
+    | "spiritual"
+    | "kesehatan"
+    | "karir"
+    | "keuangan"
+    | "relasi"
+    | "petualangan"
+    | "kontribusi"
+    | "other";
+
+export type HabitFrequency = "daily" | "weekly" | "flexible";
+
+export type HabitTrackingType = "positive" | "negative";
+
 export interface Habit {
-    id: number;
-    displayName: string;
-    description: string; // e.g., "30 minutes workout", "Read 20 pages", "No smoking"
-    iconName: string;
-    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
-    timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
-    frequencyType: "daily" | "weekly" | "custom";
-    frequencyDays?: string; // e.g., "1,2,3,4,5" for weekdays
-    reminderTime?: string; // e.g., "07:00"
-    isReminderOn: boolean;
-    isActive: boolean;
-    createdAt: string;
+    id: string;
+    user_id: string;
+    name: string;
+    description: string | null;
+    category: HabitCategory;
+    frequency: HabitFrequency;
+    monthly_goal: number;
+    tracking_type: HabitTrackingType;
+    target_time: string | null;
+    is_archived: boolean;
+    sort_order: number;
+    daily_target: number;
+    created_at: string;
+    updated_at: string;
 }
 
-export interface HabitLog {
-    id: number;
-    habitId: number;
-    date: string; // YYYY-MM-DD format
-    completedValue?: number; // Optional achievement value
-    completedAt: string; // Timestamp when completed
+export interface HabitCompletion {
+    id: string;
+    habit_id: string;
+    user_id: string;
+    date: string; // YYYY-MM-DD
+    note: string | null;
+    created_at: string;
 }
 
-export interface GoogleSheetsResponse {
-    data: any[];
-    error?: string;
-}
+export type CreateHabitData = Pick<
+    Habit,
+    | "name"
+    | "description"
+    | "category"
+    | "frequency"
+    | "tracking_type"
+    | "daily_target"
+    | "monthly_goal"
+    | "target_time"
+>;
 
-// Helper types for form data
-export interface CreateHabitData {
-    displayName: string;
-    description: string;
-    iconName: string;
-    category: "Spiritual" | "Health" | "Mind" | "To Dont List";
-    timeOfDay: "Morning" | "Afternoon" | "Evening" | "All Day";
-    frequencyType: "daily" | "weekly" | "custom";
-    frequencyDays?: string;
-    reminderTime?: string;
-    isReminderOn: boolean;
-}
+export const CATEGORIES: HabitCategory[] = [
+    "spiritual",
+    "kesehatan",
+    "karir",
+    "keuangan",
+    "relasi",
+    "petualangan",
+    "kontribusi",
+    "other",
+];
 
-export interface CreateHabitLogData {
-    habitId: number;
-    date: string;
-    completedValue?: number;
-}
+export const FREQUENCIES: HabitFrequency[] = ["daily", "weekly", "flexible"];

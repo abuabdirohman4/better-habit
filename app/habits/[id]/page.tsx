@@ -5,78 +5,103 @@ import { useParams, useRouter } from "next/navigation";
 import { useHabits } from "@/hooks/useHabits";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
 import Calendar from "@/components/Calendar";
-import HabitPerformance from "@/components/HabitPerformance";
 import Spinner from "@/components/Spinner";
+import { Habit, HabitCompletion } from "@/lib/types";
 
 export default function HabitStatisticsPage() {
     const params = useParams();
     const router = useRouter();
-    const habitId = parseInt(params.id as string);
-    
-    const { habits, isLoading: habitsLoading, error: habitsError } = useHabits();
-    const { logs, isLoading: logsLoading, error: logsError } = useHabitLogs(habitId);
-    
+    const habitId = params.id as string;
+
+    const {
+        habits,
+        isLoading: habitsLoading,
+        error: habitsError,
+    } = useHabits();
+
+    const habit = useMemo(
+        () => habits.find((h: Habit) => h.id === habitId),
+        [habits, habitId]
+    );
+
+    const { logs, isLoading: logsLoading } = useHabitLogs(
+        habitId,
+        habit?.daily_target || 1
+    );
+
     // Current month state
     const [currentDate, setCurrentDate] = useState(() => new Date());
-    
-    // Find the specific habit
-    const habit = useMemo(() => {
-        return habits.find((h: any) => h.id === habitId);
-    }, [habits, habitId]);
-    
+
     // Calculate habit statistics for current month
     const habitStats = useMemo(() => {
         if (!habit || !logs) return null;
-        
+
         const currentMonth = currentDate.getMonth();
         const currentYear = currentDate.getFullYear();
-        
-        // Filter logs for current month
-        const monthLogs = logs.filter((log: any) => {
-            const logDate = new Date(log.date);
-            return logDate.getMonth() === currentMonth && logDate.getFullYear() === currentYear;
+
+        // Distinct completed dates (multiple completions/day count once)
+        const completedDates = new Set(
+            logs.map((log: HabitCompletion) => log.date)
+        );
+
+        const monthDays = Array.from(completedDates).filter((date) => {
+            const logDate = new Date(date + "T00:00:00");
+            return (
+                logDate.getMonth() === currentMonth &&
+                logDate.getFullYear() === currentYear
+            );
         });
-        
-        // Calculate streak (consecutive days)
+
+        // Streak: consecutive days (any completion counts)
         const today = new Date();
         let streak = 0;
         let checkDate = new Date(today);
-        
+
         while (true) {
-            const dateString = checkDate.toISOString().split('T')[0];
-            const hasLog = logs.some((log: any) => log.date === dateString);
-            
-            if (hasLog) {
+            const year = checkDate.getFullYear();
+            const month = String(checkDate.getMonth() + 1).padStart(2, "0");
+            const day = String(checkDate.getDate()).padStart(2, "0");
+            const dateString = `${year}-${month}-${day}`;
+
+            if (completedDates.has(dateString)) {
                 streak++;
                 checkDate.setDate(checkDate.getDate() - 1);
             } else {
                 break;
             }
         }
-        
-        // Calculate success rate for current month
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const successRate = monthLogs.length > 0 ? Math.round((monthLogs.length / daysInMonth) * 100) : 0;
-        
+
+        const daysInMonth = new Date(
+            currentYear,
+            currentMonth + 1,
+            0
+        ).getDate();
+        const successRate =
+            monthDays.length > 0
+                ? Math.round((monthDays.length / daysInMonth) * 100)
+                : 0;
+
         return {
             streak,
             successRate,
-            completedDays: monthLogs.length,
-            totalDaysInMonth: daysInMonth
+            completedDays: monthDays.length,
+            totalDaysInMonth: daysInMonth,
         };
     }, [habit, logs, currentDate]);
-    
-    // Navigate month
-    const navigateMonth = (direction: 'prev' | 'next') => {
-        setCurrentDate(prev => {
+
+    const navigateMonth = (direction: "prev" | "next") => {
+        setCurrentDate((prev) => {
             const newDate = new Date(prev);
-            newDate.setMonth(prev.getMonth() + (direction === 'next' ? 1 : -1));
+            newDate.setMonth(prev.getMonth() + (direction === "next" ? 1 : -1));
             return newDate;
         });
     };
-    
+
     const formatMonthYear = (date: Date) => {
-        return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        return date.toLocaleDateString("en-US", {
+            month: "long",
+            year: "numeric",
+        });
     };
 
     if (habitsLoading || logsLoading) {
@@ -87,26 +112,26 @@ export default function HabitStatisticsPage() {
         );
     }
 
-    if (habitsError || logsError) {
+    if (habitsError) {
         return (
             <main className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-500 mb-4">
                         Error loading habit statistics
                     </p>
-                    <p className="text-gray-500">{habitsError || logsError}</p>
+                    <p className="text-gray-500">{habitsError}</p>
                 </div>
             </main>
         );
     }
-    
+
     if (!habit) {
         return (
             <main className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-gray-500 mb-4">Habit not found</p>
                     <button
-                        onClick={() => router.push('/dashboard')}
+                        onClick={() => router.push("/dashboard")}
                         className="bg-habit-blue text-white px-4 py-2 rounded-lg"
                     >
                         Back to Dashboard
@@ -141,7 +166,9 @@ export default function HabitStatisticsPage() {
                             </svg>
                         </button>
                         <div>
-                            <h1 className="text-3xl font-bold mb-1">{habit.displayName}</h1>
+                            <h1 className="text-3xl font-bold mb-1">
+                                {habit.name}
+                            </h1>
                             <p className="text-white/90">{habit.description}</p>
                         </div>
                     </div>
@@ -153,7 +180,9 @@ export default function HabitStatisticsPage() {
                     <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between">
                         <div>
                             <p className="text-white/80 text-sm">Day Streak</p>
-                            <p className="text-2xl font-bold">{habitStats?.streak || 0}</p>
+                            <p className="text-2xl font-bold">
+                                {habitStats?.streak || 0}
+                            </p>
                         </div>
                         <div className="w-10 h-10 bg-habit-yellow rounded-full flex items-center justify-center">
                             <svg
@@ -169,8 +198,12 @@ export default function HabitStatisticsPage() {
                     {/* Success Rate Card */}
                     <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-4 flex items-center justify-between">
                         <div>
-                            <p className="text-white/80 text-sm">Success Rate</p>
-                            <p className="text-2xl font-bold">{habitStats?.successRate || 0}%</p>
+                            <p className="text-white/80 text-sm">
+                                Success Rate
+                            </p>
+                            <p className="text-2xl font-bold">
+                                {habitStats?.successRate || 0}%
+                            </p>
                         </div>
                         <div className="w-10 h-10 bg-habit-green rounded-full flex items-center justify-center">
                             <svg
@@ -200,8 +233,8 @@ export default function HabitStatisticsPage() {
                             Monthly Progress
                         </h2>
                         <div className="flex items-center space-x-2">
-                            <button 
-                                onClick={() => navigateMonth('prev')}
+                            <button
+                                onClick={() => navigateMonth("prev")}
                                 className="p-2 hover:bg-gray-100 rounded-full"
                             >
                                 <svg
@@ -221,8 +254,8 @@ export default function HabitStatisticsPage() {
                             <span className="text-lg font-semibold text-gray-800">
                                 {formatMonthYear(currentDate)}
                             </span>
-                            <button 
-                                onClick={() => navigateMonth('next')}
+                            <button
+                                onClick={() => navigateMonth("next")}
                                 className="p-2 hover:bg-gray-100 rounded-full"
                             >
                                 <svg
@@ -243,11 +276,7 @@ export default function HabitStatisticsPage() {
                     </div>
 
                     {/* Calendar Component */}
-                    <Calendar 
-                        currentDate={currentDate}
-                        habitLogs={logs}
-                        habitId={habitId}
-                    />
+                    <Calendar currentDate={currentDate} habitLogs={logs} />
                 </div>
 
                 {/* Monthly Summary */}
@@ -260,7 +289,9 @@ export default function HabitStatisticsPage() {
                             <p className="text-2xl font-bold text-habit-blue">
                                 {habitStats?.completedDays || 0}
                             </p>
-                            <p className="text-sm text-gray-600">Days Completed</p>
+                            <p className="text-sm text-gray-600">
+                                Days Completed
+                            </p>
                         </div>
                         <div className="text-center p-4 bg-gray-50 rounded-xl">
                             <p className="text-2xl font-bold text-gray-600">

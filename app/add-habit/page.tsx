@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useHabits } from "@/hooks/useHabits";
-import { CreateHabitData } from "@/lib/types";
-import { AVAILABLE_ICONS } from "@/utils/habit-icons";
+import { CreateHabitData, CATEGORIES, FREQUENCIES } from "@/lib/types";
 import Input from "@/components/Input";
 import Toggle from "@/components/Toggle";
 
@@ -12,130 +11,35 @@ export default function AddHabitPage() {
     const router = useRouter();
     const { createHabit, isLoading } = useHabits();
 
-    // Form state
     const [formData, setFormData] = useState<CreateHabitData>({
-        displayName: "",
-        iconName: "run_icon",
-        category: "Health",
-        timeOfDay: "Morning",
-        frequencyType: "daily",
-        frequencyDays: "",
-        reminderTime: "07:00",
-        isReminderOn: false,
+        name: "",
         description: "",
+        category: "other",
+        frequency: "daily",
+        tracking_type: "positive",
+        daily_target: 1,
+        monthly_goal: 20,
+        target_time: null,
     });
 
-    // UI state
-    const [selectedIcon, setSelectedIcon] = useState("");
-    const [selectedFrequency, setSelectedFrequency] = useState("daily");
-    const [selectedDays, setSelectedDays] = useState<string[]>([]);
-    const [isReminderEnabled, setIsReminderEnabled] = useState(false);
-
-    // Available icons
-    const availableIcons = AVAILABLE_ICONS;
-
-    // Days of week
-    const daysOfWeek = [
-        { id: "1", name: "M", fullName: "Monday" },
-        { id: "2", name: "T", fullName: "Tuesday" },
-        { id: "3", name: "W", fullName: "Wednesday" },
-        { id: "4", name: "T", fullName: "Thursday" },
-        { id: "5", name: "F", fullName: "Friday" },
-        { id: "6", name: "S", fullName: "Saturday" },
-        { id: "7", name: "S", fullName: "Sunday" },
-    ];
-
-    // Time options
-    const timeOptions = [
-        "06:00",
-        "06:30",
-        "07:00",
-        "07:30",
-        "08:00",
-        "08:30",
-        "09:00",
-        "09:30",
-        "10:00",
-        "10:30",
-        "11:00",
-        "11:30",
-        "12:00",
-        "12:30",
-        "13:00",
-        "13:30",
-        "14:00",
-        "14:30",
-        "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
-        "19:30",
-        "20:00",
-        "20:30",
-        "21:00",
-        "21:30",
-        "22:00",
-        "22:30",
-        "23:00",
-        "23:30",
-    ];
-
-
-    // Handle form changes
     const handleInputChange = (field: keyof CreateHabitData, value: any) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    // Handle icon selection
-    const handleIconSelect = (iconId: string) => {
-        setSelectedIcon(iconId);
-        handleInputChange("iconName", iconId);
-    };
-
-    // Handle frequency selection
-    const handleFrequencySelect = (frequency: string) => {
-        setSelectedFrequency(frequency);
-        handleInputChange("frequencyType", frequency);
-
-        // Reset selected days when changing frequency
-        if (frequency === "daily") {
-            setSelectedDays([]);
-            handleInputChange("frequencyDays", "");
-        }
-    };
-
-    // Handle day selection
-    const handleDayToggle = (dayId: string) => {
-        if (selectedFrequency === "daily") return;
-
-        const newSelectedDays = selectedDays.includes(dayId)
-            ? selectedDays.filter((d) => d !== dayId)
-            : [...selectedDays, dayId];
-
-        setSelectedDays(newSelectedDays);
-        handleInputChange("frequencyDays", newSelectedDays.join(","));
-    };
-
-    // Handle reminder toggle
-    const handleReminderToggle = (enabled: boolean) => {
-        setIsReminderEnabled(enabled);
-        handleInputChange("isReminderOn", enabled);
-    };
-
-    // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!formData.name.trim()) {
+            alert("Please enter a habit name");
+            return;
+        }
 
         try {
             await createHabit(formData);
             router.push("/dashboard");
         } catch (error) {
             console.error("Error creating habit:", error);
+            alert("Failed to create habit. Please try again.");
         }
     };
 
@@ -170,49 +74,18 @@ export default function AddHabitPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="px-7 py-6 space-y-8">
-                {/* Habit Name Section */}
                 <Input
                     type="text"
                     label="Habit Name"
-                    value={formData.displayName}
-                    onChange={(e) => handleInputChange("displayName", e.target.value)}
+                    value={formData.name}
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     placeholder="e.g. Morning Run"
                     required
                     className="text-lg"
                     inputClassName="rounded-2xl"
                 />
 
-                {/* Icon Selection Section */}
-                <div>
-                    <label className="block text-lg font-semibold text-gray-800 mb-3">
-                        Choose Icon
-                    </label>
-                    <div className="grid grid-cols-3 gap-4">
-                        {availableIcons.map((icon) => (
-                            <button
-                                key={icon.id}
-                                type="button"
-                                onClick={() => handleIconSelect(icon.id)}
-                                className={`p-4 rounded-2xl border-2 transition-all duration-200 ${
-                                    selectedIcon === icon.id
-                                        ? "border-habit-blue bg-habit-blue/10"
-                                        : "border-gray-200 hover:border-gray-300"
-                                }`}
-                            >
-                                <div className="text-center">
-                                    <div className="text-3xl mb-2">
-                                        {icon.emoji}
-                                    </div>
-                                    <div className="text-sm font-medium text-gray-700">
-                                        {icon.name}
-                                    </div>
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Category Selection Section */}
+                {/* Category */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-800 mb-3">
                         Category
@@ -222,130 +95,133 @@ export default function AddHabitPage() {
                         onChange={(e) =>
                             handleInputChange("category", e.target.value)
                         }
-                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent capitalize"
                     >
-                        <option value="Health">Health</option>
-                        <option value="Spiritual">Spiritual</option>
-                        <option value="Mind">Mind</option>
-                        <option value="To Dont List">To Dont List</option>
+                        {CATEGORIES.map((category) => (
+                            <option
+                                key={category}
+                                value={category}
+                                className="capitalize"
+                            >
+                                {category}
+                            </option>
+                        ))}
                     </select>
                 </div>
 
-                {/* Time of Day Selection Section */}
+                {/* Habit Type */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-800 mb-3">
-                        Time of Day
+                        Habit Type
                     </label>
-                    <select
-                        value={formData.timeOfDay}
-                        onChange={(e) =>
-                            handleInputChange("timeOfDay", e.target.value)
+                    <Toggle
+                        checked={formData.tracking_type === "negative"}
+                        onChange={(checked: boolean) =>
+                            handleInputChange(
+                                "tracking_type",
+                                checked ? "negative" : "positive"
+                            )
                         }
-                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
-                    >
-                        <option value="Morning">Morning</option>
-                        <option value="Afternoon">Afternoon</option>
-                        <option value="Evening">Evening</option>
-                        <option value="All Day">All Day</option>
-                    </select>
+                        label={
+                            formData.tracking_type === "negative"
+                                ? "Quit / To Don't (avoid this)"
+                                : "Build (do this)"
+                        }
+                        color="primary"
+                    />
                 </div>
 
-                {/* Frequency Selection Section */}
+                {/* Frequency */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-800 mb-3">
                         Frequency
                     </label>
                     <div className="flex space-x-3">
-                        {["daily", "weekly", "custom"].map((frequency) => (
+                        {FREQUENCIES.map((frequency) => (
                             <button
                                 key={frequency}
                                 type="button"
-                                onClick={() => handleFrequencySelect(frequency)}
-                                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                                    selectedFrequency === frequency
+                                onClick={() =>
+                                    handleInputChange("frequency", frequency)
+                                }
+                                className={`px-6 py-3 rounded-full font-medium transition-all duration-200 capitalize ${
+                                    formData.frequency === frequency
                                         ? "bg-habit-blue text-white"
                                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                                 }`}
                             >
-                                {frequency.charAt(0).toUpperCase() +
-                                    frequency.slice(1)}
+                                {frequency}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                {/* Days of Week Selection (only for weekly/custom) */}
-                {selectedFrequency !== "daily" && (
+                {/* Targets */}
+                <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-lg font-semibold text-gray-800 mb-3">
-                            Days of Week
+                            Daily Target
                         </label>
-                        <div className="flex space-x-3">
-                            {daysOfWeek.map((day) => (
-                                <button
-                                    key={day.id}
-                                    type="button"
-                                    onClick={() => handleDayToggle(day.id)}
-                                    className={`w-12 h-12 rounded-full font-medium transition-all duration-200 ${
-                                        selectedDays.includes(day.id)
-                                            ? "bg-habit-blue text-white"
-                                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                                    }`}
-                                >
-                                    {day.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Reminder Settings Section */}
-                <div>
-                    <label className="block text-lg font-semibold text-gray-800 mb-3">
-                        Reminder
-                    </label>
-                    <div className="space-y-4">
-                        <Toggle
-                            checked={isReminderEnabled}
-                            onChange={handleReminderToggle}
-                            label="Enable reminder"
-                            color="primary"
+                        <input
+                            type="number"
+                            min={1}
+                            max={99}
+                            value={formData.daily_target}
+                            onChange={(e) =>
+                                handleInputChange(
+                                    "daily_target",
+                                    Number(e.target.value)
+                                )
+                            }
+                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
                         />
-
-                        {isReminderEnabled && (
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Time
-                                </label>
-                                <select
-                                    value={formData.reminderTime}
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            "reminderTime",
-                                            e.target.value
-                                        )
-                                    }
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
-                                >
-                                    {timeOptions.map((time) => (
-                                        <option key={time} value={time}>
-                                            {time}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
+                    </div>
+                    <div>
+                        <label className="block text-lg font-semibold text-gray-800 mb-3">
+                            Monthly Goal
+                        </label>
+                        <input
+                            type="number"
+                            min={1}
+                            max={31}
+                            value={formData.monthly_goal}
+                            onChange={(e) =>
+                                handleInputChange(
+                                    "monthly_goal",
+                                    Number(e.target.value)
+                                )
+                            }
+                            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                        />
                     </div>
                 </div>
 
-                {/* Description Section */}
+                {/* Target Time */}
+                <div>
+                    <label className="block text-lg font-semibold text-gray-800 mb-3">
+                        Target Time (optional)
+                    </label>
+                    <input
+                        type="time"
+                        value={formData.target_time || ""}
+                        onChange={(e) =>
+                            handleInputChange(
+                                "target_time",
+                                e.target.value || null
+                            )
+                        }
+                        className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                    />
+                </div>
+
+                {/* Description */}
                 <div>
                     <label className="block text-lg font-semibold text-gray-800 mb-3">
                         Description (optional)
                     </label>
                     <Input
                         type="text"
-                        value={formData.description}
+                        value={formData.description || ""}
                         onChange={(e) =>
                             handleInputChange("description", e.target.value)
                         }

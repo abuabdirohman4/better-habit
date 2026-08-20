@@ -39,3 +39,8 @@ next-env.d.ts
 # Versioning
 VERSION
 *.version
+
+.mcp.json
+# PWA build output
+public/sw.js
+public/workbox-*.js

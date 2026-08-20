@@ -6,5 +6,4 @@ export const swrConfig: SWRConfiguration = {
     dedupingInterval: 5000,
     errorRetryCount: 2,
     refreshInterval: 15000,
-    fetcher: (url: string) => fetch(url).then((res) => res.json()),
 };

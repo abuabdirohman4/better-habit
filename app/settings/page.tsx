@@ -4,8 +4,12 @@ import { useState } from "react";
 import Modal from "@/components/Modal";
 import Toggle from "@/components/Toggle";
 import Input from "@/components/Input";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
+    const router = useRouter();
+    const supabase = createClient();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [notifications, setNotifications] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
@@ -124,6 +128,22 @@ export default function SettingsPage() {
                                 </select>
                             </div>
                         </div>
+                    </div>
+
+                    {/* Account Section */}
+                    <div className="bg-white rounded-2xl p-6">
+                        <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                            Account
+                        </h2>
+                        <button
+                            onClick={async () => {
+                                await supabase.auth.signOut();
+                                router.push("/");
+                            }}
+                            className="w-full px-4 py-3 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors font-medium"
+                        >
+                            Sign Out
+                        </button>
                     </div>
 
                     {/* About Section */}

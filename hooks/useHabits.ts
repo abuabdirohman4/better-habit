@@ -1,110 +1,77 @@
 import useSWR from "swr";
+import { createClient } from "@/lib/supabase/client";
 import { Habit, CreateHabitData } from "@/lib/types";
 
+const supabase = createClient();
+
 export const useHabits = () => {
-    // Use real API call
     const { data, error, isLoading, mutate } = useSWR(
-        "/api/habits",
-        async (url: string) => {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error("Failed to fetch habits");
-            }
-            return response.json();
+        "habits",
+        async (): Promise<Habit[]> => {
+            const { data, error } = await supabase
+                .from("habits")
+                .select("*")
+                .order("sort_order");
+            if (error) throw error;
+            return data;
         }
     );
 
     const createHabit = async (habitData: CreateHabitData) => {
-        try {
-            const response = await fetch("/api/habits", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(habitData),
-            });
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not signed in");
 
-            if (!response.ok) {
-                throw new Error("Failed to create habit");
-            }
+        const { data: newHabit, error } = await supabase
+            .from("habits")
+            .insert({ ...habitData, user_id: user.id })
+            .select()
+            .single();
+        if (error) throw error;
 
-            const { data: newHabit } = await response.json();
-
-            // Optimistic update
-            mutate((currentData: any) => {
-                if (!currentData) return { data: [newHabit] };
-                return {
-                    ...currentData,
-                    data: [...currentData.data, newHabit],
-                };
-            }, false);
-
-            return newHabit;
-        } catch (err) {
-            throw err;
-        }
+        mutate((current) => [...(current || []), newHabit as Habit], false);
+        return newHabit as Habit;
     };
 
-    const updateHabit = async (id: number, updates: Partial<Habit>) => {
-        try {
-            const response = await fetch(`/api/habits/${id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(updates),
-            });
+    const updateHabit = async (id: string, updates: Partial<Habit>) => {
+        const { data: updatedHabit, error } = await supabase
+            .from("habits")
+            .update(updates)
+            .eq("id", id)
+            .select()
+            .single();
+        if (error) throw error;
 
-            if (!response.ok) {
-                throw new Error("Failed to update habit");
-            }
-
-            const { data: updatedHabit } = await response.json();
-
-            // Optimistic update
-            mutate((currentData: any) => {
-                if (!currentData) return { data: [] };
-                return {
-                    ...currentData,
-                    data: currentData.data.map((habit: Habit) =>
-                        habit.id === id ? updatedHabit : habit
-                    ),
-                };
-            }, false);
-
-            return updatedHabit;
-        } catch (err) {
-            throw err;
-        }
+        mutate(
+            (current) =>
+                (current || []).map((habit) =>
+                    habit.id === id ? (updatedHabit as Habit) : habit
+                ),
+            false
+        );
+        return updatedHabit as Habit;
     };
 
-    const deleteHabit = async (id: number) => {
-        try {
-            const response = await fetch(`/api/habits/${id}`, {
-                method: "DELETE",
-            });
+    const deleteHabit = async (id: string) => {
+        // Completions first — FK on habit_completions.habit_id has no cascade.
+        const { error: completionsError } = await supabase
+            .from("habit_completions")
+            .delete()
+            .eq("habit_id", id);
+        if (completionsError) throw completionsError;
 
-            if (!response.ok) {
-                throw new Error("Failed to delete habit");
-            }
+        const { error } = await supabase.from("habits").delete().eq("id", id);
+        if (error) throw error;
 
-            // Optimistic update
-            mutate((currentData: any) => {
-                if (!currentData) return { data: [] };
-                return {
-                    ...currentData,
-                    data: currentData.data.filter(
-                        (habit: Habit) => habit.id !== id
-                    ),
-                };
-            }, false);
-        } catch (err) {
-            throw err;
-        }
+        mutate(
+            (current) => (current || []).filter((habit) => habit.id !== id),
+            false
+        );
     };
 
     return {
-        habits: data?.data || [],
+        habits: data || [],
         isLoading,
         error: error?.message,
         createHabit,

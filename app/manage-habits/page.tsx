@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { useHabits } from "@/hooks/useHabits";
-import { Habit } from "@/lib/types";
+import { Habit, CATEGORIES, HabitCategory } from "@/lib/types";
+import { getHabitIcon } from "@/utils/habit-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faEdit,
     faArchive,
     faTrash,
     faEye,
-    faEyeSlash,
     faPlus,
     faSearch,
     faFilter,
@@ -21,48 +21,43 @@ export default function ManageHabitsPage() {
     const { habits, isLoading, error, updateHabit, deleteHabit } = useHabits();
     const [searchTerm, setSearchTerm] = useState("");
     const [filterType, setFilterType] = useState<"all" | "active" | "archived">("all");
-    const [filterCategory, setFilterCategory] = useState<"all" | "Health" | "Spiritual" | "Mind" | "To Dont List">("all");
-    const [filterTimeOfDay, setFilterTimeOfDay] = useState<"all" | "Morning" | "Afternoon" | "Evening" | "All Day">("all");
-    const [sortBy, setSortBy] = useState<"name" | "created" | "category" | "timeOfDay">("name");
+    const [filterCategory, setFilterCategory] = useState<"all" | HabitCategory>("all");
+    const [sortBy, setSortBy] = useState<"name" | "created" | "category">("name");
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-    const [selectedHabits, setSelectedHabits] = useState<number[]>([]);
+    const [selectedHabits, setSelectedHabits] = useState<string[]>([]);
 
-    // Filter and sort habits
     const filteredHabits = habits
-        ?.filter((habit: Habit) => {
-            const matchesSearch = habit.displayName
+        .filter((habit: Habit) => {
+            const matchesSearch = habit.name
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase());
             const matchesFilter =
                 filterType === "all" ||
-                (filterType === "active" && habit.isActive) ||
-                (filterType === "archived" && !habit.isActive);
-            const matchesCategory = 
+                (filterType === "active" && !habit.is_archived) ||
+                (filterType === "archived" && habit.is_archived);
+            const matchesCategory =
                 filterCategory === "all" || habit.category === filterCategory;
-            const matchesTimeOfDay = 
-                filterTimeOfDay === "all" || habit.timeOfDay === filterTimeOfDay;
-            return matchesSearch && matchesFilter && matchesCategory && matchesTimeOfDay;
+            return matchesSearch && matchesFilter && matchesCategory;
         })
         .sort((a: Habit, b: Habit) => {
             let comparison = 0;
             switch (sortBy) {
                 case "name":
-                    comparison = a.displayName.localeCompare(b.displayName);
+                    comparison = a.name.localeCompare(b.name);
                     break;
                 case "created":
-                    comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    comparison =
+                        new Date(a.created_at).getTime() -
+                        new Date(b.created_at).getTime();
                     break;
                 case "category":
                     comparison = a.category.localeCompare(b.category);
                     break;
-                case "timeOfDay":
-                    comparison = a.timeOfDay.localeCompare(b.timeOfDay);
-                    break;
             }
             return sortOrder === "asc" ? comparison : -comparison;
-        }) || [];
+        });
 
-    const handleToggleSelection = (habitId: number) => {
+    const handleToggleSelection = (habitId: string) => {
         setSelectedHabits((prev) =>
             prev.includes(habitId)
                 ? prev.filter((id) => id !== habitId)
@@ -78,23 +73,23 @@ export default function ManageHabitsPage() {
         }
     };
 
-    const handleArchiveHabit = async (habitId: number) => {
+    const handleArchiveHabit = async (habitId: string) => {
         try {
-            await updateHabit(habitId, { isActive: false });
+            await updateHabit(habitId, { is_archived: true });
         } catch (error) {
             console.error("Failed to archive habit:", error);
         }
     };
 
-    const handleRestoreHabit = async (habitId: number) => {
+    const handleRestoreHabit = async (habitId: string) => {
         try {
-            await updateHabit(habitId, { isActive: true });
+            await updateHabit(habitId, { is_archived: false });
         } catch (error) {
             console.error("Failed to restore habit:", error);
         }
     };
 
-    const handleDeleteHabit = async (habitId: number) => {
+    const handleDeleteHabit = async (habitId: string) => {
         if (confirm("Are you sure you want to permanently delete this habit?")) {
             try {
                 await deleteHabit(habitId);
@@ -109,7 +104,7 @@ export default function ManageHabitsPage() {
             try {
                 await Promise.all(
                     selectedHabits.map((habitId) =>
-                        updateHabit(habitId, { isActive: false })
+                        updateHabit(habitId, { is_archived: true })
                     )
                 );
                 setSelectedHabits([]);
@@ -124,7 +119,7 @@ export default function ManageHabitsPage() {
             try {
                 await Promise.all(
                     selectedHabits.map((habitId) =>
-                        updateHabit(habitId, { isActive: true })
+                        updateHabit(habitId, { is_archived: false })
                     )
                 );
                 setSelectedHabits([]);
@@ -135,7 +130,11 @@ export default function ManageHabitsPage() {
     };
 
     const handleBulkDelete = async () => {
-        if (confirm(`Permanently delete ${selectedHabits.length} selected habits?`)) {
+        if (
+            confirm(
+                `Permanently delete ${selectedHabits.length} selected habits?`
+            )
+        ) {
             try {
                 await Promise.all(
                     selectedHabits.map((habitId) => deleteHabit(habitId))
@@ -192,10 +191,7 @@ export default function ManageHabitsPage() {
                                 View, edit, and organize your habits
                             </p>
                         </div>
-                        <Link
-                            href="/add-habit"
-                            className="btn btn-primary gap-2"
-                        >
+                        <Link href="/add-habit" className="btn btn-primary gap-2">
                             <FontAwesomeIcon icon={faPlus} />
                             Add
                         </Link>
@@ -231,7 +227,12 @@ export default function ManageHabitsPage() {
                             <select
                                 value={filterType}
                                 onChange={(e) =>
-                                    setFilterType(e.target.value as "all" | "active" | "archived")
+                                    setFilterType(
+                                        e.target.value as
+                                            | "all"
+                                            | "active"
+                                            | "archived"
+                                    )
                                 }
                                 className="select select-bordered w-full pl-10"
                             >
@@ -246,32 +247,22 @@ export default function ManageHabitsPage() {
                             <select
                                 value={filterCategory}
                                 onChange={(e) =>
-                                    setFilterCategory(e.target.value as "all" | "Health" | "Spiritual" | "Mind" | "To Dont List")
+                                    setFilterCategory(
+                                        e.target.value as "all" | HabitCategory
+                                    )
                                 }
-                                className="select select-bordered w-full"
+                                className="select select-bordered w-full capitalize"
                             >
                                 <option value="all">All Categories</option>
-                                <option value="Health">Health</option>
-                                <option value="Spiritual">Spiritual</option>
-                                <option value="Mind">Mind</option>
-                                <option value="To Dont List">To Dont List</option>
-                            </select>
-                        </div>
-
-                        {/* Time of Day Filter */}
-                        <div className="relative">
-                            <select
-                                value={filterTimeOfDay}
-                                onChange={(e) =>
-                                    setFilterTimeOfDay(e.target.value as "all" | "Morning" | "Afternoon" | "Evening" | "All Day")
-                                }
-                                className="select select-bordered w-full"
-                            >
-                                <option value="all">All Times</option>
-                                <option value="Morning">Morning</option>
-                                <option value="Afternoon">Afternoon</option>
-                                <option value="Evening">Evening</option>
-                                <option value="All Day">All Day</option>
+                                {CATEGORIES.map((category) => (
+                                    <option
+                                        key={category}
+                                        value={category}
+                                        className="capitalize"
+                                    >
+                                        {category}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
@@ -284,21 +275,29 @@ export default function ManageHabitsPage() {
                             <select
                                 value={sortBy}
                                 onChange={(e) =>
-                                    setSortBy(e.target.value as "name" | "created" | "category" | "timeOfDay")
+                                    setSortBy(
+                                        e.target.value as
+                                            | "name"
+                                            | "created"
+                                            | "category"
+                                    )
                                 }
                                 className="select select-bordered w-full pl-10"
                             >
                                 <option value="name">Sort by Name</option>
                                 <option value="created">Sort by Created</option>
-                                <option value="category">Sort by Category</option>
-                                <option value="timeOfDay">Sort by Time</option>
+                                <option value="category">
+                                    Sort by Category
+                                </option>
                             </select>
                         </div>
 
                         {/* Sort Order */}
                         <button
                             onClick={() =>
-                                setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                                setSortOrder(
+                                    sortOrder === "asc" ? "desc" : "asc"
+                                )
                             }
                             className="btn btn-outline gap-2"
                         >
@@ -359,10 +358,7 @@ export default function ManageHabitsPage() {
                                     ? "Try adjusting your search or filter"
                                     : "Create your first habit to get started"}
                             </p>
-                            <Link
-                                href="/add-habit"
-                                className="btn btn-primary"
-                            >
+                            <Link href="/add-habit" className="btn btn-primary">
                                 Add
                             </Link>
                         </div>
@@ -376,7 +372,7 @@ export default function ManageHabitsPage() {
                                                 type="checkbox"
                                                 checked={
                                                     selectedHabits.length ===
-                                                    filteredHabits.length &&
+                                                        filteredHabits.length &&
                                                     filteredHabits.length > 0
                                                 }
                                                 onChange={handleSelectAll}
@@ -385,7 +381,7 @@ export default function ManageHabitsPage() {
                                         </th>
                                         <th>Habit</th>
                                         <th>Category</th>
-                                        <th>Time</th>
+                                        <th>Type</th>
                                         <th>Frequency</th>
                                         <th>Description</th>
                                         <th>Status</th>
@@ -436,7 +432,11 @@ export default function ManageHabitsPage() {
                             </div>
                             <div className="ml-4">
                                 <p className="text-2xl font-bold text-gray-900">
-                                    {habits?.filter((h: Habit) => h.isActive).length || 0}
+                                    {
+                                        habits.filter(
+                                            (h: Habit) => !h.is_archived
+                                        ).length
+                                    }
                                 </p>
                             </div>
                         </div>
@@ -455,7 +455,11 @@ export default function ManageHabitsPage() {
                             </div>
                             <div className="ml-4">
                                 <p className="text-2xl font-bold text-gray-900">
-                                    {habits?.filter((h: Habit) => !h.isActive).length || 0}
+                                    {
+                                        habits.filter(
+                                            (h: Habit) => h.is_archived
+                                        ).length
+                                    }
                                 </p>
                             </div>
                         </div>
@@ -474,7 +478,7 @@ export default function ManageHabitsPage() {
                             </div>
                             <div className="ml-4">
                                 <p className="text-2xl font-bold text-gray-900">
-                                    {habits?.length || 0}
+                                    {habits.length}
                                 </p>
                             </div>
                         </div>
@@ -504,45 +508,23 @@ function HabitRow({
 }: HabitRowProps) {
     const getCategoryColor = (category: string) => {
         switch (category) {
-            case "Health":
+            case "kesehatan":
                 return "badge-success";
-            case "Spiritual":
+            case "spiritual":
                 return "badge-primary";
-            case "Mind":
+            case "karir":
                 return "badge-info";
-            case "To Dont List":
+            case "keuangan":
+                return "badge-warning";
+            case "relasi":
+                return "badge-secondary";
+            case "petualangan":
+                return "badge-accent";
+            case "kontribusi":
                 return "badge-error";
             default:
                 return "badge-neutral";
         }
-    };
-
-    const getTimeOfDayColor = (timeOfDay: string) => {
-        switch (timeOfDay) {
-            case "Morning":
-                return "badge-warning";
-            case "Afternoon":
-                return "badge-secondary";
-            case "Evening":
-                return "badge-accent";
-            case "All Day":
-                return "badge-neutral";
-            default:
-                return "badge-neutral";
-        }
-    };
-
-    const getFrequencyText = (habit: Habit) => {
-        if (habit.frequencyType === "daily") return "Daily";
-        if (habit.frequencyType === "weekly") {
-            const days = habit.frequencyDays?.split(",").length || 0;
-            return `${days} days/week`;
-        }
-        if (habit.frequencyType === "custom") {
-            const days = habit.frequencyDays?.split(",").length || 0;
-            return `${days} days`;
-        }
-        return "Custom";
     };
 
     const formatDate = (dateString: string) => {
@@ -566,31 +548,39 @@ function HabitRow({
             <td>
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                        <span className="text-lg">🏃</span>
+                        <span className="text-lg">
+                            {getHabitIcon(habit.category)}
+                        </span>
                     </div>
-                    <div>
-                        <div className="font-medium text-gray-900">
-                            {habit.displayName}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                            {habit.iconName}
-                        </div>
+                    <div className="font-medium text-gray-900">
+                        {habit.name}
                     </div>
                 </div>
             </td>
             <td>
-                <span className={`text-white font-bold badge ${getCategoryColor(habit.category)}`}>
+                <span
+                    className={`text-white font-bold badge capitalize ${getCategoryColor(habit.category)}`}
+                >
                     {habit.category}
                 </span>
             </td>
             <td>
-                <span className={`text-white font-bold badge ${getTimeOfDayColor(habit.timeOfDay)}`}>
-                    {habit.timeOfDay}
+                <span
+                    className={`text-white font-bold badge ${
+                        habit.tracking_type === "negative"
+                            ? "badge-error"
+                            : "badge-success"
+                    }`}
+                >
+                    {habit.tracking_type === "negative" ? "Quit" : "Build"}
                 </span>
             </td>
             <td>
-                <span className="text-sm text-gray-600">
-                    {getFrequencyText(habit)}
+                <span className="text-sm text-gray-600 capitalize">
+                    {habit.frequency}
+                    {habit.daily_target > 1
+                        ? ` · ${habit.daily_target}x/day`
+                        : ""}
                 </span>
             </td>
             <td>
@@ -601,15 +591,15 @@ function HabitRow({
             <td>
                 <span
                     className={`text-white font-bold badge ${
-                        habit.isActive ? "badge-success" : "badge-warning"
+                        !habit.is_archived ? "badge-success" : "badge-warning"
                     }`}
                 >
-                    {habit.isActive ? "Active" : "Archived"}
+                    {!habit.is_archived ? "Active" : "Archived"}
                 </span>
             </td>
             <td>
                 <span className="text-sm text-gray-600">
-                    {formatDate(habit.createdAt)}
+                    {formatDate(habit.created_at)}
                 </span>
             </td>
             <td>
@@ -621,7 +611,7 @@ function HabitRow({
                     >
                         <FontAwesomeIcon icon={faEdit} />
                     </Link>
-                    {habit.isActive ? (
+                    {!habit.is_archived ? (
                         <button
                             onClick={onArchive}
                             className="btn btn-ghost btn-sm text-warning"

@@ -6,7 +6,7 @@ interface CalendarProps {
     className?: string;
     currentDate?: Date;
     habitLogs?: any[];
-    habitId?: number;
+    habitId?: string;
 }
 
 interface DayData {
@@ -63,14 +63,6 @@ export default function Calendar({
             const dateString = `${year}-${month}-${dayStr}`;
             const hasLog = habitLogs.some(log => log.date === dateString);
             
-            // Quick debug for user reported dates
-            if (day >= 8 && day <= 12 && habitLogs.length > 0) {
-                const logForDay = habitLogs.find(log => log.date === dateString);
-                if (logForDay) {
-                    console.log(`Found log for ${dateString}:`, logForDay);
-                }
-            }
-
             let status: DayData["status"] = "future";
 
             if (isToday) {
@@ -88,9 +80,6 @@ export default function Calendar({
     };
 
     const calendarData = generateCalendarData();
-    
-    // Debug current date being displayed
-    console.log(`Calendar showing: ${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`);
 
     // Navigation functions (only for internal use when no prop is provided)
     const goToPreviousMonth = () => {

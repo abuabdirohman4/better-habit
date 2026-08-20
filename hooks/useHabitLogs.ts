@@ -1,165 +1,124 @@
 import { useCallback } from "react";
 import useSWR from "swr";
-import { HabitLog, CreateHabitLogData } from "@/lib/types";
+import { createClient } from "@/lib/supabase/client";
+import { HabitCompletion } from "@/lib/types";
 
-// Hook untuk mengambil semua habit logs
+const supabase = createClient();
+
+// Semua completion milik user (RLS membatasi ke user login)
 export const useAllHabitLogs = () => {
     const { data, error, isLoading, mutate } = useSWR(
-        "/api/habit-logs",
-        async (url: string) => {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error("Failed to fetch habit logs");
-            }
-            return response.json();
+        "habit_completions",
+        async (): Promise<HabitCompletion[]> => {
+            const { data, error } = await supabase
+                .from("habit_completions")
+                .select("*")
+                .order("date");
+            if (error) throw error;
+            return data;
         },
         {
-            revalidateOnFocus: false, // Prevent revalidation on focus
-            revalidateOnReconnect: false, // Prevent revalidation on reconnect
-            dedupingInterval: 60000, // Cache for 1 minute
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            dedupingInterval: 60000,
         }
     );
 
     return {
-        logs: data?.data || [],
+        logs: data || [],
         isLoading,
         error: error?.message,
         mutate,
     };
 };
 
-// Hook untuk mengambil habit logs untuk habit tertentu
-export const useHabitLogs = (habitId: number) => {
+// Completion untuk satu habit
+export const useHabitLogs = (habitId: string, dailyTarget: number = 1) => {
     const { logs, isLoading, mutate } = useAllHabitLogs();
-    
-    // Filter logs for this specific habit
-    const habitLogs = logs.filter((log: any) => log.habitId === habitId);
 
-    const addLog = async (logData: CreateHabitLogData) => {
-        try {
-            const response = await fetch('/api/habit-logs', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(logData),
-            });
+    const habitLogs = logs.filter(
+        (log: HabitCompletion) => log.habit_id === habitId
+    );
 
-            if (!response.ok) {
-                throw new Error("Failed to create habit log");
-            }
+    const getCountForDate = useCallback(
+        (date: string): number =>
+            habitLogs.filter((log: HabitCompletion) => log.date === date)
+                .length,
+        [habitLogs]
+    );
 
-            const { data: newLog } = await response.json();
+    const isCompletedOnDate = useCallback(
+        (date: string): boolean => getCountForDate(date) >= dailyTarget,
+        [getCountForDate, dailyTarget]
+    );
 
-            // Optimistic update
-            mutate((currentData: any) => {
-                if (!currentData) return { data: [newLog] };
-                return {
-                    ...currentData,
-                    data: [...currentData.data, newLog],
-                };
-            }, false);
+    const toggleCompletion = async (date: string) => {
+        const count = getCountForDate(date);
 
-            return newLog;
-        } catch (err) {
-            throw err;
-        }
-    };
+        if (count >= dailyTarget) {
+            // Sudah penuh → reset: hapus semua completion habit+tanggal ini
+            const { error } = await supabase
+                .from("habit_completions")
+                .delete()
+                .eq("habit_id", habitId)
+                .eq("date", date);
+            if (error) throw error;
 
-    const toggleCompletion = async (date: string, completedValue?: number) => {
-        try {
-            // Check if log already exists for this date
-            const existingLog = habitLogs.find(
-                (log: HabitLog) => log.date === date
+            mutate(
+                (current) =>
+                    (current || []).filter(
+                        (log) => !(log.habit_id === habitId && log.date === date)
+                    ),
+                false
             );
-
-            if (existingLog) {
-                // If log exists, remove it (toggle off)
-                try {
-                    const response = await fetch(`/api/habit-logs?habitId=${habitId}&date=${date}`, {
-                        method: "DELETE",
-                    });
-
-                    if (!response.ok) {
-                        throw new Error("Failed to delete habit log");
-                    }
-
-                    // Update cache optimistically
-                    mutate((currentData: any) => {
-                        if (!currentData) return currentData;
-                        return {
-                            ...currentData,
-                            data: currentData.data.filter(
-                                (log: HabitLog) => !(log.habitId === habitId && log.date === date)
-                            ),
-                        };
-                    }, false); // false = don't revalidate from server
-                    
-                    console.log("Log deleted from database and cache");
-                    return false; // Return false to indicate habit is now not completed
-                } catch (error) {
-                    console.error("Error deleting log:", error);
-                    // Fallback to cache-only delete
-                    mutate((currentData: any) => {
-                        if (!currentData) return currentData;
-                        return {
-                            ...currentData,
-                            data: currentData.data.filter(
-                                (log: HabitLog) => !(log.habitId === habitId && log.date === date)
-                            ),
-                        };
-                    }, false);
-                    return false;
-                }
-            } else {
-                // Create new log
-                const logData: CreateHabitLogData = {
-                    habitId,
-                    date,
-                    completedValue,
-                };
-                await addLog(logData);
-                return true; // Return true to indicate habit is now completed
-            }
-        } catch (err) {
-            throw err;
+            return false;
         }
+
+        const {
+            data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not signed in");
+
+        const { data: newLog, error } = await supabase
+            .from("habit_completions")
+            .insert({ habit_id: habitId, user_id: user.id, date })
+            .select()
+            .single();
+        if (error) throw error;
+
+        mutate(
+            (current) => [...(current || []), newLog as HabitCompletion],
+            false
+        );
+        return count + 1 >= dailyTarget;
     };
-
-    const getLogForDate = useCallback((date: string): HabitLog | undefined => {
-        const log = habitLogs.find((log: HabitLog) => log.date === date);
-        return log;
-    }, [habitLogs]);
-
-    const isCompletedOnDate = useCallback((date: string): boolean => {
-        const completed = !!getLogForDate(date);
-        return completed;
-    }, [getLogForDate]);
 
     const getCompletionRate = (): number => {
-        if (!habitLogs || habitLogs.length === 0) return 0;
+        if (habitLogs.length === 0) return 0;
 
-        // Calculate completion rate for the last 7 days
         const today = new Date();
         const sevenDaysAgo = new Date(today);
         sevenDaysAgo.setDate(today.getDate() - 7);
 
-        const recentLogs = habitLogs.filter((log: HabitLog) => {
-            const logDate = new Date(log.date);
-            return logDate >= sevenDaysAgo && logDate <= today;
-        });
+        const recentDays = new Set(
+            habitLogs
+                .filter((log) => {
+                    const logDate = new Date(log.date);
+                    return logDate >= sevenDaysAgo && logDate <= today;
+                })
+                .map((log) => log.date)
+        );
 
-        return Math.round((recentLogs.length / 7) * 100);
+        return Math.round((recentDays.size / 7) * 100);
     };
 
     return {
         logs: habitLogs,
         isLoading,
         error: null,
-        addLog,
-        toggleCompletion,
-        getLogForDate,
+        getCountForDate,
         isCompletedOnDate,
+        toggleCompletion,
         getCompletionRate,
         mutate,
     };

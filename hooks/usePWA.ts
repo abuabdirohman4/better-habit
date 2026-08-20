@@ -60,38 +60,3 @@ export const usePWA = () => {
         installApp,
     };
 };
-
-
-// Hook for offline habit storage
-export const useOfflineHabits = () => {
-    const storeHabitCompletion = (habitId: number, date: string, completed: boolean) => {
-        const offlineQueue = JSON.parse(localStorage.getItem('habitQueue') || '[]');
-        const item = {
-            id: Date.now(),
-            action: 'toggle_completion',
-            habitId,
-            date,
-            completed,
-            timestamp: new Date().toISOString()
-        };
-        
-        offlineQueue.push(item);
-        localStorage.setItem('habitQueue', JSON.stringify(offlineQueue));
-        
-        // Note: Background sync can be implemented later if needed
-    };
-
-    const getOfflineQueue = () => {
-        return JSON.parse(localStorage.getItem('habitQueue') || '[]');
-    };
-
-    const clearOfflineQueue = () => {
-        localStorage.removeItem('habitQueue');
-    };
-
-    return {
-        storeHabitCompletion,
-        getOfflineQueue,
-        clearOfflineQueue,
-    };
-};
