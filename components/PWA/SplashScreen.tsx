@@ -8,9 +8,9 @@ interface SplashScreenProps {
     minDisplayTime?: number; // Minimum display time in milliseconds
 }
 
-export default function SplashScreen({ 
-    isLoading = false, 
-    minDisplayTime = 1500 
+export default function SplashScreen({
+    isLoading = false,
+    minDisplayTime = 600,
 }: SplashScreenProps) {
     const [showSplash, setShowSplash] = useState(true);
     const [minTimeElapsed, setMinTimeElapsed] = useState(false);

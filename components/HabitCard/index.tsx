@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@/hooks/useNavigate";
 import { Habit } from "@/lib/types";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
 import {
@@ -28,7 +28,7 @@ const HabitCard: React.FC<HabitCardProps> = ({
     className = "",
     targetDate,
 }) => {
-    const router = useRouter();
+    const { navigate, isPending } = useNavigate();
     const { isCompletedOnDate, getCountForDate, toggleCompletion } =
         useHabitLogs(habit.id, habit.daily_target);
 
@@ -70,13 +70,23 @@ const HabitCard: React.FC<HabitCardProps> = ({
     };
 
     const handleCardClick = () => {
-        router.push(`/habits/${habit.id}`);
+        navigate(`/habits/${habit.id}`);
     };
 
     return (
         <div
-            className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${className}`}
+            className={`relative bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-5 border border-gray-100 ${
+                isPending ? "opacity-60" : ""
+            } ${className}`}
         >
+            {isPending && (
+                <div className="absolute right-3 top-3">
+                    <div
+                        className="h-5 w-5 animate-spin rounded-full border-2 border-habit-blue border-t-transparent"
+                        aria-label="Opening habit"
+                    />
+                </div>
+            )}
             <div className="flex items-center space-x-4">
                 <div
                     className="flex items-center space-x-4 flex-1 cursor-pointer hover:bg-gray-50 rounded-xl p-2 -m-2 transition-colors"

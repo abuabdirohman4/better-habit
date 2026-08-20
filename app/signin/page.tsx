@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import NavButton from "@/components/NavButton";
 import { useRouter } from "next/navigation";
 import { RiEyeCloseLine, RiEyeLine } from "react-icons/ri";
 import Button from "@/components/Button";
@@ -125,9 +125,13 @@ export default function SignIn() {
                     </form>
 
                     <p className="mt-6 pb-10 text-center text-sm">
-                        <Link href="/" className="text-primary underline underline-offset-4">
+                        <NavButton
+                            href="/"
+                            className="text-primary underline underline-offset-4"
+                            spinnerClassName="border-primary border-t-transparent"
+                        >
                             &larr; Kembali ke beranda
-                        </Link>
+                        </NavButton>
                     </p>
                 </>
             )}

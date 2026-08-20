@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, useState, useTransition } from "react";
 
 interface BottomNavigationBarProps {
     className?: string;
@@ -20,6 +20,8 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
 }) => {
     const pathname = usePathname();
     const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+    const [pendingPath, setPendingPath] = useState<string | null>(null);
 
     const navItems: NavItem[] = useMemo(
         () => [
@@ -97,7 +99,11 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
     );
 
     const handleNavigation = (path: string) => {
-        router.push(path);
+        if (path === pathname) return;
+        setPendingPath(path);
+        startTransition(() => {
+            router.push(path);
+        });
     };
 
     // Halaman login belum punya sesi — nav ke halaman terproteksi tidak berguna di sana.
@@ -112,7 +118,8 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
                     <button
                         key={item.id}
                         onClick={() => handleNavigation(item.path)}
-                        className={`flex flex-col items-center justify-center py-2 px-4 min-w-0 flex-1 transition-all duration-200 ${
+                        disabled={isPending}
+                        className={`flex flex-col items-center justify-center py-2 px-4 min-w-0 flex-1 transition-all duration-200 disabled:cursor-default ${
                             item.isActive
                                 ? "text-habit-blue"
                                 : "text-habit-gray hover:text-habit-blue"
@@ -124,7 +131,14 @@ const BottomNavigationBar: React.FC<BottomNavigationBarProps> = ({
                                 item.isActive ? "scale-110" : "scale-100"
                             }`}
                         >
-                            {item.icon}
+                            {isPending && pendingPath === item.path ? (
+                                <div
+                                    className="h-6 w-6 animate-spin rounded-full border-2 border-current border-t-transparent"
+                                    aria-label="Loading"
+                                />
+                            ) : (
+                                item.icon
+                            )}
                         </div>
                         <span
                             className={`text-xs font-medium mt-1 transition-all duration-200 ${

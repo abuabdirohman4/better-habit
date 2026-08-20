@@ -15,7 +15,7 @@ import {
     faFilter,
     faSort,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+import NavButton from "@/components/NavButton";
 
 export default function ManageHabitsPage() {
     const { habits, isLoading, error, updateHabit, deleteHabit } = useHabits();
@@ -191,10 +191,10 @@ export default function ManageHabitsPage() {
                                 View, edit, and organize your habits
                             </p>
                         </div>
-                        <Link href="/add-habit" className="btn btn-primary gap-2">
+                        <NavButton href="/add-habit" className="btn btn-primary gap-2">
                             <FontAwesomeIcon icon={faPlus} />
                             Add
-                        </Link>
+                        </NavButton>
                     </div>
                 </div>
             </div>
@@ -358,9 +358,9 @@ export default function ManageHabitsPage() {
                                     ? "Try adjusting your search or filter"
                                     : "Create your first habit to get started"}
                             </p>
-                            <Link href="/add-habit" className="btn btn-primary">
+                            <NavButton href="/add-habit" className="btn btn-primary">
                                 Add
-                            </Link>
+                            </NavButton>
                         </div>
                     ) : (
                         <div className="overflow-x-auto">
@@ -604,13 +604,13 @@ function HabitRow({
             </td>
             <td>
                 <div className="flex gap-1">
-                    <Link
+                    <NavButton
                         href={`/edit-habit/${habit.id}`}
                         className="btn btn-ghost btn-sm"
-                        title="Edit"
+                        spinnerClassName="border-current border-t-transparent"
                     >
                         <FontAwesomeIcon icon={faEdit} />
-                    </Link>
+                    </NavButton>
                     {!habit.is_archived ? (
                         <button
                             onClick={onArchive}

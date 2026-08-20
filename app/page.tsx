@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import NavButton from "@/components/NavButton";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { LANDING_COPY, type Lang } from "@/lib/landing-copy";
@@ -78,12 +78,12 @@ export default function Landing() {
                                 </button>
                             ))}
                         </div>
-                        <Link
+                        <NavButton
                             href="/signin"
                             className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:brightness-110"
                         >
                             {t.nav.signIn}
-                        </Link>
+                        </NavButton>
                     </div>
                 </div>
             </header>
@@ -105,12 +105,12 @@ export default function Landing() {
                             {t.hero.subtitle}
                         </p>
                         <div className="mt-7 flex flex-wrap items-center gap-4">
-                            <Link
+                            <NavButton
                                 href="/signin"
                                 className="rounded-full bg-primary px-6 py-3.5 text-base font-medium text-white hover:brightness-110"
                             >
                                 {t.hero.ctaPrimary}
-                            </Link>
+                            </NavButton>
                             <a
                                 href="#how"
                                 className="text-sm font-medium text-habit-gray underline underline-offset-4 hover:text-primary"
@@ -320,12 +320,12 @@ export default function Landing() {
                     {t.finalCta.title}
                 </h2>
                 <p className="mt-4 text-habit-gray">{t.finalCta.body}</p>
-                <Link
+                <NavButton
                     href="/signin"
-                    className="mt-8 inline-block rounded-full bg-primary px-8 py-4 text-base font-medium text-white hover:brightness-110"
+                    className="mt-8 rounded-full bg-primary px-8 py-4 text-base font-medium text-white hover:brightness-110"
                 >
                     {t.finalCta.button}
-                </Link>
+                </NavButton>
             </section>
 
             {/* Footer */}
