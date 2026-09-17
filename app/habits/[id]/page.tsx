@@ -6,8 +6,18 @@ import { useHabits } from "@/hooks/useHabits";
 import { useHabitLogs } from "@/hooks/useHabitLogs";
 import Calendar from "@/components/Calendar";
 import Spinner from "@/components/Spinner";
+import MonthlyTrendChart from "@/components/MonthlyTrendChart";
+import AchievementBadges from "@/components/AchievementBadges";
 import { Habit, HabitCompletion } from "@/lib/types";
-import { buildCompletedDates, monthlyProgress } from "@/utils/habit-stats";
+import {
+    buildCompletedDates,
+    monthlyProgress,
+    monthlyTrend,
+    calculateBadges,
+    mainInsight,
+    currentStreak,
+    todayWIB,
+} from "@/utils/habit-stats";
 
 export default function HabitStatisticsPage() {
     const params = useParams();
@@ -51,24 +61,8 @@ export default function HabitStatisticsPage() {
             );
         });
 
-        // Streak: consecutive days (any completion counts)
-        const today = new Date();
-        let streak = 0;
-        let checkDate = new Date(today);
-
-        while (true) {
-            const year = checkDate.getFullYear();
-            const month = String(checkDate.getMonth() + 1).padStart(2, "0");
-            const day = String(checkDate.getDate()).padStart(2, "0");
-            const dateString = `${year}-${month}-${day}`;
-
-            if (completedDates.has(dateString)) {
-                streak++;
-                checkDate.setDate(checkDate.getDate() - 1);
-            } else {
-                break;
-            }
-        }
+        const today = todayWIB();
+        const streak = currentStreak(completedDates, today);
 
         const daysInMonth = new Date(
             currentYear,
@@ -87,12 +81,19 @@ export default function HabitStatisticsPage() {
             currentMonth + 1
         );
 
+        const trend = monthlyTrend(habit, logs, currentYear, currentMonth + 1);
+        const badges = calculateBadges(completedDates, goalProgress, today);
+        const insight = mainInsight(habit, completedDates, trend, goalProgress, today);
+
         return {
             streak,
             successRate,
             completedDays: monthDays.length,
             totalDaysInMonth: daysInMonth,
             goalProgress,
+            trend,
+            badges,
+            insight,
         };
     }, [habit, logs, currentDate]);
 
@@ -329,6 +330,34 @@ export default function HabitStatisticsPage() {
                                     width: `${Math.min(100, habitStats?.goalProgress.percentage || 0)}%`,
                                 }}
                             />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Grafik penyelesaian bulanan */}
+                <div className="bg-white rounded-2xl p-6 mb-6">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                        Tren 6 Bulan
+                    </h2>
+                    <MonthlyTrendChart data={habitStats?.trend ?? []} />
+                </div>
+
+                {/* Achievement badges */}
+                <div className="bg-white rounded-2xl p-6 mb-6">
+                    <AchievementBadges badges={habitStats?.badges ?? []} />
+                </div>
+
+                {/* Insight Utama */}
+                <div className="bg-gradient-to-r from-habit-blue to-habit-purple rounded-2xl p-6 mb-6 text-white">
+                    <div className="flex items-start gap-3">
+                        <span className="text-2xl leading-none">💡</span>
+                        <div>
+                            <h2 className="text-lg font-semibold mb-1">
+                                Insight Utama
+                            </h2>
+                            <p className="text-white/90 text-sm leading-relaxed">
+                                {habitStats?.insight}
+                            </p>
                         </div>
                     </div>
                 </div>

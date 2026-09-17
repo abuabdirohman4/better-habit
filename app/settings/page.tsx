@@ -1,11 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Modal from "@/components/Modal";
 import Toggle from "@/components/Toggle";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useHabits } from "@/hooks/useHabits";
+import { useAllHabitLogs } from "@/hooks/useHabitLogs";
+import { useHabitReminder } from "@/hooks/useHabitReminder";
+import { isDueOn, todayWIB } from "@/utils/habit-stats";
+import { Habit, HabitCompletion } from "@/lib/types";
 import {
     usePWAInstall,
     setDeferredPrompt,
@@ -19,7 +24,27 @@ export default function SettingsPage() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showSignOutModal, setShowSignOutModal] = useState(false);
     const [isSigningOut, setIsSigningOut] = useState(false);
-    const [notifications, setNotifications] = useState(true);
+
+    // Sisa habit hari ini — jadi isi pesan notifikasi.
+    const { habits } = useHabits();
+    const { logs } = useAllHabitLogs();
+    const pendingCount = useMemo(() => {
+        const today = todayWIB();
+        const doneCount: Record<string, number> = {};
+        logs.forEach((log: HabitCompletion) => {
+            if (log.date === today) {
+                doneCount[log.habit_id] = (doneCount[log.habit_id] || 0) + 1;
+            }
+        });
+        return habits.filter(
+            (h: Habit) =>
+                !h.is_archived &&
+                isDueOn(h, today) &&
+                (doneCount[h.id] || 0) < h.daily_target
+        ).length;
+    }, [habits, logs]);
+
+    const reminder = useHabitReminder(pendingCount);
 
     const { deferredPrompt, isInstalled } = usePWAInstall();
     const canInstall = !isInstalled && !!deferredPrompt;
@@ -109,20 +134,48 @@ export default function SettingsPage() {
                             Notifications
                         </h2>
                         <div className="space-y-4">
-                            <Toggle
-                                checked={notifications}
-                                onChange={setNotifications}
-                                label="Push Notifications"
-                                helperText="Receive habit reminders"
-                                color="primary"
-                            />
-                            <Toggle
-                                checked={false}
-                                onChange={() => {}}
-                                label="Email Reminders"
-                                helperText="Get daily progress emails"
-                                color="primary"
-                            />
+                            {reminder.isSupported ? (
+                                <>
+                                    <Toggle
+                                        checked={reminder.enabled}
+                                        onChange={reminder.toggle}
+                                        label="Daily Reminder"
+                                        helperText={
+                                            reminder.permission === "denied"
+                                                ? "Notifikasi diblokir browser — izinkan dulu di setelan situs"
+                                                : "Pengingat harian kalau masih ada habit belum dicentang"
+                                        }
+                                        color="primary"
+                                    />
+
+                                    {reminder.enabled && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Jam pengingat
+                                            </label>
+                                            <input
+                                                type="time"
+                                                value={reminder.time}
+                                                onChange={(e) =>
+                                                    reminder.changeTime(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-habit-blue focus:border-transparent"
+                                            />
+                                            <p className="text-xs text-gray-500 mt-2">
+                                                Hari ini sisa {pendingCount} habit.
+                                                Notifikasi hanya muncul selama app
+                                                masih terbuka.
+                                            </p>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <p className="text-sm text-gray-500">
+                                    Browser ini tidak mendukung notifikasi.
+                                </p>
+                            )}
                         </div>
                     </div>
 
