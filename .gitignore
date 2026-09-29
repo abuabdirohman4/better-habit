@@ -40,7 +40,7 @@ next-env.d.ts
 VERSION
 *.version
 
-.mcp.json
+# .mcp.json di-commit: token lewat ${VAR}, nilai di env mesin
 # PWA build output
 public/sw.js
 public/workbox-*.js
