@@ -1,0 +1,13 @@
+{
+  "projectName": "Better Habit",
+  "projectDescription": "Habit tracker PWA: centang kebiasaan harian, streak dan statistik.",
+  "versionFile": "package.json",
+  "artifacts": {
+    "changelog": "CHANGELOG.md",
+    "features": "docs/features.md",
+    "readme": null,
+    "social": null
+  },
+  "language": "en",
+  "rilisKonten": true
+}
