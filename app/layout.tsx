@@ -6,6 +6,7 @@ import BottomNavigationBar from "@/components/BottomNavigationBar";
 import AppShell from "@/components/AppShell";
 import PWAComponents from "@/components/PWA";
 import LoadingHandler from "@/components/PWA/LoadingHandler";
+import UmamiScript from "@/components/UmamiScript";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -71,6 +72,7 @@ export default function RootLayout({
                     <AppShell>{children}</AppShell>
                     <BottomNavigationBar />
                 </SWRProvider>
+                <UmamiScript />
             </body>
         </html>
     );
